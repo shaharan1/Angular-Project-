@@ -1,0 +1,13 @@
+{
+  "name": "MediConnect Pro HMS",
+  "description": "Enterprise-level Hospital Management System with EHR, Appointment Scheduling, and Billing.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "Authentication",
+    "Database",
+    "Real-time Updates"
+  ]
+}

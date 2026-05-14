@@ -1,0 +1,26 @@
+{
+  "patients": [
+    {
+      "id": "1",
+      "patientId": "PAT-000452",
+      "firstName": "Shaharan",
+      "lastName": "Hossain",
+      "age": 45,
+      "gender": "Male",
+      "status": "Inpatient",
+      "bloodGroup": "O+",
+      "email": "shaharanhossain@example.com",
+      "phone": "01521522195",
+      "address": "10/3A,Mirpur Road Dhaka-1205"
+    }
+  ],
+  "appointments": [
+    {
+      "id": "1",
+      "patientName": "Emon",
+      "doctorName": "Dr. Tanvir",
+      "time": "09:00 AM",
+      "status": "Confirmed"
+    }
+  ]
+}
