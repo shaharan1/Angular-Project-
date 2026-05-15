@@ -1,26 +1,85 @@
 {
+  "users": [
+    { "id": "u1", "email": "superadmin@mederp.com", "password": "password", "firstName": "System", "lastName": "Admin", "isActive": true, "roleId": 1 },
+    { "id": "u2", "email": "admin@mederp.com", "password": "password", "firstName": "Hospital", "lastName": "Admin", "isActive": true, "roleId": 2 },
+    { "id": "u3", "email": "doctor@mederp.com", "password": "password", "firstName": "John", "lastName": "Doe", "isActive": true, "roleId": 3 },
+    { "id": "u4", "email": "nurse@mederp.com", "password": "password", "firstName": "Clara", "lastName": "Barton", "isActive": true, "roleId": 4 },
+    { "id": "u5", "email": "reception@mederp.com", "password": "password", "firstName": "Pam", "lastName": "Beesly", "isActive": true, "roleId": 5 },
+    { "id": "u6", "email": "lab@mederp.com", "password": "password", "firstName": "Walter", "lastName": "White", "isActive": true, "roleId": 6 },
+    { "id": "u7", "email": "pharmacy@mederp.com", "password": "password", "firstName": "Jesse", "lastName": "Pinkman", "isActive": true, "roleId": 7 },
+    { "id": "u8", "email": "finance@mederp.com", "password": "password", "firstName": "Angela", "lastName": "Martin", "isActive": true, "roleId": 8 },
+    { "id": "u9", "email": "hr@mederp.com", "password": "password", "firstName": "Toby", "lastName": "Flenderson", "isActive": true, "roleId": 9 }
+  ],
+  "roles": [
+    { "id": 1, "name": "Super Admin", "permissions": [{ "id": 1, "code": "all", "name": "Full Access" }] },
+    { "id": 2, "name": "Admin", "permissions": [{ "id": 2, "code": "admin_access", "name": "Admin Access" }] },
+    { "id": 3, "name": "Doctor", "permissions": [{ "id": 10, "code": "view_patient", "name": "View Patient" }, { "id": 11, "code": "edit_clinical", "name": "Edit Clinical Notes" }] },
+    { "id": 4, "name": "Nurse", "permissions": [{ "id": 10, "code": "view_patient", "name": "View Patient" }] },
+    { "id": 5, "name": "Receptionist", "permissions": [{ "id": 10, "code": "view_patient", "name": "View Patient" }] },
+    { "id": 6, "name": "Lab Technician", "permissions": [{ "id": 30, "code": "view_lab", "name": "View Lab" }] },
+    { "id": 7, "name": "Pharmacist", "permissions": [{ "id": 40, "code": "view_pharmacy", "name": "View Pharmacy" }] },
+    { "id": 8, "name": "Accountant", "permissions": [{ "id": 50, "code": "view_billing", "name": "View Billing" }] },
+    { "id": 9, "name": "HR Manager", "permissions": [{ "id": 20, "code": "view_payroll", "name": "View Payroll" }, { "id": 21, "code": "edit_employee", "name": "Manage Employees" }] }
+  ],
   "patients": [
     {
       "id": "1",
-      "patientId": "PAT-000452",
-      "firstName": "Shaharan",
-      "lastName": "Hossain",
-      "age": 45,
+      "patientId": "PT-2023-0001",
+      "firstName": "Michael",
+      "lastName": "Scott",
+      "dateOfBirth": "1965-03-15T00:00:00.000Z",
       "gender": "Male",
-      "status": "Inpatient",
       "bloodGroup": "O+",
-      "email": "shaharanhossain@example.com",
-      "phone": "01521522195",
-      "address": "10/3A,Mirpur Road Dhaka-1205"
+      "contactNumber": "+1 570 555 1234",
+      "email": "mscott@dundermifflin.com",
+      "address": "1725 Slough Avenue, Scranton, PA",
+      "emergencyContactName": "Holly Flax",
+      "emergencyContactRelation": "Wife",
+      "emergencyContactNumber": "+1 570 555 5678",
+      "status": "Admitted",
+      "allergies": ["Penicillin"],
+      "chronicDiseases": [],
+      "registrationDate": "2023-01-10T10:30:00.000Z"
+    },
+    {
+      "id": "2",
+      "patientId": "PT-2023-0002",
+      "firstName": "Dwight",
+      "lastName": "Schrute",
+      "dateOfBirth": "1970-01-20T00:00:00.000Z",
+      "gender": "Male",
+      "bloodGroup": "A-",
+      "contactNumber": "+1 570 555 2345",
+      "email": "dschrute@dundermifflin.com",
+      "address": "Schrute Farms",
+      "emergencyContactName": "Mose Schrute",
+      "emergencyContactRelation": "Cousin",
+      "emergencyContactNumber": "+1 570 555 8765",
+      "status": "OPD",
+      "allergies": [],
+      "chronicDiseases": [],
+      "registrationDate": "2023-02-14T09:15:00.000Z"
     }
   ],
   "appointments": [
     {
-      "id": "1",
-      "patientName": "Emon",
-      "doctorName": "Dr. Tanvir",
-      "time": "09:00 AM",
-      "status": "Confirmed"
+      "id": "A-1001",
+      "patientId": "PT-2023-0001",
+      "doctorId": "u3",
+      "appointmentDate": "2026-05-16T10:00:00.000Z",
+      "timeSlot": "10:00 AM - 10:30 AM",
+      "status": "Scheduled",
+      "reasonForVisit": "Follow up for hypertension"
+    },
+    {
+      "id": "A-1002",
+      "patientId": "PT-2023-0002",
+      "doctorId": "u3",
+      "appointmentDate": "2026-05-16T11:00:00.000Z",
+      "timeSlot": "11:00 AM - 11:30 AM",
+      "status": "In Progress",
+      "reasonForVisit": "Routine Checkup"
     }
-  ]
+  ],
+  "consultations": []
 }

@@ -1,0 +1,113 @@
+<div class="animate-in space-y-6">
+  <!-- Header Section -->
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <div>
+      <h1 class="text-2xl font-bold text-slate-800 dark:text-white">Patient Management</h1>
+      <p class="text-slate-500 dark:text-slate-400">View and manage hospital patient records.</p>
+    </div>
+    <div class="flex gap-3">
+      <button mat-flat-button color="primary" routerLink="/patients/register">
+        <mat-icon>person_add</mat-icon>
+        Register Patient
+      </button>
+    </div>
+  </div>
+
+  <!-- Search and Filters -->
+  <mat-card class="!rounded-2xl !shadow-sm">
+    <mat-card-content class="!p-4 flex flex-col md:flex-row gap-4">
+      <mat-form-field appearance="outline" class="w-full md:max-w-md !mb-[-1.25em]">
+        <mat-label>Search patients...</mat-label>
+        <mat-icon matPrefix class="mr-2 text-slate-400">search</mat-icon>
+        <input matInput [formControl]="searchControl" placeholder="By ID, Name, or Phone">
+      </mat-form-field>
+      
+      <div class="flex-1"></div>
+      
+      <button mat-stroked-button class="!h-14">
+        <mat-icon>filter_list</mat-icon>
+        Filters
+      </button>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Data Table -->
+  <mat-card class="!rounded-2xl !shadow-sm overflow-hidden border border-slate-200 dark:border-slate-700">
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-sm text-slate-600 dark:text-slate-300">
+        <thead class="bg-slate-50 dark:bg-slate-800 text-xs uppercase text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-slate-700">
+          <tr>
+            <th scope="col" class="px-6 py-4 font-semibold">Patient</th>
+            <th scope="col" class="px-6 py-4 font-semibold">Contact</th>
+            <th scope="col" class="px-6 py-4 font-semibold">Blood Group</th>
+            <th scope="col" class="px-6 py-4 font-semibold">Status</th>
+            <th scope="col" class="px-6 py-4 font-semibold">Registered On</th>
+            <th scope="col" class="px-6 py-4 font-semibold text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+          <!-- Loading State -->
+          <tr *ngIf="patientService.loadingSignal()">
+            <td colspan="6" class="px-6 py-12 text-center">
+              <mat-spinner diameter="40" class="mx-auto"></mat-spinner>
+              <p class="mt-4 text-slate-500">Loading patients...</p>
+            </td>
+          </tr>
+
+          <!-- Empty State -->
+          <tr *ngIf="!patientService.loadingSignal() && patientService.patientsSignal().length === 0">
+            <td colspan="6" class="px-6 py-12 text-center">
+              <div class="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                <mat-icon class="text-slate-400 text-3xl h-8 w-8">search_off</mat-icon>
+              </div>
+              <h3 class="text-lg font-medium text-slate-900 dark:text-white">No patients found</h3>
+              <p class="text-slate-500 dark:text-slate-400 mt-1">Try adjusting your search criteria or register a new patient.</p>
+            </td>
+          </tr>
+
+          <!-- Data Rows -->
+          <ng-container *ngIf="!patientService.loadingSignal()">
+            <tr *ngFor="let patient of patientService.patientsSignal()" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold shrink-0">
+                    {{ patient.firstName[0] }}{{ patient.lastName[0] }}
+                  </div>
+                  <div>
+                    <div class="font-medium text-slate-900 dark:text-white">{{ patient.firstName }} {{ patient.lastName }}</div>
+                    <div class="text-xs text-slate-500">{{ patient.patientId }}</div>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4">
+                <div>{{ patient.contactNumber }}</div>
+                <div class="text-xs text-slate-500 truncate max-w-[150px]">{{ patient.email || 'N/A' }}</div>
+              </td>
+              <td class="px-6 py-4">
+                <span class="inline-flex items-center justify-center w-8 h-8 rounded bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 font-medium text-xs border border-red-100 dark:border-red-800/30">
+                  {{ patient.bloodGroup }}
+                </span>
+              </td>
+              <td class="px-6 py-4">
+                <span [class]="'px-2.5 py-1 rounded-full text-xs font-medium ' + getStatusBadgeClass(patient.status)">
+                  {{ patient.status }}
+                </span>
+              </td>
+              <td class="px-6 py-4 text-sm">
+                {{ patient.registrationDate | date:'mediumDate' }}
+              </td>
+              <td class="px-6 py-4 text-right">
+                <button mat-icon-button color="primary" [routerLink]="['/patients', patient.id]">
+                  <mat-icon>visibility</mat-icon>
+                </button>
+                <button mat-icon-button>
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </mat-card>
+</div>

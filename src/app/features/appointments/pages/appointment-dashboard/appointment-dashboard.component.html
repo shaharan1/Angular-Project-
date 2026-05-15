@@ -1,0 +1,48 @@
+<div class="animate-in space-y-6">
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div>
+      <h1 class="text-2xl font-bold text-slate-800 dark:text-white">Hospital Appointments</h1>
+      <p class="text-slate-500 dark:text-slate-400">Manage all patient appointments across the facility.</p>
+    </div>
+    <div class="flex gap-2">
+      <button mat-flat-button color="primary">
+        <mat-icon>add</mat-icon> Book Appointment
+      </button>
+    </div>
+  </div>
+
+  <mat-card class="!rounded-2xl !shadow-sm">
+    <mat-card-content class="!p-0">
+      <div *ngIf="clinicalService.loadingSignal()" class="p-8 text-center text-slate-500">
+        Loading appointments...
+      </div>
+
+      <div class="overflow-x-auto" *ngIf="!clinicalService.loadingSignal()">
+        <table class="w-full text-left text-sm text-slate-600 dark:text-slate-300">
+          <thead class="bg-slate-50 dark:bg-slate-800/50 text-xs uppercase text-slate-500 border-b border-slate-200 dark:border-slate-700">
+            <tr>
+              <th class="px-6 py-4 font-semibold">Time</th>
+              <th class="px-6 py-4 font-semibold">Patient ID</th>
+              <th class="px-6 py-4 font-semibold">Doctor ID</th>
+              <th class="px-6 py-4 font-semibold">Reason</th>
+              <th class="px-6 py-4 font-semibold">Status</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+            <tr *ngFor="let apt of clinicalService.todayAppointmentsSignal()" class="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+              <td class="px-6 py-4 font-medium">{{ apt.timeSlot }}</td>
+              <td class="px-6 py-4 text-indigo-600 dark:text-indigo-400">{{ apt.patientId }}</td>
+              <td class="px-6 py-4">{{ apt.doctorId }}</td>
+              <td class="px-6 py-4 truncate max-w-xs">{{ apt.reasonForVisit }}</td>
+              <td class="px-6 py-4">
+                <span [class]="'px-2.5 py-1 rounded-full text-xs font-medium ' + getStatusClass(apt.status)">
+                  {{ apt.status }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

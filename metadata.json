@@ -1,13 +1,17 @@
 {
-  "name": "MediConnect Pro HMS",
-  "description": "Enterprise-level Hospital Management System with EHR, Appointment Scheduling, and Billing.",
+  "name": "MediSphere Enterprise HMS",
+  "description": "Comprehensive enterprise-level Hospital Management System featuring patient care, electronic health records, staff management, and financial operations.",
   "requestFramePermissions": [
     "camera",
-    "microphone"
+    "microphone",
+    "geolocation"
   ],
   "majorCapabilities": [
-    "Authentication",
-    "Database",
-    "Real-time Updates"
+    "Patient Management",
+    "Appointment Scheduling",
+    "Electronic Health Records (EHR)",
+    "Staff & HR Management",
+    "Pharmacy & Inventory",
+    "Billing & Finance"
   ]
 }

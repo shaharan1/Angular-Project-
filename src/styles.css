@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --color-primary: var(--color-indigo-600);
+  --color-primary-hover: var(--color-indigo-700);
+}
+
+@layer base {
+  body {
+    @apply font-sans bg-slate-50 text-slate-900 transition-colors duration-300;
+  }
+}
+
+/* Material overrides for cleaner look */
+.mat-mdc-button-base {
+  @apply !tracking-wide !font-medium !rounded-xl;
+}
+
+.mat-mdc-unelevated-button.mat-primary, 
+.mat-mdc-flat-button.mat-primary {
+  @apply !bg-indigo-600 hover:!bg-indigo-700 !text-white;
+}
+
+.mat-mdc-card {
+  @apply !shadow-sm !border !border-slate-200 !rounded-2xl overflow-hidden !bg-white dark:!bg-slate-900;
+}
+
+.mat-mdc-form-field {
+  @apply !text-sm;
+}
+
+.mat-mdc-form-field-focus-overlay {
+  @apply !bg-transparent;
+}
+
+/* Custom Utilities */
+.animate-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Material Dark Mode Fixes */
+@media (prefers-color-scheme: dark) {
+  .mdc-text-field--outlined .mdc-notched-outline__leading,
+  .mdc-text-field--outlined .mdc-notched-outline__notch,
+  .mdc-text-field--outlined .mdc-notched-outline__trailing {
+    border-color: #334155 !important; /* slate-700 */
+  }
+  
+  .mdc-text-field:not(.mdc-text-field--disabled) .mdc-text-field__input {
+    color: #f8fafc !important; /* slate-50 */
+  }
+  
+  .mdc-floating-label, .mdc-text-field--outlined .mdc-text-field__input::placeholder {
+    color: #94a3b8 !important; /* slate-400 */
+  }
+
+  .mat-mdc-select-value {
+    color: #f8fafc !important;
+  }
+
+  .mat-mdc-select-arrow {
+    color: #94a3b8 !important;
+  }
+
+  .mat-mdc-form-field.mat-focused .mdc-text-field--outlined .mdc-notched-outline__leading,
+  .mat-mdc-form-field.mat-focused .mdc-text-field--outlined .mdc-notched-outline__notch,
+  .mat-mdc-form-field.mat-focused .mdc-text-field--outlined .mdc-notched-outline__trailing {
+    border-color: #6366f1 !important; /* indigo-500 */
+  }
+  
+  .mat-mdc-form-field.mat-focused .mdc-floating-label {
+    color: #6366f1 !important;
+  }
+}
+

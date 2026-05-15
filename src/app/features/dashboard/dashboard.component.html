@@ -1,0 +1,73 @@
+<div class="animate-in space-y-6">
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <div>
+      <h1 class="text-2xl font-bold text-slate-800 dark:text-white">Dashboard Overview</h1>
+      <p class="text-slate-500 dark:text-slate-400">Welcome back! Here's what's happening at the hospital today.</p>
+    </div>
+    <div class="flex gap-3">
+      <button mat-stroked-button color="primary">
+        <mat-icon>file_download</mat-icon>
+        Export Report
+      </button>
+      <button mat-flat-button color="primary">
+        <mat-icon>add</mat-icon>
+        New Patient
+      </button>
+    </div>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <mat-card *ngFor="let kpi of kpiData" class="!rounded-2xl !shadow-sm hover:shadow-md transition-shadow">
+      <mat-card-content class="!p-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm font-medium text-slate-500 dark:text-slate-400">{{ kpi.title }}</p>
+            <h3 class="text-3xl font-bold text-slate-800 dark:text-white mt-1">{{ kpi.value }}</h3>
+          </div>
+          <div [class]="'w-12 h-12 rounded-full flex items-center justify-center ' + kpi.bg">
+            <mat-icon [class]="kpi.color">{{ kpi.icon }}</mat-icon>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Main Content Grid -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Chart Area Skeleton -->
+    <mat-card class="lg:col-span-2 !rounded-2xl !shadow-sm">
+      <mat-card-header class="!pb-0 !pt-6 !px-6 flex justify-between items-center">
+        <mat-card-title class="!text-lg !font-bold">Patient Admissions</mat-card-title>
+        <button mat-icon-button><mat-icon>more_vert</mat-icon></button>
+      </mat-card-header>
+      <mat-card-content class="!p-6">
+        <div class="h-[300px] w-full flex items-center justify-center border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800/50">
+          <p class="text-slate-400 flex flex-col items-center gap-2">
+            <mat-icon>bar_chart</mat-icon>
+            Chart integration placeholder
+          </p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Recent Appointments List Skeleton -->
+    <mat-card class="!rounded-2xl !shadow-sm">
+      <mat-card-header class="!pb-0 !pt-6 !px-6 flex justify-between items-center">
+        <mat-card-title class="!text-lg !font-bold">Recent Appointments</mat-card-title>
+        <button mat-button color="primary">View All</button>
+      </mat-card-header>
+      <mat-card-content class="!p-6">
+        <div class="space-y-4">
+          <div *ngFor="let i of [1,2,3,4]" class="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+            <div class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-700 animate-pulse"></div>
+            <div class="flex-1 space-y-2">
+              <div class="h-4 bg-slate-200 dark:bg-slate-700 rounded w-3/4 animate-pulse"></div>
+              <div class="h-3 bg-slate-100 dark:bg-slate-800 rounded w-1/2 animate-pulse"></div>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

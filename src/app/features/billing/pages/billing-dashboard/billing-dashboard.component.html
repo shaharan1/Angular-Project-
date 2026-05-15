@@ -1,0 +1,48 @@
+<div class="animate-in space-y-6">
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div>
+      <h1 class="text-2xl font-bold text-slate-800 dark:text-white">Billing & Finance</h1>
+      <p class="text-slate-500 dark:text-slate-400">Manage patient invoices, payments, and revenue.</p>
+    </div>
+    <div class="flex gap-2">
+      <button mat-flat-button color="primary">
+        <mat-icon>receipt</mat-icon> Create Invoice
+      </button>
+    </div>
+  </div>
+
+  <mat-card class="!rounded-2xl !shadow-sm">
+    <mat-card-content class="!p-0">
+      <div *ngIf="billingService.loadingSignal()" class="p-8 text-center text-slate-500">
+        Loading invoices...
+      </div>
+
+      <div class="overflow-x-auto" *ngIf="!billingService.loadingSignal()">
+        <table class="w-full text-left text-sm text-slate-600 dark:text-slate-300">
+          <thead class="bg-slate-50 dark:bg-slate-800/50 text-xs uppercase text-slate-500 border-b border-slate-200 dark:border-slate-700">
+            <tr>
+              <th class="px-6 py-4 font-semibold">Invoice ID</th>
+              <th class="px-6 py-4 font-semibold">Patient ID</th>
+              <th class="px-6 py-4 font-semibold">Date</th>
+              <th class="px-6 py-4 font-semibold">Total Amount</th>
+              <th class="px-6 py-4 font-semibold">Status</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+            <tr *ngFor="let inv of billingService.invoicesSignal()" class="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+              <td class="px-6 py-4 font-medium">{{ inv.id }}</td>
+              <td class="px-6 py-4 text-indigo-600 dark:text-indigo-400">{{ inv.patientId }}</td>
+              <td class="px-6 py-4">{{ inv.date | date:'mediumDate' }}</td>
+              <td class="px-6 py-4 font-semibold">${{ inv.totalAmount }}</td>
+              <td class="px-6 py-4">
+                <span [class]="'px-2.5 py-1 rounded-full text-xs font-medium ' + getStatusClass(inv.status)">
+                  {{ inv.status }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

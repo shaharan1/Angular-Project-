@@ -1,0 +1,114 @@
+<div class="animate-in max-w-4xl mx-auto space-y-6 pb-12">
+  <div class="flex items-center gap-4">
+    <button mat-icon-button routerLink="/patients" class="text-slate-500">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div>
+      <h1 class="text-2xl font-bold text-slate-800 dark:text-white">New Patient Registration</h1>
+      <p class="text-slate-500 dark:text-slate-400">Fill in the details to register a new patient in the system.</p>
+    </div>
+  </div>
+
+  <form [formGroup]="regForm" (ngSubmit)="onSubmit()" class="space-y-6">
+    
+    <!-- Personal Details -->
+    <mat-card class="!rounded-2xl !shadow-sm border border-slate-200 dark:border-slate-700">
+      <mat-card-header class="!pb-0 !pt-6 !px-6 border-b border-slate-100 dark:border-slate-700 pb-4">
+        <mat-card-title class="!text-lg !font-bold flex items-center gap-2">
+          <mat-icon class="text-indigo-500">person</mat-icon> Personal Information
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="!p-6" formGroupName="personal">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <mat-form-field appearance="outline">
+            <mat-label>First Name</mat-label>
+            <input matInput formControlName="firstName" placeholder="John">
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Last Name</mat-label>
+            <input matInput formControlName="lastName" placeholder="Doe">
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Date of Birth</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="dateOfBirth">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Gender</mat-label>
+            <mat-select formControlName="gender">
+              <mat-option *ngFor="let g of genders" [value]="g">{{ g }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="md:col-span-2">
+            <mat-label>Blood Group</mat-label>
+            <mat-select formControlName="bloodGroup">
+              <mat-option *ngFor="let bg of bloodGroups" [value]="bg">{{ bg }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Contact Details -->
+    <mat-card class="!rounded-2xl !shadow-sm border border-slate-200 dark:border-slate-700">
+      <mat-card-header class="!pb-0 !pt-6 !px-6 border-b border-slate-100 dark:border-slate-700 pb-4">
+        <mat-card-title class="!text-lg !font-bold flex items-center gap-2">
+          <mat-icon class="text-indigo-500">contact_phone</mat-icon> Contact Details
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="!p-6" formGroupName="contact">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <mat-form-field appearance="outline">
+            <mat-label>Phone Number</mat-label>
+            <input matInput formControlName="contactNumber" placeholder="+1 234 567 890">
+            <mat-icon matPrefix class="mr-2 text-slate-400">phone</mat-icon>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Email Address</mat-label>
+            <input matInput formControlName="email" type="email" placeholder="john@example.com">
+            <mat-icon matPrefix class="mr-2 text-slate-400">email</mat-icon>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="md:col-span-2">
+            <mat-label>Residential Address</mat-label>
+            <textarea matInput formControlName="address" rows="3" placeholder="Full address"></textarea>
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Emergency Contact -->
+    <mat-card class="!rounded-2xl !shadow-sm border border-slate-200 dark:border-slate-700">
+      <mat-card-header class="!pb-0 !pt-6 !px-6 border-b border-slate-100 dark:border-slate-700 pb-4">
+        <mat-card-title class="!text-lg !font-bold flex items-center gap-2">
+          <mat-icon class="text-red-500">warning</mat-icon> Emergency Contact
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="!p-6" formGroupName="emergency">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <mat-form-field appearance="outline">
+            <mat-label>Contact Name</mat-label>
+            <input matInput formControlName="emergencyContactName">
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Relationship</mat-label>
+            <input matInput formControlName="emergencyContactRelation" placeholder="e.g., Spouse, Parent">
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Phone Number</mat-label>
+            <input matInput formControlName="emergencyContactNumber">
+            <mat-icon matPrefix class="mr-2 text-slate-400">phone</mat-icon>
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <div class="flex justify-end gap-4 pt-4">
+      <button mat-button type="button" routerLink="/patients">Cancel</button>
+      <button mat-flat-button color="primary" type="submit" [disabled]="patientService.loadingSignal()" class="!px-8 !py-6 text-lg">
+        <mat-icon>save</mat-icon>
+        {{ patientService.loadingSignal() ? 'Saving...' : 'Register Patient' }}
+      </button>
+    </div>
+  </form>
+</div>
