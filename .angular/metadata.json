@@ -1,0 +1,17 @@
+{
+  "name": "MediSphere Enterprise HMS",
+  "description": "Comprehensive enterprise-level Hospital Management System featuring patient care, electronic health records, staff management, and financial operations.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ],
+  "majorCapabilities": [
+    "Patient Management",
+    "Appointment Scheduling",
+    "Electronic Health Records (EHR)",
+    "Staff & HR Management",
+    "Pharmacy & Inventory",
+    "Billing & Finance"
+  ]
+}

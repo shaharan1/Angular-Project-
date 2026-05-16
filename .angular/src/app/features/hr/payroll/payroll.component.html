@@ -1,0 +1,86 @@
+<div class="p-6 min-h-screen bg-slate-50">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold text-slate-800 tracking-tight">Payroll Management</h1>
+    <div class="flex gap-3">
+      <button (click)="exportAllPayroll()" class="px-5 py-2.5 border-2 border-indigo-100 text-indigo-600 rounded-lg hover:bg-indigo-50 transition font-medium flex items-center gap-2">
+        <mat-icon class="text-[20px] w-5 h-5">download_for_offline</mat-icon>
+        Export Summary
+      </button>
+      <button class="px-5 py-2.5 bg-indigo-600 text-white rounded-lg shadow hover:bg-indigo-700 transition font-medium flex items-center gap-2">
+        <mat-icon class="text-[20px] w-5 h-5">payments</mat-icon>
+        Generate Payroll
+      </button>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+    <div class="overflow-x-auto rounded-lg border border-slate-200">
+      <table mat-table [dataSource]="payrolls" class="w-full text-left">
+        
+        <ng-container matColumnDef="month">
+          <th mat-header-cell *matHeaderCellDef class="bg-slate-50 text-slate-600 font-semibold uppercase text-xs tracking-wider p-4"> Month </th>
+          <td mat-cell *matCellDef="let element" class="p-4 font-semibold text-slate-800"> {{element.month}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="employeeId">
+          <th mat-header-cell *matHeaderCellDef class="bg-slate-50 text-slate-600 font-semibold uppercase text-xs tracking-wider p-4"> Employee ID </th>
+          <td mat-cell *matCellDef="let element" class="p-4 text-slate-600"> {{element.employeeId}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="basicSalary">
+          <th mat-header-cell *matHeaderCellDef class="bg-slate-50 text-slate-600 font-semibold uppercase text-xs tracking-wider p-4"> Basic Salary </th>
+          <td mat-cell *matCellDef="let element" class="p-4 text-slate-600"> ৳{{element.basicSalary}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="allowances">
+          <th mat-header-cell *matHeaderCellDef class="bg-slate-50 text-slate-600 font-semibold uppercase text-xs tracking-wider p-4"> Allowances </th>
+          <td mat-cell *matCellDef="let element" class="p-4 text-slate-600"> +৳{{element.allowances}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="deductions">
+          <th mat-header-cell *matHeaderCellDef class="bg-slate-50 text-slate-600 font-semibold uppercase text-xs tracking-wider p-4"> Deductions </th>
+          <td mat-cell *matCellDef="let element" class="p-4 text-red-600"> -৳{{element.deductions}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="netSalary">
+          <th mat-header-cell *matHeaderCellDef class="bg-slate-50 text-slate-600 font-semibold uppercase text-xs tracking-wider p-4"> Net Salary </th>
+          <td mat-cell *matCellDef="let element" class="p-4 font-bold text-indigo-700"> ৳{{element.netSalary}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef class="bg-slate-50 text-slate-600 font-semibold uppercase text-xs tracking-wider p-4"> Status </th>
+          <td mat-cell *matCellDef="let element" class="p-4">
+            <span class="px-3 py-1 rounded-full text-xs font-semibold"
+                  [ngClass]="element.status === 'Paid' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'">
+              {{ element.status }}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef class="bg-slate-50 text-slate-600 font-semibold uppercase text-xs tracking-wider p-4 text-right"> Actions </th>
+          <td mat-cell *matCellDef="let element" class="p-4 text-right">
+            <div class="flex justify-end gap-2">
+              <button *ngIf="element.status !== 'Paid'" 
+                      mat-flat-button color="primary" 
+                      class="!rounded-xl !px-4 !font-bold !bg-indigo-600 shadow-lg shadow-indigo-100" 
+                      (click)="processPayment(element)" 
+                      [disabled]="isProcessing">
+                <mat-icon class="mr-1">payments</mat-icon> Pay Now
+              </button>
+              
+              <button mat-icon-button (click)="downloadPayslip(element)" 
+                      class="text-slate-400 hover:text-indigo-600 transition-colors"
+                      matTooltip="Download Payslip">
+                <mat-icon>file_download</mat-icon>
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="hover:bg-slate-50 transition border-b border-slate-100 last:border-0"></tr>
+      </table>
+    </div>
+  </div>
+</div>

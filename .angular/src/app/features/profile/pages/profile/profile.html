@@ -1,0 +1,106 @@
+<div class="p-6 min-h-screen bg-slate-50 flex items-center justify-center">
+  <mat-card class="w-full max-w-2xl !rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-indigo-600 to-violet-600 p-10 text-white text-center relative">
+      <div class="absolute top-4 right-4" *ngIf="canEdit()">
+        <button mat-icon-button class="!bg-white/20 !text-white" (click)="toggleEdit()">
+          <mat-icon>{{ isEditMode() ? 'close' : 'edit' }}</mat-icon>
+        </button>
+      </div>
+      
+      <div class="group relative w-32 h-32 mx-auto mb-4">
+        <div class="w-full h-full rounded-3xl bg-white/20 flex items-center justify-center border-2 border-white/30 backdrop-blur-sm shadow-inner overflow-hidden">
+          <img *ngIf="profilePicturePreview()" [src]="profilePicturePreview()" class="w-full h-full object-cover">
+          <mat-icon *ngIf="!profilePicturePreview()" class="scale-[2.5]">account_circle</mat-icon>
+        </div>
+        
+        <!-- Upload Overlay -->
+        <div *ngIf="isEditMode()" 
+             (click)="fileInput.click()"
+             class="absolute inset-0 bg-black/40 rounded-3xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+          <mat-icon class="text-white">photo_camera</mat-icon>
+        </div>
+        <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*" class="hidden">
+      </div>
+
+      <h1 class="text-4xl font-black tracking-tighter mb-2 drop-shadow-md">
+        {{ viewedUser()?.firstName }} {{ viewedUser()?.lastName }}
+      </h1>
+      <p class="text-indigo-50 font-black uppercase tracking-[0.3em] text-sm opacity-90 drop-shadow-sm">
+        {{ viewedUser()?.role }}
+      </p>
+    </div>
+
+    <!-- Content -->
+    <mat-card-content class="p-10">
+      <form *ngIf="profileForm" [formGroup]="profileForm" (ngSubmit)="saveProfile()" class="space-y-10">
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>First Name</mat-label>
+            <input matInput formControlName="firstName">
+            <mat-icon matPrefix class="text-slate-400 mr-2">person</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Last Name</mat-label>
+            <input matInput formControlName="lastName">
+            <mat-icon matPrefix class="text-slate-400 mr-2">person</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <!-- Sensitive Data Section -->
+        <div class="space-y-10 bg-slate-50 dark:bg-slate-800/30 p-10 rounded-[2rem] border border-slate-100 dark:border-slate-800">
+          <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+            <mat-icon class="text-sm">security</mat-icon> Sensitive Information
+          </h3>
+
+          <div *ngIf="canSeeSensitiveData(); else restrictedData" class="space-y-6">
+            <mat-form-field appearance="outline" class="w-full">
+              <mat-label>Email Address</mat-label>
+              <input matInput formControlName="email" type="email">
+              <mat-icon matPrefix class="text-slate-400 mr-2">email</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-full">
+              <mat-label>Password</mat-label>
+              <input matInput formControlName="password" type="password">
+              <mat-icon matPrefix class="text-slate-400 mr-2">lock</mat-icon>
+            </mat-form-field>
+          </div>
+
+          <ng-template #restrictedData>
+            <div class="p-6 bg-amber-50 dark:bg-amber-900/10 border border-amber-100 dark:border-amber-900/20 rounded-2xl flex items-start gap-3">
+              <mat-icon class="text-amber-600">info</mat-icon>
+              <p class="text-sm text-amber-800 dark:text-amber-200 font-bold leading-relaxed">
+                Security Policy: Detailed contact and security information is only visible to the <strong>Super Admin</strong>.
+              </p>
+            </div>
+          </ng-template>
+        </div>
+
+        <!-- Role Assignment (Only for Super Admin) -->
+        <div *ngIf="currentUser()?.role === 'SUPER_ADMIN'" class="mt-10">
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>System Role</mat-label>
+            <mat-select formControlName="role">
+              <mat-option *ngFor="let r of roles" [value]="r.code">
+                {{ r.name }}
+              </mat-option>
+            </mat-select>
+            <mat-icon matPrefix class="text-slate-400 mr-2">admin_panel_settings</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="pt-6" *ngIf="isEditMode()">
+          <button mat-raised-button color="primary" type="submit" 
+                  class="w-full !py-8 !text-xl !rounded-2xl !font-black shadow-2xl shadow-indigo-200 transition hover:scale-[1.01] active:scale-95">
+            Save Changes
+          </button>
+        </div>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
