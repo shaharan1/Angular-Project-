@@ -126,7 +126,7 @@ export class Dashboard {
     { label: 'Total Patients', value: '1,284', trend: 12, percent: 70, barClass: 'bg-indigo-500' },
     { label: 'Appointments Today', value: '42', trend: 8, percent: 45, barClass: 'bg-blue-500' },
     { label: 'Available Beds', value: '18', trend: -4, percent: 15, barClass: 'bg-emerald-500' },
-    { label: 'Revenue (MTD)', value: '$48.2k', trend: 4.3, percent: 62, barClass: 'bg-indigo-600' },
+    { label: 'Revenue (MTD)', value: '৳48.2k', trend: 4.3, percent: 62, barClass: 'bg-indigo-600' },
   ];
 
   recentAdmissions = [

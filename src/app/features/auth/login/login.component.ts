@@ -58,9 +58,4 @@ export class LoginComponent {
       });
     }
   }
-
-  quickLogin(email: string) {
-    this.loginForm.patchValue({ email, password: 'password' });
-    this.onSubmit();
-  }
 }

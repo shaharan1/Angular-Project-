@@ -2,6 +2,7 @@ import { Patient } from './patient.model';
 
 export enum AppointmentStatus {
   SCHEDULED = 'Scheduled',
+  CONFIRMED = 'Confirmed',
   IN_PROGRESS = 'In Progress',
   COMPLETED = 'Completed',
   CANCELLED = 'Cancelled',
@@ -17,6 +18,9 @@ export interface Appointment {
   status: AppointmentStatus;
   reasonForVisit: string;
   notes?: string;
+  patientName?: string;
+  doctorName?: string;
+  department?: string;
   
   // Optional expanded patient details for the UI
   patient?: Patient;

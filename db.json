@@ -1,25 +1,156 @@
 {
   "users": [
-    { "id": "u1", "email": "superadmin@mederp.com", "password": "password", "firstName": "System", "lastName": "Admin", "isActive": true, "roleId": 1 },
-    { "id": "u2", "email": "admin@mederp.com", "password": "password", "firstName": "Hospital", "lastName": "Admin", "isActive": true, "roleId": 2 },
-    { "id": "u3", "email": "doctor@mederp.com", "password": "password", "firstName": "John", "lastName": "Doe", "isActive": true, "roleId": 3 },
-    { "id": "u4", "email": "nurse@mederp.com", "password": "password", "firstName": "Clara", "lastName": "Barton", "isActive": true, "roleId": 4 },
-    { "id": "u5", "email": "reception@mederp.com", "password": "password", "firstName": "Pam", "lastName": "Beesly", "isActive": true, "roleId": 5 },
-    { "id": "u6", "email": "lab@mederp.com", "password": "password", "firstName": "Walter", "lastName": "White", "isActive": true, "roleId": 6 },
-    { "id": "u7", "email": "pharmacy@mederp.com", "password": "password", "firstName": "Jesse", "lastName": "Pinkman", "isActive": true, "roleId": 7 },
-    { "id": "u8", "email": "finance@mederp.com", "password": "password", "firstName": "Angela", "lastName": "Martin", "isActive": true, "roleId": 8 },
-    { "id": "u9", "email": "hr@mederp.com", "password": "password", "firstName": "Toby", "lastName": "Flenderson", "isActive": true, "roleId": 9 }
+    {
+      "id": "u1",
+      "email": "superadmin@mederp.com",
+      "password": "password",
+      "firstName": "System",
+      "lastName": "Admin",
+      "isActive": true,
+      "role": "SUPER_ADMIN"
+    },
+    {
+      "id": "u2",
+      "email": "admin@mederp.com",
+      "password": "password",
+      "firstName": "Hospital",
+      "lastName": "Admin",
+      "isActive": true,
+      "role": "ADMIN"
+    },
+    {
+      "id": "u3",
+      "email": "doctor@mederp.com",
+      "password": "password",
+      "firstName": "John",
+      "lastName": "Doe",
+      "isActive": true,
+      "role": "DOCTOR"
+    },
+    {
+      "id": "u4",
+      "email": "nurse@mederp.com",
+      "password": "password",
+      "firstName": "Clara",
+      "lastName": "Barton",
+      "isActive": true,
+      "role": "NURSE"
+    },
+    {
+      "id": "u5",
+      "email": "reception@mederp.com",
+      "password": "password",
+      "firstName": "Pam",
+      "lastName": "Beesly",
+      "isActive": true,
+      "role": "RECEPTIONIST"
+    },
+    {
+      "id": "u6",
+      "email": "lab@mederp.com",
+      "password": "password",
+      "firstName": "Walter",
+      "lastName": "White",
+      "isActive": true,
+      "role": "LAB_TECHNICIAN"
+    },
+    {
+      "id": "u7",
+      "email": "pharmacy@mederp.com",
+      "password": "password",
+      "firstName": "Jesse",
+      "lastName": "Pinkman",
+      "isActive": true,
+      "role": "PHARMACIST"
+    },
+    {
+      "id": "u8",
+      "email": "finance@mederp.com",
+      "password": "password",
+      "firstName": "Angela",
+      "lastName": "Martin",
+      "isActive": true,
+      "role": "FINANCE"
+    },
+    {
+      "id": "u9",
+      "email": "hr@mederp.com",
+      "password": "password",
+      "firstName": "Toby",
+      "lastName": "Flenderson",
+      "isActive": true,
+      "role": "HR_MANAGER"
+    },
+    {
+      "id": "u10",
+      "email": "user1@mederp.com",
+      "password": "password",
+      "firstName": "Normal",
+      "lastName": "Person 1",
+      "isActive": true,
+      "role": "USER"
+    },
+    {
+      "id": "u11",
+      "email": "user2@mederp.com",
+      "password": "password",
+      "firstName": "Normal",
+      "lastName": "Person 2",
+      "isActive": true,
+      "role": "USER"
+    }
   ],
   "roles": [
-    { "id": 1, "name": "Super Admin", "permissions": [{ "id": 1, "code": "all", "name": "Full Access" }] },
-    { "id": 2, "name": "Admin", "permissions": [{ "id": 2, "code": "admin_access", "name": "Admin Access" }] },
-    { "id": 3, "name": "Doctor", "permissions": [{ "id": 10, "code": "view_patient", "name": "View Patient" }, { "id": 11, "code": "edit_clinical", "name": "Edit Clinical Notes" }] },
-    { "id": 4, "name": "Nurse", "permissions": [{ "id": 10, "code": "view_patient", "name": "View Patient" }] },
-    { "id": 5, "name": "Receptionist", "permissions": [{ "id": 10, "code": "view_patient", "name": "View Patient" }] },
-    { "id": 6, "name": "Lab Technician", "permissions": [{ "id": 30, "code": "view_lab", "name": "View Lab" }] },
-    { "id": 7, "name": "Pharmacist", "permissions": [{ "id": 40, "code": "view_pharmacy", "name": "View Pharmacy" }] },
-    { "id": 8, "name": "Accountant", "permissions": [{ "id": 50, "code": "view_billing", "name": "View Billing" }] },
-    { "id": 9, "name": "HR Manager", "permissions": [{ "id": 20, "code": "view_payroll", "name": "View Payroll" }, { "id": 21, "code": "edit_employee", "name": "Manage Employees" }] }
+    {
+      "id": 1,
+      "name": "Super Admin",
+      "code": "SUPER_ADMIN"
+    },
+    {
+      "id": 2,
+      "name": "Admin",
+      "code": "ADMIN"
+    },
+    {
+      "id": 3,
+      "name": "Doctor",
+      "code": "DOCTOR"
+    },
+    {
+      "id": 4,
+      "name": "Nurse",
+      "code": "NURSE"
+    },
+    {
+      "id": 5,
+      "name": "Receptionist",
+      "code": "RECEPTIONIST"
+    },
+    {
+      "id": 6,
+      "name": "Lab Technician",
+      "code": "LAB_TECHNICIAN"
+    },
+    {
+      "id": 7,
+      "name": "Pharmacist",
+      "code": "PHARMACIST"
+    },
+    {
+      "id": 8,
+      "name": "Finance",
+      "code": "FINANCE"
+    },
+    {
+      "id": 9,
+      "name": "HR Manager",
+      "code": "HR_MANAGER"
+    },
+    {
+      "id": 10,
+      "name": "Normal Person",
+      "code": "USER"
+    }
   ],
   "patients": [
     {
@@ -37,49 +168,159 @@
       "emergencyContactRelation": "Wife",
       "emergencyContactNumber": "+1 570 555 5678",
       "status": "Admitted",
-      "allergies": ["Penicillin"],
+      "allergies": [
+        "Penicillin"
+      ],
       "chronicDiseases": [],
       "registrationDate": "2023-01-10T10:30:00.000Z"
     },
     {
-      "id": "2",
-      "patientId": "PT-2023-0002",
-      "firstName": "Dwight",
-      "lastName": "Schrute",
-      "dateOfBirth": "1970-01-20T00:00:00.000Z",
+      "firstName": "9ohjji",
+      "lastName": "ddd",
+      "dateOfBirth": "2026-05-19T18:00:00.000Z",
       "gender": "Male",
-      "bloodGroup": "A-",
-      "contactNumber": "+1 570 555 2345",
-      "email": "dschrute@dundermifflin.com",
-      "address": "Schrute Farms",
-      "emergencyContactName": "Mose Schrute",
-      "emergencyContactRelation": "Cousin",
-      "emergencyContactNumber": "+1 570 555 8765",
-      "status": "OPD",
+      "bloodGroup": "B-",
+      "contactNumber": "56767463",
+      "email": "dasfhgj@g.c",
+      "address": "reqewrytuh",
+      "emergencyContactName": "Shaharan Hossain",
+      "emergencyContactRelation": "gtuygh",
+      "emergencyContactNumber": "321+6545+641",
       "allergies": [],
       "chronicDiseases": [],
-      "registrationDate": "2023-02-14T09:15:00.000Z"
+      "status": "OPD",
+      "patientId": "PT-2026-4327",
+      "registrationDate": "2026-05-16T13:01:09.666Z",
+      "id": "AbTVR6u"
     }
   ],
   "appointments": [
     {
-      "id": "A-1001",
-      "patientId": "PT-2023-0001",
-      "doctorId": "u3",
-      "appointmentDate": "2026-05-16T10:00:00.000Z",
+      "id": "APT-7788",
+      "patientId": "1",
+      "doctorId": "d1",
+      "patientName": "Michael Scott",
+      "doctorName": "John Doe",
+      "department": "Cardiology",
+      "appointmentDate": "2026-05-18",
       "timeSlot": "10:00 AM - 10:30 AM",
-      "status": "Scheduled",
-      "reasonForVisit": "Follow up for hypertension"
+      "reasonForVisit": "Regular checkup",
+      "notes": "Follow-up for previous condition",
+      "status": "Confirmed"
     },
     {
-      "id": "A-1002",
-      "patientId": "PT-2023-0002",
-      "doctorId": "u3",
-      "appointmentDate": "2026-05-16T11:00:00.000Z",
-      "timeSlot": "11:00 AM - 11:30 AM",
-      "status": "In Progress",
-      "reasonForVisit": "Routine Checkup"
+      "id": "APT-5371",
+      "patientId": "PT-GUEST-1778937042323",
+      "patientName": "gggh",
+      "doctorId": "d3",
+      "doctorName": "Dr. Michael Ross",
+      "department": "Orthopedics",
+      "appointmentDate": "2026-05-26",
+      "timeSlot": "10:00 AM - 10:30 AM",
+      "reasonForVisit": "cfgfgf",
+      "notes": "",
+      "status": "Confirmed"
+    },
+    {
+      "id": "APT-9511",
+      "patientId": "PT-GUEST-1778938038827",
+      "patientName": "cbfdhfdghfsg",
+      "doctorId": "d1",
+      "doctorName": "Dr. John Doe",
+      "department": "Cardiology",
+      "appointmentDate": "2026-05-26",
+      "timeSlot": "09:00 AM - 09:30 AM",
+      "reasonForVisit": "nunu te bethya",
+      "notes": "",
+      "status": "Confirmed"
+    },
+    {
+      "id": "APT-6371",
+      "patientId": "PT-GUEST-1778938038937",
+      "patientName": "cbfdhfdghfsg",
+      "doctorId": "d1",
+      "doctorName": "Dr. John Doe",
+      "department": "Cardiology",
+      "appointmentDate": "2026-05-26",
+      "timeSlot": "09:00 AM - 09:30 AM",
+      "reasonForVisit": "nunu te bethya",
+      "notes": "",
+      "status": "Confirmed"
     }
   ],
-  "consultations": []
+  "consultations": [],
+  "employees": [
+    {
+      "id": "e1",
+      "userId": "u4",
+      "firstName": "Clara",
+      "lastName": "Barton",
+      "department": "Nursing",
+      "designation": "Head Nurse",
+      "salary": 65000,
+      "status": "Active",
+      "joinDate": "2020-05-10T00:00:00.000Z"
+    },
+    {
+      "id": "e2",
+      "userId": "u9",
+      "firstName": "Toby",
+      "lastName": "Flenderson",
+      "department": "HR",
+      "designation": "HR Manager",
+      "salary": 75000,
+      "status": "Active",
+      "joinDate": "2019-03-15T00:00:00.000Z"
+    }
+  ],
+  "payrolls": [],
+  "invoices": [],
+  "doctors": [
+    {
+      "id": "d1",
+      "firstName": "John",
+      "lastName": "Doe",
+      "department": "Cardiology",
+      "specialization": "Heart Specialist",
+      "status": "Available"
+    },
+    {
+      "id": "d2",
+      "firstName": "Sarah",
+      "lastName": "Smith",
+      "department": "Neurology",
+      "specialization": "Brain Specialist",
+      "status": "Available"
+    },
+    {
+      "id": "d3",
+      "firstName": "Michael",
+      "lastName": "Ross",
+      "department": "Orthopedics",
+      "specialization": "Bone Specialist",
+      "status": "Busy"
+    }
+  ],
+  "departments": [
+    {
+      "id": "dept1",
+      "name": "Cardiology"
+    },
+    {
+      "id": "dept2",
+      "name": "Neurology"
+    },
+    {
+      "id": "dept3",
+      "name": "Orthopedics"
+    },
+    {
+      "id": "dept4",
+      "name": "Pediatrics"
+    },
+    {
+      "id": "dept5",
+      "name": "Dermatology"
+    }
+  ]
 }

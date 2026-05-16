@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatMenuModule } from '@angular/material/menu';
 import { PatientService } from '../../services/patient';
-import { Patient } from '../../models/patient';
+import { Patient, PatientStatus } from '../../core/models/patient.model';
 
 @Component({
   selector: 'app-patient-list',
@@ -56,7 +56,7 @@ import { Patient } from '../../models/patient';
                 </div>
                 <div>
                   <p class="text-xs font-bold text-slate-900 dark:text-slate-200">{{p.firstName}} {{p.lastName}}</p>
-                  <p class="text-[10px] text-slate-500 dark:text-slate-400">{{p.gender}}, {{calculateAge(p.dob)}}Y</p>
+                  <p class="text-[10px] text-slate-500 dark:text-slate-400">{{p.gender}}, {{calculateAge(p.dateOfBirth)}}Y</p>
                 </div>
               </div>
             </td>
@@ -91,7 +91,9 @@ import { Patient } from '../../models/patient';
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-colors"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" 
+              (click)="viewPatient(row)"
+              class="hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-colors"></tr>
         </table>
 
         @if (patients().length === 0) {
@@ -128,6 +130,10 @@ export class PatientList implements OnInit {
     });
   }
 
+  viewPatient(patient: Patient) {
+    console.log('Viewing patient:', patient);
+  }
+
   calculateAge(dob: string): number {
     const birthDate = new Date(dob);
     const today = new Date();
@@ -141,10 +147,10 @@ export class PatientList implements OnInit {
 
   getStatusClass(status: string): string {
     switch(status) {
-      case 'Inpatient': return 'bg-blue-50 text-blue-600';
-      case 'Outpatient': return 'bg-emerald-50 text-emerald-600';
-      case 'Emergency': return 'bg-red-50 text-red-600';
-      case 'Discharged': return 'bg-slate-100 text-slate-500';
+      case PatientStatus.ADMITTED: return 'bg-blue-50 text-blue-600';
+      case PatientStatus.OPD: return 'bg-emerald-50 text-emerald-600';
+      case PatientStatus.EMERGENCY: return 'bg-red-50 text-red-600';
+      case PatientStatus.DISCHARGED: return 'bg-slate-100 text-slate-500';
       default: return 'bg-slate-100 text-slate-500';
     }
   }

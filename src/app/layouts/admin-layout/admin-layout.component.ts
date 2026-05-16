@@ -24,6 +24,10 @@ export class AdminLayoutComponent {
   private readonly MASTER_MENU: MenuItem[] = [
     { title: 'Dashboard', icon: 'dashboard', route: '/dashboard' },
     { 
+      title: 'User Management', icon: 'admin_panel_settings', route: '/admin/users',
+      allowedRoles: [AppRole.SUPER_ADMIN] 
+    },
+    { 
       title: 'Patient Management', icon: 'people', route: '/patients',
       allowedRoles: [AppRole.SUPER_ADMIN, AppRole.ADMIN, AppRole.DOCTOR, AppRole.NURSE, AppRole.RECEPTIONIST] 
     },
@@ -41,19 +45,22 @@ export class AdminLayoutComponent {
     },
     { 
       title: 'Laboratory', icon: 'science', route: '/laboratory',
-      allowedRoles: [AppRole.SUPER_ADMIN, AppRole.LAB_TECH, AppRole.DOCTOR] 
+      allowedRoles: [AppRole.SUPER_ADMIN, AppRole.LAB_TECHNICIAN, AppRole.DOCTOR] 
     },
     { 
       title: 'Billing & Finance', icon: 'receipt_long', route: '/billing',
-      allowedRoles: [AppRole.SUPER_ADMIN, AppRole.ADMIN, AppRole.ACCOUNTANT] 
+      allowedRoles: [AppRole.SUPER_ADMIN, AppRole.ADMIN, AppRole.FINANCE] 
     },
     { 
-      title: 'HR & Payroll', icon: 'badge', route: '/hr-payroll',
+      title: 'HR & Payroll', icon: 'badge', route: '/hr',
       allowedRoles: [AppRole.SUPER_ADMIN, AppRole.ADMIN, AppRole.HR_MANAGER] 
     },
     { 
-      title: 'Settings', icon: 'settings', route: '/settings',
-      allowedRoles: [AppRole.SUPER_ADMIN, AppRole.ADMIN] 
+      title: 'Doctor Monitoring', icon: 'monitor_heart', route: '/doctors',
+      allowedRoles: [AppRole.SUPER_ADMIN, AppRole.ADMIN, AppRole.DOCTOR] 
+    },
+    { 
+      title: 'My Profile', icon: 'account_circle', route: '/profile'
     }
   ];
 

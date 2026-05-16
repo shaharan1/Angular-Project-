@@ -1,11 +1,12 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatCardModule } from '@angular/material/card';
 import { AppointmentService } from '../../services/appointment';
-import { Appointment, AppointmentStatus } from '../../models/appointment';
+import { Appointment, AppointmentStatus } from '../../core/models/appointment.model';
 
 @Component({
   selector: 'app-appointment-list',
@@ -57,8 +58,8 @@ import { Appointment, AppointmentStatus } from '../../models/appointment';
             <th mat-header-cell *matHeaderCellDef class="!text-slate-400 !uppercase !text-[10px] !tracking-widest"> Time </th>
             <td mat-cell *matCellDef="let a"> 
               <div class="flex flex-col">
-                <span class="font-bold text-slate-800 dark:text-slate-200">{{a.time}}</span>
-                <span class="text-[10px] text-slate-400">{{a.date}}</span>
+                <span class="font-bold text-slate-800 dark:text-slate-200">{{a.timeSlot}}</span>
+                <span class="text-[10px] text-slate-400">{{a.appointmentDate}}</span>
               </div>
             </td>
           </ng-container>
@@ -97,7 +98,9 @@ import { Appointment, AppointmentStatus } from '../../models/appointment';
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" 
+              (click)="viewAppointment(row)"
+              class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors cursor-pointer"></tr>
         </table>
       </div>
     </div>
@@ -105,10 +108,12 @@ import { Appointment, AppointmentStatus } from '../../models/appointment';
   styles: [`
     :host { display: block; }
     .mat-mdc-table { background: transparent; }
+    .cursor-pointer { cursor: pointer; }
   `]
 })
 export class AppointmentList implements OnInit {
   private appointmentService = inject(AppointmentService);
+  private router = inject(Router);
   
   appointments = signal<Appointment[]>([]);
   displayedColumns = ['time', 'patient', 'doctor', 'status', 'actions'];
@@ -119,10 +124,14 @@ export class AppointmentList implements OnInit {
     });
   }
 
+  viewAppointment(appointment: Appointment) {
+    console.log('Viewing appointment:', appointment);
+  }
+
   getStatusClass(status: AppointmentStatus): string {
     switch(status) {
-      case AppointmentStatus.CONFIRMED: return 'bg-blue-50 text-blue-600';
-      case AppointmentStatus.SCHEDULED: return 'bg-amber-50 text-amber-600';
+      case AppointmentStatus.SCHEDULED: return 'bg-blue-50 text-blue-600';
+      case AppointmentStatus.IN_PROGRESS: return 'bg-amber-50 text-amber-600';
       case AppointmentStatus.COMPLETED: return 'bg-emerald-50 text-emerald-600';
       case AppointmentStatus.CANCELLED: return 'bg-red-50 text-red-600';
       default: return 'bg-slate-100 text-slate-500';

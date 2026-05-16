@@ -1,14 +1,13 @@
-import { Role } from './role.model';
+import { AppRole } from './role.model';
 
 export interface User {
   id: string;
   email: string;
+  password?: string;
   firstName: string;
   lastName: string;
   phone?: string;
-  avatarUrl?: string;
   isActive: boolean;
-  role: Role;
+  role: AppRole;
   lastLogin?: Date;
-  departmentId?: string; // Optional: Link to a specific hospital department
 }

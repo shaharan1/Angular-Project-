@@ -54,14 +54,6 @@ import { AuthService } from '../services/auth';
             </button>
           </form>
 
-          <div class="pt-6 border-t border-slate-50 dark:border-slate-800 flex flex-col gap-2">
-            <p class="text-[10px] text-center text-slate-400 uppercase tracking-widest font-bold">Quick Sandbox Access</p>
-            <div class="flex justify-center gap-4 text-[10px] font-mono text-slate-500 bg-slate-50 dark:bg-slate-800/50 p-2 rounded-lg border border-slate-100 dark:border-slate-800">
-              <span class="text-indigo-400">admin@test.com</span>
-              <span class="text-slate-300">|</span>
-              <span class="text-emerald-400">admin123</span>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -81,8 +73,8 @@ export class Login {
   isLoading = false;
 
   loginForm = this.fb.group({
-    email: ['admin@test.com', [Validators.required, Validators.email]],
-    password: ['admin123', [Validators.required, Validators.minLength(6)]]
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(6)]]
   });
 
   onSubmit() {

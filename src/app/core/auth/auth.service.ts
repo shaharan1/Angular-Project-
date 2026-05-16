@@ -72,11 +72,7 @@ export class AuthService {
         firstName: credentials.email.split('@')[0],
         lastName: 'User',
         isActive: true,
-        role: {
-          id: 1,
-          name: this.determineRoleFromEmail(credentials.email),
-          permissions: []
-        }
+        role: this.determineRoleFromEmail(credentials.email)
       } as User
     }).pipe(
       delay(800), // simulate network
@@ -97,15 +93,20 @@ export class AuthService {
     const user = this.currentUserSignal();
     if (!user || !user.role) return false;
     // Super Admin overrides everything
-    if (user.role.name === AppRole.SUPER_ADMIN) return true;
-    return allowedRoles.includes(user.role.name as AppRole);
+    if (user.role === AppRole.SUPER_ADMIN) return true;
+    return allowedRoles.includes(user.role as AppRole);
   }
 
   private determineRoleFromEmail(email: string): AppRole {
+    if (email.includes('superadmin')) return AppRole.SUPER_ADMIN;
     if (email.includes('doctor')) return AppRole.DOCTOR;
     if (email.includes('nurse')) return AppRole.NURSE;
     if (email.includes('hr')) return AppRole.HR_MANAGER;
     if (email.includes('admin')) return AppRole.ADMIN;
-    return AppRole.SUPER_ADMIN;
+    if (email.includes('reception')) return AppRole.RECEPTIONIST;
+    if (email.includes('lab')) return AppRole.LAB_TECHNICIAN;
+    if (email.includes('pharmacy')) return AppRole.PHARMACIST;
+    if (email.includes('finance')) return AppRole.FINANCE;
+    return AppRole.USER;
   }
 }

@@ -1,47 +1,107 @@
-<div class="animate-in space-y-6">
-  <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+<div class="animate-in space-y-8 p-2">
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
     <div>
-      <h1 class="text-2xl font-bold text-slate-800 dark:text-white">Hospital Appointments</h1>
-      <p class="text-slate-500 dark:text-slate-400">Manage all patient appointments across the facility.</p>
+      <h1 class="text-4xl font-black text-slate-900 tracking-tight">Appointments</h1>
+      <p class="text-slate-500 font-medium mt-1">Real-time overview of hospital schedule and patient flow.</p>
     </div>
-    <div class="flex gap-2">
-      <button mat-flat-button color="primary">
-        <mat-icon>add</mat-icon> Book Appointment
+    <div class="flex gap-3">
+      <button mat-flat-button class="!bg-indigo-600 !text-white !px-8 !py-6 !rounded-2xl !font-bold shadow-lg shadow-indigo-200" routerLink="/appointments/book">
+        <mat-icon class="mr-2">add_circle</mat-icon> New Booking
       </button>
     </div>
   </div>
 
-  <mat-card class="!rounded-2xl !shadow-sm">
+  <!-- Stats Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex items-center gap-5">
+      <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center">
+        <mat-icon class="scale-125">event_note</mat-icon>
+      </div>
+      <div>
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Today</p>
+        <h3 class="text-2xl font-black text-slate-800">{{ clinicalService.todayAppointmentsSignal().length }}</h3>
+      </div>
+    </div>
+    <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex items-center gap-5">
+      <div class="w-14 h-14 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center">
+        <mat-icon class="scale-125">pending_actions</mat-icon>
+      </div>
+      <div>
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Pending</p>
+        <h3 class="text-2xl font-black text-slate-800">12</h3>
+      </div>
+    </div>
+    <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex items-center gap-5">
+      <div class="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center">
+        <mat-icon class="scale-125">task_alt</mat-icon>
+      </div>
+      <div>
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Completed</p>
+        <h3 class="text-2xl font-black text-slate-800">48</h3>
+      </div>
+    </div>
+  </div>
+
+  <mat-card class="!rounded-[2rem] !shadow-2xl border-none overflow-hidden bg-white">
+    <div class="p-8 border-b border-slate-50 flex items-center justify-between">
+      <h3 class="text-xl font-black text-slate-800">Recent Schedule</h3>
+      <div class="flex gap-2">
+        <button mat-icon-button class="text-slate-400"><mat-icon>filter_list</mat-icon></button>
+        <button mat-icon-button class="text-slate-400"><mat-icon>more_vert</mat-icon></button>
+      </div>
+    </div>
+    
     <mat-card-content class="!p-0">
-      <div *ngIf="clinicalService.loadingSignal()" class="p-8 text-center text-slate-500">
-        Loading appointments...
+      <div *ngIf="clinicalService.loadingSignal()" class="p-20 text-center">
+        <div class="inline-block animate-spin w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full mb-4"></div>
+        <p class="text-slate-400 font-medium tracking-wide">Syncing records...</p>
       </div>
 
       <div class="overflow-x-auto" *ngIf="!clinicalService.loadingSignal()">
-        <table class="w-full text-left text-sm text-slate-600 dark:text-slate-300">
-          <thead class="bg-slate-50 dark:bg-slate-800/50 text-xs uppercase text-slate-500 border-b border-slate-200 dark:border-slate-700">
+        <table class="w-full text-left text-sm">
+          <thead class="bg-slate-50/50 text-[10px] uppercase font-black tracking-[0.15em] text-slate-400 border-b border-slate-50">
             <tr>
-              <th class="px-6 py-4 font-semibold">Time</th>
-              <th class="px-6 py-4 font-semibold">Patient ID</th>
-              <th class="px-6 py-4 font-semibold">Doctor ID</th>
-              <th class="px-6 py-4 font-semibold">Reason</th>
-              <th class="px-6 py-4 font-semibold">Status</th>
+              <th class="px-8 py-5">Time Slot</th>
+              <th class="px-8 py-5">Patient Information</th>
+              <th class="px-8 py-5">Assigned Specialist</th>
+              <th class="px-8 py-5">Status</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
-            <tr *ngFor="let apt of clinicalService.todayAppointmentsSignal()" class="hover:bg-slate-50 dark:hover:bg-slate-800/50">
-              <td class="px-6 py-4 font-medium">{{ apt.timeSlot }}</td>
-              <td class="px-6 py-4 text-indigo-600 dark:text-indigo-400">{{ apt.patientId }}</td>
-              <td class="px-6 py-4">{{ apt.doctorId }}</td>
-              <td class="px-6 py-4 truncate max-w-xs">{{ apt.reasonForVisit }}</td>
-              <td class="px-6 py-4">
-                <span [class]="'px-2.5 py-1 rounded-full text-xs font-medium ' + getStatusClass(apt.status)">
+          <tbody class="divide-y divide-slate-50">
+            <tr *ngFor="let apt of clinicalService.todayAppointmentsSignal()" 
+                (click)="viewAppointment(apt)"
+                class="hover:bg-slate-50/80 cursor-pointer transition-all duration-200 group">
+              <td class="px-8 py-6">
+                <span class="px-3 py-1.5 bg-slate-100 text-slate-600 rounded-lg font-bold text-xs">{{ apt.timeSlot }}</span>
+              </td>
+              <td class="px-8 py-6">
+                <div class="font-bold text-slate-800 group-hover:text-indigo-600 transition-colors">{{ apt.patientName }}</div>
+                <div class="text-[10px] text-slate-400 font-bold uppercase mt-1">{{ apt.patientId }}</div>
+              </td>
+              <td class="px-8 py-6">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold text-[10px]">
+                    {{ apt.doctorName ? apt.doctorName[0] : 'D' }}
+                  </div>
+                  <div>
+                    <div class="font-bold text-slate-700">{{ apt.doctorName }}</div>
+                    <div class="text-[10px] text-indigo-500 font-bold uppercase tracking-wider">{{ apt.department }}</div>
+                  </div>
+                </div>
+              </td>
+              <td class="px-8 py-6">
+                <span [class]="'px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest ' + getStatusClass(apt.status)">
                   {{ apt.status }}
                 </span>
               </td>
             </tr>
           </tbody>
         </table>
+
+        <div *ngIf="clinicalService.todayAppointmentsSignal().length === 0" class="p-20 text-center">
+          <mat-icon class="text-slate-200 scale-[3] mb-8">event_busy</mat-icon>
+          <p class="text-slate-400 font-bold tracking-wide">No appointments scheduled for today.</p>
+        </div>
       </div>
     </mat-card-content>
   </mat-card>

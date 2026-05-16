@@ -19,8 +19,8 @@ export class ClinicalService {
 
   getDoctorAppointments(doctorId: string, date: string): Observable<Appointment[]> {
     this.loadingSignal.set(true);
-    // In a real app we would pass dates, but here we just get all for the doctor from mock db
-    return this.http.get<Appointment[]>(`${this.API_URL}/appointments?doctorId=${doctorId}`).pipe(
+    const url = doctorId ? `${this.API_URL}/appointments?doctorId=${doctorId}` : `${this.API_URL}/appointments`;
+    return this.http.get<Appointment[]>(url).pipe(
       delay(600), // Simulate latency
       tap(appointments => {
         this.todayAppointmentsSignal.set(appointments);

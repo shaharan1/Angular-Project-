@@ -1,25 +1,26 @@
 export enum AppRole {
-  SUPER_ADMIN = 'Super Admin',
-  ADMIN = 'Admin',
-  DOCTOR = 'Doctor',
-  NURSE = 'Nurse',
-  RECEPTIONIST = 'Receptionist',
-  LAB_TECH = 'Lab Technician',
-  PHARMACIST = 'Pharmacist',
-  ACCOUNTANT = 'Accountant',
-  HR_MANAGER = 'HR Manager',
-  PATIENT = 'Patient'
+  SUPER_ADMIN = 'SUPER_ADMIN',
+  ADMIN = 'ADMIN',
+  DOCTOR = 'DOCTOR',
+  NURSE = 'NURSE',
+  RECEPTIONIST = 'RECEPTIONIST',
+  LAB_TECHNICIAN = 'LAB_TECHNICIAN',
+  PHARMACIST = 'PHARMACIST',
+  FINANCE = 'FINANCE',
+  HR_MANAGER = 'HR_MANAGER',
+  USER = 'USER'
 }
 
 export interface Permission {
   id: number;
   name: string;
-  code: string; // e.g., 'view_patients', 'edit_billing'
+  code: string;
   description?: string;
 }
 
 export interface Role {
   id: number;
-  name: AppRole | string;
-  permissions: Permission[];
+  name: string;
+  code: AppRole | string;
+  permissions?: Permission[];
 }

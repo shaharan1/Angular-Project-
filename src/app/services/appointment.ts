@@ -1,44 +1,45 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
-import { Appointment, AppointmentStatus } from '../models/appointment';
+import { catchError, tap } from 'rxjs/operators';
+import { Appointment } from '../core/models/appointment.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppointmentService {
-  private appointmentsSignal = signal<Appointment[]>([
-    {
-      id: 'APT-101',
-      patientId: 'P-12345',
-      patientName: 'John Doe',
-      doctorId: 'D-501',
-      doctorName: 'Dr. Sarah Miller',
-      department: 'Cardiology',
-      date: '2026-05-20',
-      time: '09:00 AM',
-      type: 'Follow-up',
-      status: AppointmentStatus.CONFIRMED
-    },
-    {
-      id: 'APT-102',
-      patientId: 'P-12346',
-      patientName: 'Emma Wilson',
-      doctorId: 'D-502',
-      doctorName: 'Dr. Michael Ross',
-      department: 'Orthopedics',
-      date: '2026-05-20',
-      time: '11:30 AM',
-      type: 'Initial',
-      status: AppointmentStatus.SCHEDULED
-    }
-  ]);
+  private http = inject(HttpClient);
+  private apiUrl = 'http://localhost:3000/appointments';
 
   getAppointments(): Observable<Appointment[]> {
-    return of(this.appointmentsSignal()).pipe(delay(500));
+    return this.http.get<Appointment[]>(this.apiUrl).pipe(
+      catchError(err => {
+        console.warn('Backend not reachable for appointments, returning empty list', err);
+        return of([]);
+      })
+    );
   }
 
-  addAppointment(apt: Appointment) {
-    this.appointmentsSignal.update(as => [...as, apt]);
+  getAppointmentById(id: string): Observable<Appointment> {
+    return this.http.get<Appointment>(`${this.apiUrl}/${id}`);
+  }
+
+  addAppointment(appointment: Appointment): Observable<Appointment> {
+    return this.http.post<Appointment>(this.apiUrl, appointment).pipe(
+      tap(() => console.log('Appointment saved to backend')),
+      catchError(err => {
+        console.warn('Backend not reachable, simulating successful booking in local memory', err);
+        // In a real app we might save to localStorage here
+        return of(appointment);
+      })
+    );
+  }
+
+  updateAppointment(id: string, appointment: Partial<Appointment>): Observable<Appointment> {
+    return this.http.patch<Appointment>(`${this.apiUrl}/${id}`, appointment);
+  }
+
+  deleteAppointment(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

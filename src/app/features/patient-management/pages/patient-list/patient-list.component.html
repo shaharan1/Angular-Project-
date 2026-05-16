@@ -6,6 +6,10 @@
       <p class="text-slate-500 dark:text-slate-400">View and manage hospital patient records.</p>
     </div>
     <div class="flex gap-3">
+      <button mat-stroked-button (click)="exportToPDF()" class="!border-indigo-200 !text-indigo-600">
+        <mat-icon>download</mat-icon>
+        Export Report
+      </button>
       <button mat-flat-button color="primary" routerLink="/patients/register">
         <mat-icon>person_add</mat-icon>
         Register Patient

@@ -10,6 +10,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PatientService } from '../../services/patient.service';
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 @Component({
   selector: 'app-patient-list',
@@ -50,5 +52,32 @@ export class PatientListComponent implements OnInit {
       case 'Emergency': return 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400';
       default: return 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400';
     }
+  }
+
+  exportToPDF() {
+    const doc = new jsPDF();
+    const patients = this.patientService.patientsSignal();
+    
+    doc.setFontSize(20);
+    doc.text('Patient List Report', 14, 20);
+    doc.setFontSize(10);
+    doc.text(`Generated on: ${new Date().toLocaleString()}`, 14, 30);
+
+    autoTable(doc, {
+      startY: 40,
+      head: [['ID', 'Name', 'Gender', 'Blood Group', 'Status', 'Contact']],
+      body: patients.map(p => [
+        p.patientId,
+        `${p.firstName} ${p.lastName}`,
+        p.gender,
+        p.bloodGroup,
+        p.status,
+        p.contactNumber
+      ]),
+      theme: 'striped',
+      headStyles: { fillColor: [79, 70, 229] }
+    });
+
+    doc.save('Patient_Report.pdf');
   }
 }

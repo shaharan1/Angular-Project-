@@ -81,3 +81,23 @@
   }
 }
 
+/* CDK Overlay fix for z-index issues */
+.cdk-overlay-container {
+  z-index: 9999 !important;
+  position: fixed;
+  pointer-events: none;
+}
+
+.cdk-overlay-pane {
+  pointer-events: auto;
+}
+
+/* Force solid backgrounds on Material inputs to prevent "see-through" issues */
+.mdc-text-field--outlined {
+  background-color: white !important;
+}
+
+.dark .mdc-text-field--outlined {
+  background-color: #0f172a !important; /* slate-900 */
+}
+
