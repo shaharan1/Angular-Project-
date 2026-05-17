@@ -28,4 +28,12 @@ export class BillingService {
       })
     );
   }
+
+  createInvoice(invoice: Omit<Invoice, 'id'>): Observable<Invoice> {
+    return this.http.post<Invoice>(`${this.API_URL}/invoices`, invoice).pipe(
+      tap(() => {
+        this.getAllInvoices().subscribe();
+      })
+    );
+  }
 }
