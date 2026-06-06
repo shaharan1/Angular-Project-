@@ -79,15 +79,9 @@ export class ProfileComponent implements OnInit {
     const isSuperAdmin = currentUser.role === AppRole.SUPER_ADMIN;
     const isAdmin = currentUser.role === AppRole.ADMIN;
 
-    // Only Super Admin can see passwords and emails of OTHERS.
-    // Users can see their own email but maybe not password? 
-    // The requirement says "only super admin can see passwords and email of every employees".
-    // I'll interpret "every employees" as "any employee's data".
-    this.canSeeSensitiveData.set(isSuperAdmin || (isOwnProfile && !isAdmin)); 
-    // Wait, let's keep it simple: ONLY Super Admin can see sensitive data as requested.
+    // Only Super Admin can see sensitive data
     this.canSeeSensitiveData.set(isSuperAdmin);
 
-    // Only Super Admin and Admin can edit.
     // Super Admin can edit ANY profile. Admin can edit THEIR OWN.
     this.canEdit.set(isSuperAdmin || (isAdmin && isOwnProfile));
   }
@@ -123,6 +117,32 @@ export class ProfileComponent implements OnInit {
       this.profileForm.enable();
     } else {
       this.profileForm.disable();
+      // Reset form to original values
+      const user = this.viewedUser();
+      if (user) {
+        this.profileForm.patchValue({
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          password: user.password,
+          role: user.role
+        });
+      }
+    }
+  }
+
+  onAvatarSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      const reader = new FileReader();
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        const dataUrl = e.target?.result as string;
+        // Update the viewed user with the new avatar
+        const user = { ...this.viewedUser(), avatarUrl: dataUrl };
+        this.viewedUser.set(user);
+      };
+      reader.readAsDataURL(file);
     }
   }
 
@@ -138,11 +158,50 @@ export class ProfileComponent implements OnInit {
           
           // If we edited our own profile, update auth service state
           if (updatedData.id === this.currentUser()?.id) {
-             // Logic to update current user signal if needed
+            // Update localStorage so changes persist
+            const storedUser = localStorage.getItem('currentUser');
+            if (storedUser) {
+              const parsed = JSON.parse(storedUser);
+              const merged = { ...parsed, ...updatedData };
+              localStorage.setItem('currentUser', JSON.stringify(merged));
+            }
           }
         },
         error: () => this.toastr.error('Failed to update profile')
       });
     }
+  }
+
+  // Helper methods for role badge styling
+  getRoleBadgeClass(role: string | undefined): string {
+    const map: Record<string, string> = {
+      'SUPER_ADMIN': 'bg-red-500/20 text-red-100 border border-red-400/30',
+      'ADMIN': 'bg-purple-500/20 text-purple-100 border border-purple-400/30',
+      'DOCTOR': 'bg-emerald-500/20 text-emerald-100 border border-emerald-400/30',
+      'NURSE': 'bg-pink-500/20 text-pink-100 border border-pink-400/30',
+      'RECEPTIONIST': 'bg-amber-500/20 text-amber-100 border border-amber-400/30',
+      'LAB_TECHNICIAN': 'bg-cyan-500/20 text-cyan-100 border border-cyan-400/30',
+      'PHARMACIST': 'bg-lime-500/20 text-lime-100 border border-lime-400/30',
+      'FINANCE': 'bg-violet-500/20 text-violet-100 border border-violet-400/30',
+      'HR_MANAGER': 'bg-orange-500/20 text-orange-100 border border-orange-400/30',
+      'USER': 'bg-slate-500/20 text-slate-100 border border-slate-400/30',
+    };
+    return map[role || ''] || map['USER'];
+  }
+
+  getRoleIcon(role: string | undefined): string {
+    const map: Record<string, string> = {
+      'SUPER_ADMIN': 'shield',
+      'ADMIN': 'admin_panel_settings',
+      'DOCTOR': 'medical_services',
+      'NURSE': 'health_and_safety',
+      'RECEPTIONIST': 'support_agent',
+      'LAB_TECHNICIAN': 'science',
+      'PHARMACIST': 'medication',
+      'FINANCE': 'payments',
+      'HR_MANAGER': 'badge',
+      'USER': 'person',
+    };
+    return map[role || ''] || 'person';
   }
 }

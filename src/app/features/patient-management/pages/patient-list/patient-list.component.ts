@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -9,7 +9,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { PatientService } from '../../services/patient.service';
+import { Patient, PatientStatus, Gender } from '../../../../core/models/patient.model';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
@@ -19,13 +23,51 @@ import autoTable from 'jspdf-autotable';
   imports: [
     CommonModule, RouterModule, ReactiveFormsModule,
     MatCardModule, MatIconModule, MatButtonModule,
-    MatInputModule, MatFormFieldModule, MatProgressSpinnerModule
+    MatInputModule, MatFormFieldModule, MatProgressSpinnerModule,
+    MatMenuModule, MatSelectModule, MatSnackBarModule
   ],
   templateUrl: './patient-list.component.html'
 })
 export class PatientListComponent implements OnInit {
   public patientService = inject(PatientService);
+  private snackBar = inject(MatSnackBar);
+
   public searchControl = new FormControl('');
+  public statusControl = new FormControl('ALL');
+  public genderControl = new FormControl('ALL');
+
+  public searchQuery = signal<string>('');
+  public selectedStatus = signal<string>('ALL');
+  public selectedGender = signal<string>('ALL');
+
+  public showFilters = signal<boolean>(false);
+  public statuses = Object.values(PatientStatus);
+  public genders = Object.values(Gender);
+
+  public filteredPatients = computed(() => {
+    let list = this.patientService.patientsSignal();
+    const query = this.searchQuery().toLowerCase().trim();
+    const status = this.selectedStatus();
+    const gender = this.selectedGender();
+
+    if (query) {
+      list = list.filter(p =>
+        p.patientId.toLowerCase().includes(query) ||
+        `${p.firstName} ${p.lastName}`.toLowerCase().includes(query) ||
+        p.contactNumber.includes(query)
+      );
+    }
+
+    if (status !== 'ALL') {
+      list = list.filter(p => p.status === status);
+    }
+
+    if (gender !== 'ALL') {
+      list = list.filter(p => p.gender === gender);
+    }
+
+    return list;
+  });
 
   ngOnInit() {
     this.patientService.getAllPatients().subscribe();
@@ -34,14 +76,56 @@ export class PatientListComponent implements OnInit {
       debounceTime(300),
       distinctUntilChanged()
     ).subscribe(query => {
-      if (query) {
-        this.patientService.searchPatients(query).subscribe(patients => {
-          this.patientService.patientsSignal.set(patients);
+      this.searchQuery.set(query || '');
+    });
+
+    this.statusControl.valueChanges.subscribe(status => {
+      this.selectedStatus.set(status || 'ALL');
+    });
+
+    this.genderControl.valueChanges.subscribe(gender => {
+      this.selectedGender.set(gender || 'ALL');
+    });
+  }
+
+  toggleFilters() {
+    this.showFilters.update(v => !v);
+  }
+
+  resetFilters() {
+    this.searchControl.setValue('');
+    this.statusControl.setValue('ALL');
+    this.genderControl.setValue('ALL');
+  }
+
+  updatePatientStatus(patient: Patient, status: PatientStatus) {
+    this.patientService.updatePatient(patient.id, { status }).subscribe({
+      next: () => {
+        this.snackBar.open(`Updated status of ${patient.firstName} to ${status}`, 'Close', {
+          duration: 3000,
+          panelClass: ['bg-emerald-600', 'text-white']
         });
-      } else {
-        this.patientService.getAllPatients().subscribe();
+      },
+      error: () => {
+        this.snackBar.open('Failed to update patient status', 'Close', { duration: 3000 });
       }
     });
+  }
+
+  deletePatient(patient: Patient) {
+    if (confirm(`Are you sure you want to remove patient ${patient.firstName} ${patient.lastName}?`)) {
+      this.patientService.deletePatient(patient.id).subscribe({
+        next: () => {
+          this.snackBar.open('Patient record removed successfully', 'Close', {
+            duration: 3000,
+            panelClass: ['bg-emerald-600', 'text-white']
+          });
+        },
+        error: () => {
+          this.snackBar.open('Failed to delete patient record', 'Close', { duration: 3000 });
+        }
+      });
+    }
   }
 
   getStatusBadgeClass(status: string): string {
@@ -56,7 +140,7 @@ export class PatientListComponent implements OnInit {
 
   exportToPDF() {
     const doc = new jsPDF();
-    const patients = this.patientService.patientsSignal();
+    const patients = this.filteredPatients();
     
     doc.setFontSize(20);
     doc.text('Patient List Report', 14, 20);

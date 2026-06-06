@@ -7,7 +7,8 @@
       "firstName": "System",
       "lastName": "Admin",
       "isActive": true,
-      "role": "SUPER_ADMIN"
+      "role": "SUPER_ADMIN",
+      "avatarUrl": "https://api.dicebear.com/9.x/personas/svg?seed=SystemAdmin&backgroundColor=b6e3f4"
     },
     {
       "id": "u2",
@@ -16,7 +17,8 @@
       "firstName": "Hospital",
       "lastName": "Admin",
       "isActive": true,
-      "role": "ADMIN"
+      "role": "ADMIN",
+      "avatarUrl": "https://api.dicebear.com/9.x/personas/svg?seed=HospitalAdmin&backgroundColor=c0aede"
     },
     {
       "id": "u3",
@@ -25,7 +27,8 @@
       "firstName": "John",
       "lastName": "Doe",
       "isActive": true,
-      "role": "DOCTOR"
+      "role": "DOCTOR",
+      "avatarUrl": "https://api.dicebear.com/9.x/personas/svg?seed=DoctorJohn&backgroundColor=d1f4d1"
     },
     {
       "id": "u4",
@@ -34,7 +37,8 @@
       "firstName": "Clara",
       "lastName": "Barton",
       "isActive": true,
-      "role": "NURSE"
+      "role": "NURSE",
+      "avatarUrl": "https://api.dicebear.com/9.x/personas/svg?seed=NurseClara&backgroundColor=ffd5dc"
     },
     {
       "id": "u5",
@@ -43,7 +47,8 @@
       "firstName": "Pam",
       "lastName": "Beesly",
       "isActive": true,
-      "role": "RECEPTIONIST"
+      "role": "RECEPTIONIST",
+      "avatarUrl": "https://api.dicebear.com/9.x/personas/svg?seed=ReceptionPam&backgroundColor=fce4b8"
     },
     {
       "id": "u6",
@@ -52,7 +57,8 @@
       "firstName": "Walter",
       "lastName": "White",
       "isActive": true,
-      "role": "LAB_TECHNICIAN"
+      "role": "LAB_TECHNICIAN",
+      "avatarUrl": "https://api.dicebear.com/9.x/personas/svg?seed=LabWalter&backgroundColor=b8e8fc"
     },
     {
       "id": "u7",
@@ -61,7 +67,8 @@
       "firstName": "Jesse",
       "lastName": "Pinkman",
       "isActive": true,
-      "role": "PHARMACIST"
+      "role": "PHARMACIST",
+      "avatarUrl": "https://api.dicebear.com/9.x/personas/svg?seed=PharmacyJesse&backgroundColor=c8f7c5"
     },
     {
       "id": "u8",
@@ -70,7 +77,8 @@
       "firstName": "Angela",
       "lastName": "Martin",
       "isActive": true,
-      "role": "FINANCE"
+      "role": "FINANCE",
+      "avatarUrl": "https://api.dicebear.com/9.x/personas/svg?seed=FinanceAngela&backgroundColor=f0d9ff"
     },
     {
       "id": "u9",
@@ -79,7 +87,8 @@
       "firstName": "Toby",
       "lastName": "Flenderson",
       "isActive": true,
-      "role": "HR_MANAGER"
+      "role": "HR_MANAGER",
+      "avatarUrl": "https://api.dicebear.com/9.x/personas/svg?seed=HRToby&backgroundColor=ffe0b2"
     },
     {
       "id": "u10",
@@ -88,7 +97,8 @@
       "firstName": "Normal",
       "lastName": "Person 1",
       "isActive": true,
-      "role": "USER"
+      "role": "USER",
+      "avatarUrl": "https://api.dicebear.com/9.x/personas/svg?seed=UserNormal1&backgroundColor=e0e0e0"
     },
     {
       "id": "u11",
@@ -97,7 +107,8 @@
       "firstName": "Normal",
       "lastName": "Person 2",
       "isActive": true,
-      "role": "USER"
+      "role": "USER",
+      "avatarUrl": "https://api.dicebear.com/9.x/personas/svg?seed=UserNormal2&backgroundColor=e0e0e0"
     }
   ],
   "roles": [
@@ -230,20 +241,20 @@
       "department": "Cardiology",
       "appointmentDate": "2026-05-26",
       "timeSlot": "09:00 AM - 09:30 AM",
-      "reasonForVisit": "nunu te bethya",
+      "reasonForVisit": "Headache",
       "notes": "",
       "status": "Confirmed"
     },
     {
       "id": "APT-6371",
       "patientId": "PT-GUEST-1778938038937",
-      "patientName": "cbfdhfdghfsg",
+      "patientName": "Sajin",
       "doctorId": "d1",
-      "doctorName": "Dr. John Doe",
+      "doctorName": "Dr. Amit Maji",
       "department": "Cardiology",
       "appointmentDate": "2026-05-26",
       "timeSlot": "09:00 AM - 09:30 AM",
-      "reasonForVisit": "nunu te bethya",
+      "reasonForVisit": "Fever",
       "notes": "",
       "status": "Confirmed"
     }
@@ -253,8 +264,8 @@
     {
       "id": "e1",
       "userId": "u4",
-      "firstName": "Clara",
-      "lastName": "Barton",
+      "firstName": "Sayada",
+      "lastName": "Jahara",
       "department": "Nursing",
       "designation": "Head Nurse",
       "salary": 65000,
@@ -264,8 +275,8 @@
     {
       "id": "e2",
       "userId": "u9",
-      "firstName": "Toby",
-      "lastName": "Flenderson",
+      "firstName": "Jui",
+      "lastName": "Israt",
       "department": "HR",
       "designation": "HR Manager",
       "salary": 75000,
@@ -278,24 +289,24 @@
   "doctors": [
     {
       "id": "d1",
-      "firstName": "John",
-      "lastName": "Doe",
+      "firstName": "Roma Moni",
+      "lastName": "Pull",
       "department": "Cardiology",
       "specialization": "Heart Specialist",
       "status": "Available"
     },
     {
       "id": "d2",
-      "firstName": "Sarah",
-      "lastName": "Smith",
+      "firstName": "Amit",
+      "lastName": "Maji",
       "department": "Neurology",
       "specialization": "Brain Specialist",
       "status": "Available"
     },
     {
       "id": "d3",
-      "firstName": "Michael",
-      "lastName": "Ross",
+      "firstName": "Abul",
+      "lastName": "Hasan",
       "department": "Orthopedics",
       "specialization": "Bone Specialist",
       "status": "Busy"

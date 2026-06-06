@@ -42,6 +42,40 @@ export class PatientService {
     );
   }
 
+  updatePatient(id: string, patientData: Partial<Patient>): Observable<Patient> {
+    this.loadingSignal.set(true);
+    return this.http.patch<Patient>(`${this.API_URL}/${id}`, patientData).pipe(
+      delay(800),
+      tap(updatedPatient => {
+        const currentPatients = this.patientsSignal();
+        this.patientsSignal.set(currentPatients.map(p => p.id === id ? updatedPatient : p));
+        this.loadingSignal.set(false);
+      }),
+      catchError(error => {
+        this.errorSignal.set('Failed to update patient.');
+        this.loadingSignal.set(false);
+        throw error;
+      })
+    );
+  }
+
+  deletePatient(id: string): Observable<any> {
+    this.loadingSignal.set(true);
+    return this.http.delete(`${this.API_URL}/${id}`).pipe(
+      delay(500),
+      tap(() => {
+        const currentPatients = this.patientsSignal();
+        this.patientsSignal.set(currentPatients.filter(p => p.id !== id));
+        this.loadingSignal.set(false);
+      }),
+      catchError(error => {
+        this.errorSignal.set('Failed to delete patient.');
+        this.loadingSignal.set(false);
+        throw error;
+      })
+    );
+  }
+
   registerPatient(patientData: Partial<Patient>): Observable<Patient> {
     this.loadingSignal.set(true);
     

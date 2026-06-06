@@ -1,22 +1,46 @@
 <div class="p-6 min-h-screen bg-slate-50 flex items-center justify-center">
   <mat-card class="w-full max-w-2xl !rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
-    <!-- Header -->
-    <div class="bg-gradient-to-r from-indigo-600 to-violet-600 p-10 text-white text-center relative">
+    <!-- Header with Avatar -->
+    <div class="bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 p-10 text-white text-center relative">
       <div class="absolute top-4 right-4" *ngIf="canEdit()">
         <button mat-icon-button class="!bg-white/20 !text-white" (click)="toggleEdit()">
           <mat-icon>{{ isEditMode() ? 'close' : 'edit' }}</mat-icon>
         </button>
       </div>
       
-      <div class="w-24 h-24 rounded-3xl bg-white/20 flex items-center justify-center mx-auto mb-4 border-2 border-white/30 backdrop-blur-sm shadow-inner">
-        <mat-icon class="scale-[2.5]">account_circle</mat-icon>
+      <!-- Avatar with Image -->
+      <div class="relative w-28 h-28 mx-auto mb-4">
+        <img *ngIf="viewedUser()?.avatarUrl" 
+             [src]="viewedUser()?.avatarUrl" 
+             alt="Profile Avatar"
+             class="w-28 h-28 rounded-full object-cover border-4 border-white/40 shadow-lg">
+        <div *ngIf="!viewedUser()?.avatarUrl" 
+             class="w-28 h-28 rounded-full bg-white/20 flex items-center justify-center border-4 border-white/40 shadow-lg">
+          <mat-icon class="scale-[3] text-white/80">account_circle</mat-icon>
+        </div>
+        <!-- Camera overlay for edit mode -->
+        <div *ngIf="isEditMode()" 
+             class="absolute inset-0 rounded-full bg-black/40 flex items-center justify-center cursor-pointer hover:bg-black/50 transition-colors"
+             (click)="avatarInput.click()">
+          <mat-icon class="text-white">camera_alt</mat-icon>
+        </div>
+        <input #avatarInput type="file" accept="image/*" class="hidden" (change)="onAvatarSelected($event)">
       </div>
+
       <h1 class="text-3xl font-black tracking-tight mb-1">
         {{ viewedUser()?.firstName }} {{ viewedUser()?.lastName }}
       </h1>
       <p class="text-indigo-100 font-bold uppercase tracking-widest text-xs opacity-80">
         {{ viewedUser()?.role }}
       </p>
+
+      <!-- Role Badge -->
+      <div class="mt-4">
+        <span [class]="'inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider ' + getRoleBadgeClass(viewedUser()?.role)">
+          <mat-icon class="!text-sm !w-4 !h-4">{{ getRoleIcon(viewedUser()?.role) }}</mat-icon>
+          {{ viewedUser()?.role }}
+        </span>
+      </div>
     </div>
 
     <!-- Content -->
@@ -81,10 +105,15 @@
         </div>
 
         <!-- Action Buttons -->
-        <div class="pt-4" *ngIf="isEditMode()">
+        <div class="pt-4 space-y-3" *ngIf="isEditMode()">
           <button mat-raised-button color="primary" type="submit" 
                   class="w-full !bg-indigo-600 !py-6 !text-lg !rounded-2xl !font-black shadow-lg shadow-indigo-100 transition hover:scale-[1.02] active:scale-95">
+            <mat-icon class="mr-2">save</mat-icon>
             Save Changes
+          </button>
+          <button mat-stroked-button type="button" (click)="toggleEdit()"
+                  class="w-full !py-5 !rounded-2xl !font-bold text-slate-600">
+            Cancel
           </button>
         </div>
 

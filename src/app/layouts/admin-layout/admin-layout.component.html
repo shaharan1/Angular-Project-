@@ -28,22 +28,24 @@
 
     <!-- Sidebar Footer -->
     <div class="p-4 border-t border-slate-200 dark:border-slate-700" *ngIf="authService.currentUserSignal() as user">
-      <div class="flex items-center gap-3" [class.justify-center]="!isSidebarOpen">
-        <div class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center shrink-0 text-indigo-600 dark:text-indigo-400 font-bold">
+      <a routerLink="/profile" class="flex items-center gap-3 hover:opacity-80 transition-opacity" [class.justify-center]="!isSidebarOpen">
+        <img *ngIf="user.avatarUrl" [src]="user.avatarUrl" alt="Avatar"
+             class="w-10 h-10 rounded-full object-cover shrink-0 ring-2 ring-indigo-400 ring-offset-2 ring-offset-white dark:ring-offset-slate-800">
+        <div *ngIf="!user.avatarUrl" class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center shrink-0 text-indigo-600 dark:text-indigo-400 font-bold">
           {{ user.firstName[0] }}
         </div>
         <div [class.hidden]="!isSidebarOpen" class="overflow-hidden">
           <p class="text-sm font-medium text-slate-900 dark:text-white truncate">{{ user.firstName }} {{ user.lastName }}</p>
           <p class="text-xs text-slate-500 dark:text-slate-400 truncate">{{ user.role }}</p>
         </div>
-      </div>
+      </a>
     </div>
   </aside>
 
   <!-- Main Content Wrapper -->
   <div class="flex-1 flex flex-col h-full min-w-0">
     <!-- Top Navbar -->
-    <header class="h-16 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md shadow-sm border-b border-slate-200 dark:border-slate-700 z-40 flex items-center justify-between px-4 lg:px-8 shrink-0 sticky top-0">
+    <header class="h-16 bg-white dark:bg-slate-800 shadow-sm border-b border-slate-200 dark:border-slate-700 z-40 flex items-center justify-between px-4 lg:px-8 shrink-0 sticky top-0">
       <div class="flex items-center">
         <button mat-icon-button (click)="toggleSidebar()" class="text-slate-600 dark:text-slate-300">
           <mat-icon>menu</mat-icon>
@@ -59,7 +61,9 @@
         <ng-container *ngIf="authService.currentUserSignal() as user">
           <button mat-button [matMenuTriggerFor]="userMenu" class="!px-2">
             <div class="flex items-center gap-2">
-              <div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-white font-medium text-sm">
+              <img *ngIf="user.avatarUrl" [src]="user.avatarUrl" alt="Avatar"
+                   class="w-8 h-8 rounded-full object-cover ring-2 ring-indigo-500 ring-offset-1 ring-offset-white dark:ring-offset-slate-800">
+              <div *ngIf="!user.avatarUrl" class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-white font-medium text-sm">
                 {{ user.firstName[0] }}
               </div>
               <span class="hidden md:block font-medium text-slate-700 dark:text-slate-200">{{ user.firstName }}</span>
@@ -71,7 +75,7 @@
               <p class="text-sm font-medium text-slate-900 dark:text-white">{{ user.email }}</p>
               <p class="text-xs text-slate-500">{{ user.role }}</p>
             </div>
-            <button mat-menu-item>
+            <button mat-menu-item routerLink="/profile">
               <mat-icon>person</mat-icon>
               <span>Profile</span>
             </button>

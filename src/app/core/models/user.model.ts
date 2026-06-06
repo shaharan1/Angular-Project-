@@ -9,5 +9,6 @@ export interface User {
   phone?: string;
   isActive: boolean;
   role: AppRole;
+  avatarUrl?: string;
   lastLogin?: Date;
 }

@@ -63,6 +63,9 @@ export class AuthService {
     // Mock Login using static mock data based on email instead of actual HTTP request to JSON Server
     // to avoid complex setup during scaffolding.
     
+    const role = this.determineRoleFromEmail(credentials.email);
+    const seed = credentials.email.split('@')[0];
+
     return of({
       token: 'fake-jwt-token-123',
       refreshToken: 'fake-refresh-token-456',
@@ -72,7 +75,8 @@ export class AuthService {
         firstName: credentials.email.split('@')[0],
         lastName: 'User',
         isActive: true,
-        role: this.determineRoleFromEmail(credentials.email)
+        role: role,
+        avatarUrl: `https://api.dicebear.com/9.x/personas/svg?seed=${seed}&backgroundColor=b6e3f4`
       } as User
     }).pipe(
       delay(800), // simulate network
