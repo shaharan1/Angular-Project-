@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
@@ -18,7 +19,7 @@ import { BloodGroup, Gender } from '../../../../core/models/patient.model';
   standalone: true,
   imports: [
     CommonModule, RouterModule, ReactiveFormsModule,
-    MatCardModule, MatInputModule, MatSelectModule,
+    MatCardModule, MatFormFieldModule, MatInputModule, MatSelectModule,
     MatButtonModule, MatIconModule, MatDatepickerModule,
     MatNativeDateModule, MatSnackBarModule
   ],
@@ -64,7 +65,7 @@ export class PatientRegistrationComponent {
     }
 
     const formValue = this.regForm.value;
-    
+
     // Flatten form data to match Patient model
     const patientData = {
       ...formValue.personal,

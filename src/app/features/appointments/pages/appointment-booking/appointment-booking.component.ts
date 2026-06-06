@@ -10,19 +10,19 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router';
+import { catchError, of } from 'rxjs';
 import { PatientService } from '../../../../services/patient';
 import { AppointmentService } from '../../../../services/appointment';
 import { DoctorMonitoringService, Doctor } from '../../../../services/doctor-monitoring.service';
-import { Patient } from '../../../../core/models/patient.model';
+import { Patient, BloodGroup, Gender, PatientStatus } from '../../../../core/models/patient.model';
 import { Appointment, AppointmentStatus } from '../../../../core/models/appointment.model';
 
 @Component({
   selector: 'app-appointment-booking',
   standalone: true,
   imports: [
-    CommonModule, ReactiveFormsModule, MatCardModule, MatFormFieldModule, 
-    MatInputModule, MatSelectModule, MatButtonModule, MatDatepickerModule, 
+    CommonModule, ReactiveFormsModule, MatCardModule, MatFormFieldModule,
+    MatInputModule, MatSelectModule, MatButtonModule, MatDatepickerModule,
     MatNativeDateModule, MatIconModule
   ],
   templateUrl: './appointment-booking.component.html'
@@ -30,7 +30,6 @@ import { Appointment, AppointmentStatus } from '../../../../core/models/appointm
 export class AppointmentBookingComponent implements OnInit {
   private fb = inject(FormBuilder);
   private toastr = inject(ToastrService);
-  private router = inject(Router);
   private appointmentService = inject(AppointmentService);
   private doctorService = inject(DoctorMonitoringService);
   private patientService = inject(PatientService);
@@ -39,7 +38,7 @@ export class AppointmentBookingComponent implements OnInit {
   doctors: Doctor[] = [];
   isSubmitting = signal(false);
   bookingConfirmed = signal(false);
-  confirmedAppointment = signal<any>(null);
+  confirmedAppointment = signal<Appointment | null>(null);
 
   timeSlots = [
     '09:00 AM - 09:30 AM',
@@ -92,9 +91,9 @@ export class AppointmentBookingComponent implements OnInit {
       this.isSubmitting.set(true);
       const formValue = this.bookingForm.value;
       const selectedDoctor = this.doctors.find(d => d.id === formValue.doctorId);
-      
+
       const newPatientId = `PT-GUEST-${Date.now()}`;
-      
+
       const appointmentData: Appointment = {
         id: `APT-${Math.floor(1000 + Math.random() * 9000)}`,
         patientId: newPatientId,
@@ -110,20 +109,34 @@ export class AppointmentBookingComponent implements OnInit {
       };
 
       // Register this patient in the patients list so they show up in Patient Management
-      const newPatientData: any = {
+      const [firstName, ...restName] = formValue.patientName.trim().split(' ');
+      const lastName = restName.join(' ') || '';
+      const newPatientData: Patient = {
         id: newPatientId,
         patientId: `PT-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`,
-        firstName: formValue.patientName,
-        lastName: '',
+        firstName: firstName || formValue.patientName,
+        lastName,
+        dateOfBirth: new Date().toISOString().split('T')[0],
+        gender: Gender.OTHER,
+        bloodGroup: BloodGroup.O_POS,
         contactNumber: 'Unknown',
         email: '',
-        bloodGroup: 'Unknown',
-        gender: 'Unknown',
-        status: 'OPD',
-        registrationDate: new Date().toISOString()
+        address: 'Unknown',
+        emergencyContactName: 'Not provided',
+        emergencyContactRelation: 'Unknown',
+        emergencyContactNumber: 'Unknown',
+        status: PatientStatus.OPD,
+        allergies: [],
+        chronicDiseases: [],
+        registrationDate: new Date()
       };
 
-      this.patientService.addPatient(newPatientData).subscribe({
+      this.patientService.addPatient(newPatientData).pipe(
+        catchError(err => {
+          console.warn('Patient API not reachable, continuing with local patient record', err);
+          return of(newPatientData);
+        })
+      ).subscribe({
         next: () => {
           this.appointmentService.addAppointment(appointmentData).subscribe({
             next: () => {

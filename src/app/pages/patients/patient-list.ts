@@ -1,4 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,7 +12,7 @@ import { Patient, PatientStatus } from '../../core/models/patient.model';
 @Component({
   selector: 'app-patient-list',
   standalone: true,
-  imports: [MatTableModule, MatButtonModule, MatIconModule, MatInputModule, MatChipsModule, MatMenuModule],
+  imports: [RouterModule, MatTableModule, MatButtonModule, MatIconModule, MatInputModule, MatChipsModule, MatMenuModule],
   template: `
     <div class="space-y-6">
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -19,7 +20,7 @@ import { Patient, PatientStatus } from '../../core/models/patient.model';
           <h2 class="text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">Patient Records</h2>
           <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Manage and monitor patient status across all departments.</p>
         </div>
-        <button mat-flat-button color="primary" class="!rounded-xl shadow-lg shadow-indigo-500/20">
+        <button mat-flat-button color="primary" routerLink="/patients/register" class="!rounded-xl shadow-lg shadow-indigo-500/20">
           <mat-icon class="mr-2">person_add</mat-icon> Register Patient
         </button>
       </div>
@@ -96,12 +97,12 @@ import { Patient, PatientStatus } from '../../core/models/patient.model';
               class="hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-colors"></tr>
         </table>
 
-        @if (patients().length === 0) {
-          <div class="py-20 text-center">
+        <tr *ngIf="patients().length === 0">
+          <td colspan="5" class="py-20 text-center">
              <mat-icon class="text-slate-200 text-6xl h-auto w-auto">search_off</mat-icon>
              <p class="text-slate-400 mt-4">No patients found match your criteria</p>
-          </div>
-        }
+          </td>
+        </tr>
       </div>
     </div>
 
@@ -120,7 +121,7 @@ import { Patient, PatientStatus } from '../../core/models/patient.model';
 })
 export class PatientList implements OnInit {
   private patientService = inject(PatientService);
-  
+
   patients = signal<Patient[]>([]);
   displayedColumns = ['id', 'name', 'status', 'doctor', 'actions'];
 
@@ -146,7 +147,7 @@ export class PatientList implements OnInit {
   }
 
   getStatusClass(status: string): string {
-    switch(status) {
+    switch (status) {
       case PatientStatus.ADMITTED: return 'bg-blue-50 text-blue-600';
       case PatientStatus.OPD: return 'bg-emerald-50 text-emerald-600';
       case PatientStatus.EMERGENCY: return 'bg-red-50 text-red-600';
