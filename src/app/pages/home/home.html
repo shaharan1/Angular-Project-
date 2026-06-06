@@ -1,28 +1,27 @@
-<div #reportContent class="home-page-container bg-light font-sans min-h-screen text-dark">
-
+<div #reportContent class="home-page-container bg-light font-sans min-vh-100 text-dark">
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-md navbar-light bg-white border-bottom sticky-top py-3 shadow-sm">
+  <nav class="navbar navbar-expand-md navbar-light sticky-top py-3">
     <div class="container">
       <a class="navbar-brand d-flex align-items-center gap-2" href="#" routerLink="/">
-        <div class="brand-icon bg-primary text-white d-flex align-items-center justify-center rounded-3" style="width: 40px; height: 40px;">
+        <div class="brand-icon bg-primary text-white d-flex align-items-center justify-content-center rounded-3 shadow-sm" style="width: 44px; height: 44px;">
           <mat-icon>local_hospital</mat-icon>
         </div>
-        <span class="fs-4 fw-black tracking-tight text-dark mb-0">MED<span class="text-primary">ERP</span></span>
+        <span class="fs-4 fw-black tracking-tight text-dark mb-0">Med<span class="text-primary">ERP</span></span>
       </a>
 
       <div class="d-none d-md-flex align-items-center gap-4 ms-auto me-4">
-        <a href="#" class="nav-link text-secondary fw-bold text-uppercase small tracking-wider hover-primary">Home</a>
-        <a href="#services" class="nav-link text-secondary fw-bold text-uppercase small tracking-wider hover-primary">Services</a>
-        <a href="#benefits" class="nav-link text-secondary fw-bold text-uppercase small tracking-wider hover-primary">Benefits</a>
-        <a href="#faq" class="nav-link text-secondary fw-bold text-uppercase small tracking-wider hover-primary">FAQs</a>
+        <a href="#" class="nav-link text-secondary fw-bold text-uppercase small tracking-wider hover-primary transition-all">Home</a>
+        <a href="#services" class="nav-link text-secondary fw-bold text-uppercase small tracking-wider hover-primary transition-all">Modules</a>
+        <a href="#benefits" class="nav-link text-secondary fw-bold text-uppercase small tracking-wider hover-primary transition-all">Benefits</a>
+        <a href="#faq" class="nav-link text-secondary fw-bold text-uppercase small tracking-wider hover-primary transition-all">FAQs</a>
       </div>
 
       <div class="d-flex align-items-center gap-3">
-        <button class="btn btn-link text-secondary fw-bold text-decoration-none px-3" routerLink="/login">
-          Login
+        <button class="btn btn-link text-secondary fw-bold text-decoration-none px-3 hover-primary" routerLink="/login">
+          Login Portal
         </button>
         <button class="btn btn-primary rounded-pill px-4 py-2 fw-bold shadow-sm" routerLink="/appointments/book">
-          Book Appointment
+          Book Visit
         </button>
       </div>
     </div>
@@ -32,46 +31,47 @@
   <header class="hero-section py-5 text-center text-md-start position-relative overflow-hidden bg-white border-bottom">
     <div class="container py-5">
       <div class="row align-items-center g-5">
-        <div class="col-lg-6 space-y-4">
-          <span class="badge bg-primary-soft text-primary px-3 py-2 rounded-pill uppercase tracking-wider mb-2 fw-bold">
-            <mat-icon class="align-middle me-1" style="font-size: 16px; width: 16px; height: 16px;">star</mat-icon> Next-Gen Hospital ERP
+        <div class="col-lg-6 position-relative z-index-20">
+          <span class="badge bg-primary-soft text-primary px-3 py-2 rounded-pill text-uppercase tracking-wider mb-2 fw-bold d-inline-flex align-items-center">
+            <mat-icon class="me-1" style="font-size: 16px; width: 16px; height: 16px;">star</mat-icon> Next-Gen Hospital ERP
           </span>
-          <h1 class="display-4 fw-black text-dark tracking-tight lh-sm mt-3">
+          <h1 class="display-3 fw-black text-dark tracking-tight lh-sm mt-3">
             Intelligent Healthcare <br class="d-none d-lg-inline">
-            <span class="text-gradient">Management Operations</span>
+            <span class="text-gradient">Operations</span>
           </h1>
-          <p class="lead text-secondary mt-3">
+          <p class="lead text-secondary mt-4 fw-medium" style="max-width: 500px;">
             Coordinate clinical workflows, manage emergency staff, schedule consultations, and maintain secure Electronic Health Records (EHR) dynamically.
           </p>
-          <div class="d-flex flex-column flex-sm-row gap-3 pt-3">
-            <button class="btn btn-primary btn-lg rounded-pill px-4 py-3 fw-bold shadow" routerLink="/appointments/book">
-              <mat-icon class="align-middle me-1">today</mat-icon> Book Visit
+          <div class="d-flex flex-column flex-sm-row gap-3 pt-4">
+            <button class="btn btn-primary btn-lg rounded-pill px-5 py-3 fw-bold shadow-lg d-flex align-items-center justify-content-center" routerLink="/appointments/book">
+              <mat-icon class="me-2">today</mat-icon> Book Appointment
             </button>
-            <button class="btn btn-outline-secondary btn-lg rounded-pill px-4 py-3 fw-bold bg-white" routerLink="/dashboard">
-              <mat-icon class="align-middle me-1">dashboard</mat-icon> View Dashboard
+            <button class="btn btn-outline-primary btn-lg rounded-pill px-5 py-3 fw-bold bg-white d-flex align-items-center justify-content-center" routerLink="/dashboard">
+              <mat-icon class="me-2">dashboard</mat-icon> Admin Console
             </button>
           </div>
         </div>
+        
         <div class="col-lg-6 text-center position-relative">
           <div class="hero-shape-background"></div>
-          <div class="hero-showcase bg-white border rounded-4 shadow p-4 mx-auto" style="max-width: 440px;">
-            <div class="d-flex align-items-center gap-3 border-bottom pb-3 mb-3">
-              <div class="bg-success-soft text-success p-2 rounded-3">
-                <mat-icon class="align-middle">check_circle</mat-icon>
+          <div class="hero-showcase bg-white border rounded-4 shadow-lg p-5 mx-auto animate-in" style="max-width: 480px;">
+            <div class="d-flex align-items-center gap-3 border-bottom pb-4 mb-4">
+              <div class="bg-success-soft text-success p-3 rounded-4">
+                <mat-icon class="fs-1 w-auto h-auto">check_circle</mat-icon>
               </div>
               <div class="text-start">
-                <h6 class="mb-0 fw-bold">System Status: Active</h6>
-                <small class="text-muted">All services online</small>
+                <h5 class="mb-0 fw-black text-dark tracking-tight">System Status: Active</h5>
+                <p class="text-secondary mb-0 fw-medium">All cloud services online</p>
               </div>
             </div>
-            <div class="d-flex justify-content-between text-start small">
+            <div class="d-flex justify-content-between text-start border bg-light p-4 rounded-4">
               <div>
-                <p class="text-muted mb-1">Active Consultations</p>
-                <h5 class="fw-bold mb-0">124 Patients</h5>
+                <p class="text-secondary mb-1 fw-bold text-uppercase small tracking-wider">Active Consultations</p>
+                <h3 class="fw-black text-dark mb-0">124 <span class="fs-6 text-secondary fw-bold">Patients</span></h3>
               </div>
               <div>
-                <p class="text-muted mb-1">Available Doctors</p>
-                <h5 class="fw-bold mb-0">38 Consultants</h5>
+                <p class="text-secondary mb-1 fw-bold text-uppercase small tracking-wider">Available Doctors</p>
+                <h3 class="fw-black text-dark mb-0">38 <span class="fs-6 text-secondary fw-bold">Specialists</span></h3>
               </div>
             </div>
           </div>
@@ -81,32 +81,32 @@
   </header>
 
   <!-- Stats Grid -->
-  <section class="container position-relative z-index-20" style="margin-top: -30px;">
-    <div class="bg-primary text-white rounded-4 p-4 shadow-lg border-0">
+  <section class="container position-relative z-index-20" style="margin-top: -40px;">
+    <div class="bg-primary text-white rounded-4 p-5 shadow-lg border-0" style="background: linear-gradient(135deg, var(--bs-primary) 0%, #3311DB 100%);">
       <div class="row text-center g-4">
-        <div *ngFor="let stat of stats" class="col-6 col-md-3">
-          <h2 class="fw-black mb-1">{{ stat.value }}</h2>
-          <small class="text-white-50 text-uppercase tracking-wider font-semibold">{{ stat.label }}</small>
+        <div *ngFor="let stat of stats" class="col-6 col-md-3 border-end border-white border-opacity-25 last:border-0">
+          <h2 class="display-5 fw-black mb-1">{{ stat.value }}</h2>
+          <span class="text-white opacity-75 text-uppercase tracking-wider fw-bold small">{{ stat.label }}</span>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Benefits Section -->
-  <section id="benefits" class="py-5 max-w-7xl mx-auto container mt-5">
-    <div class="text-center max-w-2xl mx-auto mb-5">
-      <h2 class="fw-bold text-dark">Why Choose MEDERP</h2>
-      <p class="text-muted mt-2">A high-performance solution designed for medical speed and administrative security.</p>
+  <section id="benefits" class="py-5 container mt-5">
+    <div class="text-center mb-5">
+      <h2 class="display-6 fw-black text-dark tracking-tight">Why Choose MedERP</h2>
+      <p class="text-secondary mt-2 fs-5">A high-performance solution designed for medical speed and administrative security.</p>
     </div>
 
     <div class="row g-4 justify-content-center">
       <div *ngFor="let b of benefits" class="col-md-6 col-lg-3">
-        <div class="card h-100 border border-light shadow-sm p-4 rounded-3 hover-card">
-          <div class="icon-wrapper mb-3 p-3 rounded-3 d-inline-flex {{ b.color }}">
-            <mat-icon>{{ b.icon }}</mat-icon>
+        <div class="card h-100 border-0 shadow-sm p-4 rounded-4 hover-card bg-white">
+          <div class="icon-wrapper mb-4 p-3 rounded-4 d-inline-flex {{ b.color }}">
+            <mat-icon class="fs-2 w-auto h-auto">{{ b.icon }}</mat-icon>
           </div>
-          <h5 class="fw-bold text-dark mb-2">{{ b.title }}</h5>
-          <p class="text-muted small mb-0">{{ b.description }}</p>
+          <h5 class="fw-black text-dark mb-3 fs-4 tracking-tight">{{ b.title }}</h5>
+          <p class="text-secondary mb-0 fw-medium lh-lg">{{ b.description }}</p>
         </div>
       </div>
     </div>
@@ -114,102 +114,101 @@
 
   <!-- Interactive Features Sector (Dynamic Tabs) -->
   <section id="services" class="py-5 bg-white border-top border-bottom mt-5">
-    <div class="container py-4">
-      <div class="text-center max-w-2xl mx-auto mb-5">
-        <h2 class="fw-bold text-dark">Interactive Modules</h2>
-        <p class="text-muted mt-2">Explore the central modules built into the core ERP application.</p>
+    <div class="container py-5">
+      <div class="text-center mb-5">
+        <h2 class="display-6 fw-black text-dark tracking-tight">Interactive Modules</h2>
+        <p class="text-secondary mt-2 fs-5">Explore the central modules built into the core ERP application.</p>
       </div>
 
       <!-- Tab Buttons -->
-      <div class="d-flex flex-wrap gap-2 justify-content-center mb-5">
+      <div class="d-flex flex-wrap gap-3 justify-content-center mb-5">
         <button *ngFor="let s of services" 
                 (click)="activeTab.set(s.id)"
-                [class]="'btn d-flex align-items-center gap-2 px-4 py-3 rounded-3 fw-bold transition-all ' + 
-                         (activeTab() === s.id ? 'btn-primary shadow-sm' : 'btn-outline-secondary bg-white text-secondary')">
+                [class]="'btn d-flex align-items-center gap-2 px-4 py-3 rounded-pill fw-bold transition-all border ' + 
+                         (activeTab() === s.id ? 'btn-primary shadow border-primary' : 'btn-light text-secondary border-light')">
           <mat-icon class="fs-5">{{ s.icon }}</mat-icon>
           {{ s.label }}
         </button>
       </div>
 
       <!-- Dynamic Content Showcase -->
-      <div class="row g-4 align-items-center border rounded-4 p-4 p-lg-5 mx-0 shadow-sm">
-        <div class="col-lg-7">
+      <div class="row g-0 align-items-center border rounded-4 overflow-hidden shadow-sm bg-light">
+        <div class="col-lg-7 p-5 bg-white h-100">
           <ng-container *ngFor="let s of services">
-            <div *ngIf="activeTab() === s.id" class="animate-in space-y-4">
-              <span class="p-3 bg-primary-soft text-primary rounded-3 d-inline-flex mb-3">
-                <mat-icon>{{ s.icon }}</mat-icon>
+            <div *ngIf="activeTab() === s.id" class="animate-in">
+              <span class="p-3 bg-primary-soft text-primary rounded-4 d-inline-flex mb-4">
+                <mat-icon class="fs-2 w-auto h-auto">{{ s.icon }}</mat-icon>
               </span>
-              <h3 class="fw-bold text-dark">{{ s.title }}</h3>
-              <p class="text-muted leading-relaxed">{{ s.desc }}</p>
+              <h3 class="display-6 fw-black text-dark tracking-tight mb-3">{{ s.title }}</h3>
+              <p class="text-secondary fs-5 lh-lg mb-4">{{ s.desc }}</p>
               
-              <div class="row g-3 pt-3">
-                <div *ngFor="let pt of s.points" class="col-sm-6 d-flex align-items-center gap-2">
-                  <span class="bg-success-soft text-success rounded-circle d-flex align-items-center justify-content-center" style="width: 24px; height: 24px;">
-                    <mat-icon style="font-size: 14px; width: 14px; height: 14px;" class="d-flex align-items-center justify-content-center">check</mat-icon>
+              <div class="row g-3">
+                <div *ngFor="let pt of s.points" class="col-sm-6 d-flex align-items-center gap-3">
+                  <span class="bg-success-soft text-success rounded-circle d-flex align-items-center justify-content-center p-1">
+                    <mat-icon style="font-size: 16px; width: 16px; height: 16px;">check</mat-icon>
                   </span>
-                  <span class="small fw-semibold text-secondary">{{ pt }}</span>
+                  <span class="fw-bold text-dark">{{ pt }}</span>
                 </div>
               </div>
             </div>
           </ng-container>
         </div>
 
-        <div class="col-lg-5">
-          <div class="bg-light p-4 rounded-3 border text-center py-5">
-            <ng-container *ngFor="let s of services">
-              <div *ngIf="activeTab() === s.id" class="animate-in space-y-3">
-                <div class="bg-white border rounded-4 p-3 d-inline-flex mb-3 shadow-sm">
-                  <mat-icon class="text-primary" style="font-size: 36px; width: 36px; height: 36px;">{{ s.icon }}</mat-icon>
-                </div>
-                <h5 class="fw-bold text-dark mb-1">Module: {{ s.label }}</h5>
-                <p class="text-muted small">Access full metrics and controls.</p>
-                <button class="btn btn-outline-primary btn-sm rounded-pill px-4" routerLink="/dashboard">
-                  Open Console
-                </button>
+        <div class="col-lg-5 p-5 text-center bg-light border-start">
+          <ng-container *ngFor="let s of services">
+            <div *ngIf="activeTab() === s.id" class="animate-in py-4">
+              <div class="bg-white border rounded-circle p-4 d-inline-flex mb-4 shadow-sm">
+                <mat-icon class="text-primary" style="font-size: 48px; width: 48px; height: 48px;">{{ s.icon }}</mat-icon>
               </div>
-            </ng-container>
-          </div>
+              <h4 class="fw-black text-dark mb-2 tracking-tight">Module: {{ s.label }}</h4>
+              <p class="text-secondary fw-medium mb-4">Access full metrics and comprehensive controls via the admin portal.</p>
+              <button class="btn btn-outline-primary rounded-pill px-4 py-2 fw-bold" routerLink="/dashboard">
+                Open Console
+              </button>
+            </div>
+          </ng-container>
         </div>
       </div>
-
     </div>
   </section>
 
   <!-- FAQ Section (Dynamic Accordion) -->
-  <section id="faq" class="py-5 container max-w-4xl mx-auto my-5">
+  <section id="faq" class="py-5 container my-5" style="max-width: 800px;">
     <div class="text-center mb-5">
-      <h2 class="fw-bold text-dark">Frequently Asked Questions</h2>
-      <p class="text-muted">Answers to common patient and staff inquiries.</p>
+      <h2 class="display-6 fw-black text-dark tracking-tight">Frequently Asked Questions</h2>
+      <p class="text-secondary fs-5 mt-2">Answers to common patient and staff inquiries.</p>
     </div>
 
     <div class="d-flex flex-column gap-3">
-      <div *ngFor="let faq of faqs; let idx = index" class="card border rounded-3 overflow-hidden shadow-sm bg-white">
-        <button (click)="toggleFaq(idx)" class="btn btn-light w-full border-0 d-flex justify-content-between align-items-center p-4 text-start fw-bold text-dark">
-          <span>{{ faq.question }}</span>
-          <mat-icon class="text-secondary transition-transform duration-300" [class.rotate-180]="faq.open">
-            expand_more
-          </mat-icon>
+      <div *ngFor="let faq of faqs; let idx = index" class="card border-0 rounded-4 overflow-hidden shadow-sm bg-white">
+        <button (click)="toggleFaq(idx)" class="btn btn-light w-100 border-0 d-flex justify-content-between align-items-center p-4 text-start hover-primary transition-all">
+          <span class="fw-bold text-dark fs-5 tracking-tight">{{ faq.question }}</span>
+          <div class="bg-white rounded-circle p-1 shadow-sm d-flex align-items-center justify-content-center">
+            <mat-icon class="text-primary transition-transform duration-300" [class.rotate-180]="faq.open">
+              expand_more
+            </mat-icon>
+          </div>
         </button>
-        <div *ngIf="faq.open" class="card-body p-4 text-secondary border-top small bg-light animate-in">
-          {{ faq.answer }}
+        <div *ngIf="faq.open" class="card-body p-4 pt-0 text-secondary fs-6 lh-lg bg-light border-top animate-in">
+          <div class="pt-3 fw-medium">{{ faq.answer }}</div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- CTA Section -->
-  <section class="py-5 bg-dark text-white text-center position-relative">
-    <div class="container py-4 space-y-4">
-      <h2 class="fw-bold tracking-tight">Step Into Modern Medical Care</h2>
-      <p class="text-white-50 max-w-lg mx-auto small">
-        Connect checkups, patient cards, invoicing systems, and electronic prescriptions instantly.
+  <section class="py-5 text-white text-center position-relative mt-5" style="background: linear-gradient(135deg, var(--bs-dark) 0%, #0a0e27 100%);">
+    <div class="container py-5">
+      <h2 class="display-5 fw-black tracking-tight mb-4">Step Into Modern Medical Care</h2>
+      <p class="text-white opacity-75 fs-5 max-w-lg mx-auto mb-5 fw-medium" style="max-width: 600px;">
+        Connect checkups, patient cards, invoicing systems, and electronic prescriptions instantly through a single unified portal.
       </p>
-      <div class="d-flex gap-3 justify-content-center pt-3">
-        <button class="btn btn-primary rounded-pill px-4 py-2.5 fw-bold" routerLink="/appointments/book">
-          Book Appointment
+      <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
+        <button class="btn btn-primary rounded-pill px-5 py-3 fw-bold fs-5 shadow-lg d-flex align-items-center justify-content-center" routerLink="/appointments/book">
+          <mat-icon class="me-2">calendar_month</mat-icon> Book Appointment
         </button>
-        <button class="btn btn-outline-light rounded-pill px-4 py-2.5 fw-bold" routerLink="/login">
-          Sign In Portal
+        <button class="btn btn-outline-light rounded-pill px-5 py-3 fw-bold fs-5 d-flex align-items-center justify-content-center" routerLink="/login">
+          <mat-icon class="me-2">login</mat-icon> Sign In Portal
         </button>
       </div>
     </div>
@@ -219,13 +218,13 @@
   <footer id="contact" class="py-4 bg-white text-center border-top">
     <div class="container">
       <div class="d-flex justify-content-center align-items-center gap-2 mb-2">
-        <div class="bg-primary text-white rounded-2 d-flex align-items-center justify-content-center" style="width: 24px; height: 24px;">
-          <mat-icon style="font-size: 14px; width: 14px; height: 14px;" class="d-flex align-items-center justify-content-center">local_hospital</mat-icon>
+        <div class="bg-primary text-white rounded-2 d-flex align-items-center justify-content-center shadow-sm" style="width: 28px; height: 28px;">
+          <mat-icon style="font-size: 16px; width: 16px; height: 16px;">local_hospital</mat-icon>
         </div>
-        <span class="fw-bold text-dark">MEDERP</span>
+        <span class="fw-black text-dark tracking-tight fs-5">MedERP</span>
       </div>
-      <small class="text-muted">
-        © 2026 MEDERP Hospital Operations Portal. All rights reserved.
+      <small class="text-secondary fw-bold">
+        © 2026 MedERP Hospital Operations Portal. All rights reserved.
       </small>
     </div>
   </footer>
@@ -234,7 +233,7 @@
 
 <!-- ✅ EXPORT BUTTON -->
 <div class="position-fixed bottom-0 end-0 m-4 z-index-1000">
-  <button class="btn btn-primary rounded-circle shadow-lg d-flex align-items-center justify-content-center" style="width: 56px; height: 56px;" (click)="exportPdf()" title="Export page as PDF">
-    <mat-icon>file_download</mat-icon>
+  <button class="btn btn-primary rounded-circle shadow-lg d-flex align-items-center justify-content-center hover-card" style="width: 60px; height: 60px;" (click)="exportPdf()" title="Export page as PDF">
+    <mat-icon class="fs-4 w-auto h-auto">file_download</mat-icon>
   </button>
 </div>

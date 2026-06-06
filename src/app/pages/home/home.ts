@@ -21,10 +21,10 @@ export class HomeComponent {
   public activeTab = signal<string>('clinical');
 
   benefits = [
-    { title: '24/7 Virtual Support', description: 'Our medical assistants are online round-the-clock for help.', icon: 'support_agent', color: 'text-indigo-600 bg-indigo-50 dark:bg-indigo-950/40' },
-    { title: 'Expert Consultants', description: 'Connect directly with top specialists across multiple domains.', icon: 'medical_services', color: 'text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40' },
-    { title: 'Instant Booking', description: 'Schedule physical or tele-consultation visits in just a few taps.', icon: 'event_available', color: 'text-amber-600 bg-amber-50 dark:bg-amber-950/40' },
-    { title: 'Encrypted Records', description: 'Your medical records (EHR) are protected by HIPAA-compliant security.', icon: 'security', color: 'text-rose-600 bg-rose-50 dark:bg-rose-950/40' }
+    { title: '24/7 Virtual Support', description: 'Our medical assistants are online round-the-clock for help.', icon: 'support_agent', color: 'bg-primary-soft text-primary' },
+    { title: 'Expert Consultants', description: 'Connect directly with top specialists across multiple domains.', icon: 'medical_services', color: 'bg-success-soft text-success' },
+    { title: 'Instant Booking', description: 'Schedule physical or tele-consultation visits in just a few taps.', icon: 'event_available', color: 'bg-warning-soft text-warning' },
+    { title: 'Encrypted Records', description: 'Your medical records (EHR) are protected by HIPAA-compliant security.', icon: 'security', color: 'bg-danger-soft text-danger' }
   ];
 
   stats = [

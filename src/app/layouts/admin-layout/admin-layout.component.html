@@ -19,11 +19,11 @@
     <!-- Navigation Menu (Dynamic based on Role) -->
     <nav class="flex-1 overflow-y-auto py-6 px-4 space-y-2">
       <ng-container *ngFor="let item of dynamicMenu()">
-        <a [routerLink]="item.route" routerLinkActive="bg-[#E9E3FF] text-[#4318FF] font-bold shadow-sm"
+        <a [routerLink]="item.route" routerLinkActive="bg-[#E9E3FF] text-[#4318FF] font-bold shadow-sm" #rla="routerLinkActive"
            class="flex items-center gap-4 px-4 py-3.5 rounded-[14px] text-[#A3AED0] font-medium hover:bg-slate-50 transition-all duration-200 group">
            
           <div class="w-8 h-8 rounded-lg flex items-center justify-center transition-colors duration-200"
-               [class]="routerLinkActive ? 'text-[#4318FF]' : 'group-hover:text-[#4318FF] text-inherit'">
+               [class]="rla.isActive ? 'text-[#4318FF]' : 'group-hover:text-[#4318FF] text-inherit'">
             <mat-icon class="shrink-0">{{ item.icon }}</mat-icon>
           </div>
           
