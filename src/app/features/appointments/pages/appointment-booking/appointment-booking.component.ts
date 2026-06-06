@@ -33,6 +33,7 @@ export class AppointmentBookingComponent implements OnInit {
   private router = inject(Router);
   private appointmentService = inject(AppointmentService);
   private doctorService = inject(DoctorMonitoringService);
+  private patientService = inject(PatientService);
 
   bookingForm!: FormGroup;
   doctors: Doctor[] = [];
@@ -88,9 +89,11 @@ export class AppointmentBookingComponent implements OnInit {
       const formValue = this.bookingForm.value;
       const selectedDoctor = this.doctors.find(d => d.id === formValue.doctorId);
       
+      const newPatientId = `PT-GUEST-${Date.now()}`;
+      
       const appointmentData: Appointment = {
         id: `APT-${Math.floor(1000 + Math.random() * 9000)}`,
-        patientId: `PT-GUEST-${Date.now()}`, // Temporary ID for guest patients
+        patientId: newPatientId,
         patientName: formValue.patientName,
         doctorId: formValue.doctorId,
         doctorName: selectedDoctor ? `Dr. ${selectedDoctor.firstName} ${selectedDoctor.lastName}` : 'Unknown',
@@ -102,12 +105,31 @@ export class AppointmentBookingComponent implements OnInit {
         status: AppointmentStatus.CONFIRMED
       };
 
-      this.appointmentService.addAppointment(appointmentData).subscribe({
+      // Register this patient in the patients list so they show up in Patient Management
+      const newPatientData: any = {
+        id: newPatientId,
+        patientId: `PT-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`,
+        firstName: formValue.patientName,
+        lastName: '',
+        contactNumber: 'Unknown',
+        email: '',
+        bloodGroup: 'Unknown',
+        gender: 'Unknown',
+        status: 'OPD',
+        registrationDate: new Date().toISOString()
+      };
+
+      this.patientService.addPatient(newPatientData).subscribe({
         next: () => {
-          this.toastr.success('Appointment booked successfully!', 'Success');
-          this.router.navigate(['/appointments/dashboard']);
+          this.appointmentService.addAppointment(appointmentData).subscribe({
+            next: () => {
+              this.toastr.success('Appointment booked successfully!', 'Success');
+              this.router.navigate(['/appointments/dashboard']);
+            },
+            error: () => this.toastr.error('Failed to book appointment. Please try again.')
+          });
         },
-        error: () => this.toastr.error('Failed to book appointment. Please try again.')
+        error: () => this.toastr.error('Failed to create patient record for booking.')
       });
     } else {
       this.bookingForm.markAllAsTouched();
