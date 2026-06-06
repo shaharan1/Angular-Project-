@@ -1,4 +1,4 @@
-<div class="animate-in space-y-8">
+<div class="animate-in space-y-8 p-4 md:p-6">
   <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
     <div>
       <h1 class="text-[32px] leading-tight font-black text-[#1B254B] tracking-tight">Dashboard Overview</h1>
@@ -9,7 +9,7 @@
         <mat-icon>file_download</mat-icon>
         Export Report
       </button>
-      <button mat-flat-button class="!bg-gradient-to-r !from-[#4318FF] !to-[#00E5FF] !text-white !rounded-xl !h-12 !px-6 !font-bold shadow-[0_10px_20px_-10px_rgba(67,24,255,0.5)] hover:-translate-y-0.5 transition-all">
+      <button mat-flat-button routerLink="/patients/register" class="!bg-gradient-to-r !from-[#4318FF] !to-[#00E5FF] !text-white !rounded-xl !h-12 !px-6 !font-bold shadow-[0_10px_20px_-10px_rgba(67,24,255,0.5)] hover:-translate-y-0.5 transition-all">
         <mat-icon>add</mat-icon>
         New Patient
       </button>
@@ -28,6 +28,80 @@
           <mat-icon class="text-[#4318FF] text-3xl w-8 h-8 flex items-center justify-center">{{ kpi.icon }}</mat-icon>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- All Booked Appointments Table -->
+  <div class="bg-white rounded-[20px] shadow-[0_18px_40px_rgba(112,144,176,0.12)] border border-white/50 overflow-hidden">
+    <div class="flex justify-between items-center p-6 border-b border-[#F4F7FE]">
+      <h3 class="text-[22px] font-black text-[#1B254B] tracking-tight">All Booked Appointments</h3>
+      <button mat-button class="!text-[#4318FF] !font-bold hover:bg-[#E9E3FF]/50 !rounded-lg" routerLink="/appointments">View All</button>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-sm">
+        <thead class="bg-[#F4F7FE] text-xs uppercase text-[#A3AED0] tracking-wider border-b border-[#E9E3FF]">
+          <tr>
+            <th class="px-6 py-4 font-bold">Patient</th>
+            <th class="px-6 py-4 font-bold">Doctor</th>
+            <th class="px-6 py-4 font-bold">Department</th>
+            <th class="px-6 py-4 font-bold">Date</th>
+            <th class="px-6 py-4 font-bold">Time Slot</th>
+            <th class="px-6 py-4 font-bold">Status</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-[#F4F7FE]">
+          <!-- Empty State -->
+          <tr *ngIf="allAppointments().length === 0">
+            <td colspan="6" class="px-6 py-16 text-center">
+              <div class="w-20 h-20 bg-[#F4F7FE] rounded-full flex items-center justify-center mx-auto mb-4">
+                <mat-icon class="text-[#A3AED0] scale-150">event_busy</mat-icon>
+              </div>
+              <h3 class="text-xl font-black text-[#1B254B]">No appointments yet</h3>
+              <p class="text-[#A3AED0] font-medium mt-1">Appointments booked from the home page will appear here.</p>
+            </td>
+          </tr>
+
+          <!-- Appointment Rows -->
+          <tr *ngFor="let apt of allAppointments()" class="hover:bg-[#F4F7FE]/50 transition-colors group">
+            <td class="px-6 py-5">
+              <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#4318FF] to-[#00E5FF] flex items-center justify-center text-white font-black text-sm shadow-md shrink-0">
+                  {{ apt.patientName ? apt.patientName[0] : 'P' }}
+                </div>
+                <div>
+                  <div class="font-bold text-[#1B254B]">{{ apt.patientName }}</div>
+                  <div class="text-xs font-bold text-[#A3AED0] mt-0.5">{{ apt.patientId }}</div>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-5">
+              <div class="font-bold text-[#1B254B]">{{ apt.doctorName }}</div>
+            </td>
+            <td class="px-6 py-5">
+              <span class="font-bold text-[#A3AED0]">{{ apt.department }}</span>
+            </td>
+            <td class="px-6 py-5">
+              <span class="font-bold text-[#1B254B]">{{ apt.appointmentDate }}</span>
+            </td>
+            <td class="px-6 py-5">
+              <span class="font-black text-[#4318FF] bg-[#E9E3FF] px-3 py-1.5 rounded-lg text-xs">{{ apt.timeSlot }}</span>
+            </td>
+            <td class="px-6 py-5">
+              <span class="px-4 py-2 rounded-xl text-xs font-black tracking-wider uppercase border"
+                    [ngClass]="{
+                      'bg-emerald-50 text-emerald-600 border-emerald-100': apt.status === 'Confirmed',
+                      'bg-blue-50 text-blue-600 border-blue-100': apt.status === 'Scheduled',
+                      'bg-amber-50 text-amber-600 border-amber-100': apt.status === 'In Progress',
+                      'bg-red-50 text-red-600 border-red-100': apt.status === 'Cancelled',
+                      'bg-slate-50 text-slate-600 border-slate-100': apt.status !== 'Confirmed' && apt.status !== 'Scheduled' && apt.status !== 'In Progress' && apt.status !== 'Cancelled'
+                    }">
+                {{ apt.status }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
@@ -55,7 +129,7 @@
     <!-- Recent Appointments List -->
     <div class="bg-white rounded-[20px] shadow-[0_18px_40px_rgba(112,144,176,0.12)] border border-white/50 p-6 flex flex-col">
       <div class="flex justify-between items-center mb-6">
-        <h3 class="text-[22px] font-black text-[#1B254B] tracking-tight">Recent Bookings</h3>
+        <h3 class="text-[22px] font-black text-[#1B254B] tracking-tight">Today's Bookings</h3>
         <button mat-button class="!text-[#4318FF] !font-bold hover:bg-[#E9E3FF]/50 !rounded-lg" routerLink="/appointments">View All</button>
       </div>
       
@@ -77,7 +151,7 @@
             <p class="text-xs font-bold text-[#A3AED0] truncate mt-0.5">{{ apt.reasonForVisit }}</p>
           </div>
           <div class="text-right">
-            <p class="text-xs font-black text-[#4318FF] bg-[#E9E3FF] px-3 py-1.5 rounded-lg">{{ apt.timeSlot.split(' ')[0] }}</p>
+            <p class="text-xs font-black text-[#4318FF] bg-[#E9E3FF] px-3 py-1.5 rounded-lg">{{ apt.timeSlot ? apt.timeSlot.split(' ')[0] : '' }}</p>
           </div>
         </div>
       </div>
