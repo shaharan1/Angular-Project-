@@ -1,15 +1,15 @@
-<div class="animate-in space-y-6">
+<div class="animate-in space-y-8">
   <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
     <div>
-      <h1 class="text-2xl font-bold text-slate-800 dark:text-white">Dashboard Overview</h1>
-      <p class="text-slate-500 dark:text-slate-400">Welcome back! Here's what's happening at the hospital today.</p>
+      <h1 class="text-[32px] leading-tight font-black text-[#1B254B] tracking-tight">Dashboard Overview</h1>
+      <p class="text-[#A3AED0] font-medium text-sm mt-1">Welcome back! Here's what's happening at the hospital today.</p>
     </div>
     <div class="flex gap-3">
-      <button mat-stroked-button color="primary">
+      <button mat-stroked-button class="!border-[#E9E3FF] !text-[#4318FF] !rounded-xl !h-12 !px-6 !font-bold hover:bg-[#E9E3FF]/50 transition-colors">
         <mat-icon>file_download</mat-icon>
         Export Report
       </button>
-      <button mat-flat-button color="primary">
+      <button mat-flat-button class="!bg-gradient-to-r !from-[#4318FF] !to-[#00E5FF] !text-white !rounded-xl !h-12 !px-6 !font-bold shadow-[0_10px_20px_-10px_rgba(67,24,255,0.5)] hover:-translate-y-0.5 transition-all">
         <mat-icon>add</mat-icon>
         New Patient
       </button>
@@ -18,67 +18,69 @@
 
   <!-- KPI Cards -->
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-    <mat-card *ngFor="let kpi of kpiData()" class="!rounded-2xl !shadow-sm hover:shadow-md transition-shadow">
-      <mat-card-content class="!p-6">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-sm font-medium text-slate-500 dark:text-slate-400">{{ kpi.title }}</p>
-            <h3 class="text-3xl font-bold text-slate-800 dark:text-white mt-1">{{ kpi.value }}</h3>
-          </div>
-          <div [class]="'w-12 h-12 rounded-full flex items-center justify-center ' + kpi.bg">
-            <mat-icon [class]="kpi.color">{{ kpi.icon }}</mat-icon>
-          </div>
+    <div *ngFor="let kpi of kpiData()" class="bg-white rounded-[20px] p-6 shadow-[0_18px_40px_rgba(112,144,176,0.12)] border border-white/50 hover:-translate-y-1 transition-transform duration-300">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-bold text-[#A3AED0]">{{ kpi.title }}</p>
+          <h3 class="text-[34px] font-black text-[#1B254B] tracking-tight mt-1">{{ kpi.value }}</h3>
         </div>
-      </mat-card-content>
-    </mat-card>
+        <div class="w-14 h-14 rounded-2xl flex items-center justify-center bg-[#F4F7FE]">
+          <mat-icon class="text-[#4318FF] text-3xl w-8 h-8 flex items-center justify-center">{{ kpi.icon }}</mat-icon>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Main Content Grid -->
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
     <!-- Chart Area Skeleton -->
-    <mat-card class="lg:col-span-2 !rounded-2xl !shadow-sm">
-      <mat-card-header class="!pb-0 !pt-6 !px-6 flex justify-between items-center">
-        <mat-card-title class="!text-lg !font-bold">Patient Admissions</mat-card-title>
-        <button mat-icon-button><mat-icon>more_vert</mat-icon></button>
-      </mat-card-header>
-      <mat-card-content class="!p-6">
-        <div class="h-[300px] w-full flex items-center justify-center border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800/50">
-          <p class="text-slate-400 flex flex-col items-center gap-2">
-            <mat-icon>bar_chart</mat-icon>
-            Chart integration placeholder
-          </p>
+    <div class="lg:col-span-2 bg-white rounded-[20px] shadow-[0_18px_40px_rgba(112,144,176,0.12)] border border-white/50 p-6">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-[22px] font-black text-[#1B254B] tracking-tight">Patient Admissions</h3>
+        <button mat-icon-button class="text-[#A3AED0] hover:text-[#4318FF] transition-colors bg-[#F4F7FE] rounded-full">
+          <mat-icon>more_horiz</mat-icon>
+        </button>
+      </div>
+      <div class="h-[320px] w-full flex items-center justify-center border-[3px] border-dashed border-[#E9E3FF] rounded-[16px] bg-[#F4F7FE]/50 relative overflow-hidden group">
+        <div class="absolute inset-0 bg-gradient-to-br from-[#4318FF]/5 to-[#00E5FF]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        <div class="text-[#A3AED0] flex flex-col items-center gap-3 relative z-10">
+          <div class="w-16 h-16 rounded-full bg-white shadow-lg flex items-center justify-center text-[#4318FF]">
+            <mat-icon class="text-3xl w-8 h-8 flex items-center justify-center">bar_chart</mat-icon>
+          </div>
+          <p class="font-bold tracking-wide">Chart Integration Placeholder</p>
         </div>
-      </mat-card-content>
-    </mat-card>
+      </div>
+    </div>
 
     <!-- Recent Appointments List -->
-    <mat-card class="!rounded-2xl !shadow-sm border border-slate-100">
-      <mat-card-header class="!pb-0 !pt-6 !px-6 flex justify-between items-center">
-        <mat-card-title class="!text-lg !font-bold">Recent Appointments</mat-card-title>
-        <button mat-button color="primary" routerLink="/appointments">View All</button>
-      </mat-card-header>
-      <mat-card-content class="!p-6">
-        <div class="space-y-4">
-          <div *ngIf="clinicalService.todayAppointmentsSignal().length === 0" class="py-8 text-center text-slate-400">
-            <mat-icon class="mb-2">event_busy</mat-icon>
-            <p>No appointments today</p>
+    <div class="bg-white rounded-[20px] shadow-[0_18px_40px_rgba(112,144,176,0.12)] border border-white/50 p-6 flex flex-col">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-[22px] font-black text-[#1B254B] tracking-tight">Recent Bookings</h3>
+        <button mat-button class="!text-[#4318FF] !font-bold hover:bg-[#E9E3FF]/50 !rounded-lg" routerLink="/appointments">View All</button>
+      </div>
+      
+      <div class="space-y-4 flex-1">
+        <div *ngIf="clinicalService.todayAppointmentsSignal().length === 0" class="h-full flex flex-col items-center justify-center text-[#A3AED0] py-10">
+          <div class="w-20 h-20 rounded-full bg-[#F4F7FE] flex items-center justify-center mb-4">
+            <mat-icon class="text-4xl w-10 h-10 flex items-center justify-center">event_busy</mat-icon>
           </div>
-          
-          <div *ngFor="let apt of clinicalService.todayAppointmentsSignal().slice(0, 5)" 
-               class="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100 cursor-pointer">
-            <div class="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold text-xs">
-              {{ apt.patientName ? apt.patientName[0] : 'P' }}
-            </div>
-            <div class="flex-1 min-w-0">
-              <p class="text-sm font-bold text-slate-800 truncate">{{ apt.patientName }}</p>
-              <p class="text-xs text-slate-500 truncate">{{ apt.reasonForVisit }}</p>
-            </div>
-            <div class="text-right">
-              <p class="text-[10px] font-black text-slate-400 uppercase tracking-tighter">{{ apt.timeSlot.split(' ')[0] }}</p>
-            </div>
+          <p class="font-bold text-lg">No appointments today</p>
+        </div>
+        
+        <div *ngFor="let apt of clinicalService.todayAppointmentsSignal().slice(0, 5)" 
+             class="flex items-center gap-4 p-4 rounded-[16px] bg-[#F4F7FE]/50 hover:bg-[#F4F7FE] transition-colors cursor-pointer group">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#4318FF] to-[#00E5FF] flex items-center justify-center text-white font-black text-lg shadow-md group-hover:shadow-lg transition-shadow">
+            {{ apt.patientName ? apt.patientName[0] : 'P' }}
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-base font-bold text-[#1B254B] truncate">{{ apt.patientName }}</p>
+            <p class="text-xs font-bold text-[#A3AED0] truncate mt-0.5">{{ apt.reasonForVisit }}</p>
+          </div>
+          <div class="text-right">
+            <p class="text-xs font-black text-[#4318FF] bg-[#E9E3FF] px-3 py-1.5 rounded-lg">{{ apt.timeSlot.split(' ')[0] }}</p>
           </div>
         </div>
-      </mat-card-content>
-    </mat-card>
+      </div>
+    </div>
   </div>
 </div>

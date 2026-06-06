@@ -1,134 +1,124 @@
 @charset "UTF-8";
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
-@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
-@import "bootstrap/dist/css/bootstrap.min.css";
 @import "tailwindcss";
 
-body {
-  font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
-  background-color: #f8fafc;
-  color: #0f172a;
-  transition: color 0.3s, background-color 0.3s;
+/* 
+  MedERP Premium Design System 
+  Tailwind v4 Setup & Custom Properties
+*/
+
+:root {
+  /* Brand Colors */
+  --color-primary: #4318FF;
+  --color-primary-hover: #3311DB;
+  --color-primary-light: #E9E3FF;
+  
+  --color-secondary: #00E5FF;
+  --color-accent: #FF56F6;
+  
+  /* Neutral/Backgrounds */
+  --bg-main: #F4F7FE;
+  --bg-surface: #FFFFFF;
+  --bg-surface-glass: rgba(255, 255, 255, 0.7);
+  
+  /* Text */
+  --text-main: #1B254B;
+  --text-muted: #A3AED0;
+}
+
+/* Base Resets & Global Typography */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Global Link & Underline Reset */
-a, a:hover, a:focus, a:active, .btn, .btn:hover, .btn:focus {
+a, a:hover, a:focus, a:active, button {
   text-decoration: none !important;
+  outline: none;
 }
 
-/* Material overrides for cleaner look */
+/* Premium Typography Utility Classes */
+.heading-brand {
+  color: var(--text-main);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* Glassmorphism Utilities */
+.glass-panel {
+  background: var(--bg-surface-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+}
+
+.card-shadow {
+  box-shadow: 0px 18px 40px rgba(112, 144, 176, 0.12);
+}
+
+/* Smooth Transitions */
+.transition-smooth {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 
+  Material UI Overrides 
+  (Forcing Material components to match the modern premium aesthetic)
+*/
 .mat-mdc-button-base {
-  letter-spacing: 0.025em !important;
-  font-weight: 500 !important;
-  border-radius: 0.75rem !important;
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  letter-spacing: 0.3px !important;
 }
 
-.mat-mdc-unelevated-button.mat-primary, 
-.mat-mdc-flat-button.mat-primary {
-  background-color: #4f46e5 !important;
-  color: #ffffff !important;
+/* Primary Button Styling */
+.mat-mdc-raised-button.mat-primary, 
+.mat-mdc-unelevated-button.mat-primary {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover) 100%) !important;
+  color: white !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 20px -10px var(--color-primary) !important;
+  transition: transform 0.2s, box-shadow 0.2s !important;
 }
-.mat-mdc-unelevated-button.mat-primary:hover, 
-.mat-mdc-flat-button.mat-primary:hover {
-  background-color: #4338ca !important;
-}
-
-.mat-mdc-card {
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
-  border: 1px solid #e2e8f0 !important;
-  border-radius: 1rem !important;
-  overflow: hidden;
-  background-color: #ffffff !important;
+.mat-mdc-raised-button.mat-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 24px -10px var(--color-primary) !important;
 }
 
-.mat-mdc-form-field {
-  font-size: 0.875rem !important;
-}
-
-.mat-mdc-form-field-focus-overlay {
-  background-color: transparent !important;
-}
-
-/* Custom Utilities */
-.animate-in {
-  animation: fadeIn 0.5s ease-out forwards;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Material Dark Mode Fixes */
-@media (prefers-color-scheme: dark) {
-  .mdc-text-field--outlined .mdc-notched-outline__leading,
-  .mdc-text-field--outlined .mdc-notched-outline__notch,
-  .mdc-text-field--outlined .mdc-notched-outline__trailing {
-    border-color: #334155 !important; /* slate-700 */
-  }
-  
-  .mdc-text-field:not(.mdc-text-field--disabled) .mdc-text-field__input {
-    color: #f8fafc !important; /* slate-50 */
-  }
-  
-  .mdc-floating-label, .mdc-text-field--outlined .mdc-text-field__input::placeholder {
-    color: #94a3b8 !important; /* slate-400 */
-  }
-
-  .mat-mdc-select-value {
-    color: #f8fafc !important;
-  }
-
-  .mat-mdc-select-arrow {
-    color: #94a3b8 !important;
-  }
-
-  .mat-mdc-form-field.mat-focused .mdc-text-field--outlined .mdc-notched-outline__leading,
-  .mat-mdc-form-field.mat-focused .mdc-text-field--outlined .mdc-notched-outline__notch,
-  .mat-mdc-form-field.mat-focused .mdc-text-field--outlined .mdc-notched-outline__trailing {
-    border-color: #6366f1 !important; /* indigo-500 */
-  }
-  
-  .mat-mdc-form-field.mat-focused .mdc-floating-label {
-    color: #6366f1 !important;
-  }
-}
-
-/* CDK Overlay fix for z-index issues */
-.cdk-overlay-container {
-  z-index: 9999 !important;
-  position: fixed;
-  pointer-events: none;
-}
-
-.cdk-overlay-pane {
-  pointer-events: auto;
-}
-
-/* Force solid backgrounds on Material inputs to prevent "see-through" issues */
-.mdc-text-field--outlined {
-  background-color: white !important;
-}
-
-.dark .mdc-text-field--outlined {
-  background-color: #0f172a !important; /* slate-900 */
-}
-
-/* Prevent transparency/overlap issues in Material menus, select panels, dialogs, and datepicker */
-.mat-mdc-menu-panel,
+/* Solid Backgrounds for Menus & Dialogs */
+.mat-mdc-menu-panel, 
+.mat-mdc-dialog-container, 
 .mat-mdc-select-panel,
-.mat-datepicker-content,
-.mat-mdc-dialog-container .mdc-dialog__surface {
-  background-color: #ffffff !important;
-  color: #0f172a !important;
+.mat-datepicker-content {
+  background-color: var(--bg-surface) !important;
+  border-radius: 20px !important;
+  box-shadow: 0px 20px 50px rgba(18, 20, 32, 0.1) !important;
+  border: 1px solid rgba(226, 232, 240, 0.8) !important;
 }
 
-/* Dark mode overrides for Material overlays */
-.dark .mat-mdc-menu-panel,
-.dark .mat-mdc-select-panel,
-.dark .mat-datepicker-content,
-.dark .mat-mdc-dialog-container .mdc-dialog__surface {
-  background-color: #1e293b !important; /* slate-800 */
-  color: #f8fafc !important; /* slate-50 */
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }
 
+/* Ensure no transparent overlaps */
+.cdk-overlay-pane {
+  background: transparent !important;
+}

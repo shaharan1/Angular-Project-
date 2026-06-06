@@ -1,42 +1,42 @@
-<div class="p-6 min-h-screen bg-slate-50 flex items-center justify-center">
-  <mat-card class="w-full max-w-2xl !rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
+<div class="p-6 min-h-screen bg-[#F4F7FE] flex justify-center py-10">
+  <mat-card class="w-full max-w-2xl !rounded-[24px] shadow-[0_18px_40px_rgba(112,144,176,0.12)] border border-white/50 overflow-hidden bg-white">
     <!-- Header with Avatar -->
-    <div class="bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 p-10 text-white text-center relative">
+    <div class="bg-gradient-to-br from-[#4318FF] to-[#00E5FF] p-12 text-white text-center relative shadow-inner">
       <div class="absolute top-4 right-4" *ngIf="canEdit()">
-        <button mat-icon-button class="!bg-white/20 !text-white" (click)="toggleEdit()">
+        <button mat-icon-button class="!bg-white/20 !text-white hover:!bg-white/30 transition-colors" (click)="toggleEdit()">
           <mat-icon>{{ isEditMode() ? 'close' : 'edit' }}</mat-icon>
         </button>
       </div>
       
       <!-- Avatar with Image -->
-      <div class="relative w-28 h-28 mx-auto mb-4">
+      <div class="relative w-32 h-32 mx-auto mb-5 group">
         <img *ngIf="viewedUser()?.avatarUrl" 
              [src]="viewedUser()?.avatarUrl" 
              alt="Profile Avatar"
-             class="w-28 h-28 rounded-full object-cover border-4 border-white/40 shadow-lg">
+             class="w-32 h-32 rounded-[20px] object-cover border-[4px] border-white/40 shadow-xl group-hover:scale-105 transition-transform duration-300">
         <div *ngIf="!viewedUser()?.avatarUrl" 
-             class="w-28 h-28 rounded-full bg-white/20 flex items-center justify-center border-4 border-white/40 shadow-lg">
+             class="w-32 h-32 rounded-[20px] bg-white/20 flex items-center justify-center border-[4px] border-white/40 shadow-xl group-hover:scale-105 transition-transform duration-300">
           <mat-icon class="scale-[3] text-white/80">account_circle</mat-icon>
         </div>
         <!-- Camera overlay for edit mode -->
         <div *ngIf="isEditMode()" 
-             class="absolute inset-0 rounded-full bg-black/40 flex items-center justify-center cursor-pointer hover:bg-black/50 transition-colors"
+             class="absolute inset-0 rounded-[20px] bg-black/40 flex items-center justify-center cursor-pointer hover:bg-black/50 transition-colors"
              (click)="avatarInput.click()">
           <mat-icon class="text-white">camera_alt</mat-icon>
         </div>
         <input #avatarInput type="file" accept="image/*" class="hidden" (change)="onAvatarSelected($event)">
       </div>
 
-      <h1 class="text-3xl font-black tracking-tight mb-1">
+      <h1 class="text-[32px] font-black tracking-tight mb-1 drop-shadow-md">
         {{ viewedUser()?.firstName }} {{ viewedUser()?.lastName }}
       </h1>
-      <p class="text-indigo-100 font-bold uppercase tracking-widest text-xs opacity-80">
-        {{ viewedUser()?.role }}
+      <p class="text-white/80 font-bold uppercase tracking-widest text-xs">
+        {{ viewedUser()?.email }}
       </p>
 
       <!-- Role Badge -->
-      <div class="mt-4">
-        <span [class]="'inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider ' + getRoleBadgeClass(viewedUser()?.role)">
+      <div class="mt-5">
+        <span class="inline-flex items-center gap-1.5 px-5 py-2 rounded-xl text-xs font-black uppercase tracking-wider bg-white/20 backdrop-blur-md border border-white/30 shadow-sm">
           <mat-icon class="!text-sm !w-4 !h-4">{{ getRoleIcon(viewedUser()?.role) }}</mat-icon>
           {{ viewedUser()?.role }}
         </span>
@@ -50,40 +50,40 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <mat-form-field appearance="outline" class="w-full">
             <mat-label>First Name</mat-label>
-            <input matInput formControlName="firstName">
-            <mat-icon matPrefix class="text-slate-400 mr-2">person</mat-icon>
+            <input matInput formControlName="firstName" class="!text-[#1B254B] !font-medium">
+            <mat-icon matPrefix class="text-[#A3AED0] mr-2">person</mat-icon>
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="w-full">
             <mat-label>Last Name</mat-label>
-            <input matInput formControlName="lastName">
-            <mat-icon matPrefix class="text-slate-400 mr-2">person</mat-icon>
+            <input matInput formControlName="lastName" class="!text-[#1B254B] !font-medium">
+            <mat-icon matPrefix class="text-[#A3AED0] mr-2">person</mat-icon>
           </mat-form-field>
         </div>
 
         <!-- Sensitive Data Section -->
-        <div class="space-y-6 bg-slate-50 p-6 rounded-2xl border border-slate-100">
-          <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+        <div class="space-y-6 bg-[#F4F7FE]/50 p-6 rounded-[20px] border border-[#E9E3FF]">
+          <h3 class="text-xs font-black text-[#A3AED0] uppercase tracking-widest mb-2 flex items-center gap-2">
             <mat-icon class="text-sm">security</mat-icon> Sensitive Information
           </h3>
 
           <div *ngIf="canSeeSensitiveData(); else restrictedData">
             <mat-form-field appearance="outline" class="w-full">
               <mat-label>Email Address</mat-label>
-              <input matInput formControlName="email" type="email">
-              <mat-icon matPrefix class="text-slate-400 mr-2">email</mat-icon>
+              <input matInput formControlName="email" type="email" class="!text-[#1B254B] !font-medium">
+              <mat-icon matPrefix class="text-[#A3AED0] mr-2">email</mat-icon>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="w-full">
               <mat-label>Password</mat-label>
-              <input matInput formControlName="password" type="password">
-              <mat-icon matPrefix class="text-slate-400 mr-2">lock</mat-icon>
+              <input matInput formControlName="password" type="password" class="!text-[#1B254B] !font-medium">
+              <mat-icon matPrefix class="text-[#A3AED0] mr-2">lock</mat-icon>
             </mat-form-field>
           </div>
 
           <ng-template #restrictedData>
-            <div class="p-4 bg-amber-50 border border-amber-100 rounded-xl flex items-start gap-3">
-              <mat-icon class="text-amber-600">info</mat-icon>
+            <div class="p-5 bg-amber-50 border border-amber-100 rounded-xl flex items-start gap-3 shadow-sm">
+              <mat-icon class="text-amber-600 mt-0.5">info</mat-icon>
               <p class="text-sm text-amber-800 font-medium leading-relaxed">
                 Security Policy: Detailed contact and security information is only visible to the <strong>Super Admin</strong>.
               </p>
@@ -95,24 +95,24 @@
         <div *ngIf="currentUser()?.role === 'SUPER_ADMIN'" class="mt-6">
           <mat-form-field appearance="outline" class="w-full">
             <mat-label>System Role</mat-label>
-            <mat-select formControlName="role">
+            <mat-select formControlName="role" class="!text-[#1B254B] !font-medium">
               <mat-option *ngFor="let r of roles" [value]="r.code">
                 {{ r.name }}
               </mat-option>
             </mat-select>
-            <mat-icon matPrefix class="text-slate-400 mr-2">admin_panel_settings</mat-icon>
+            <mat-icon matPrefix class="text-[#A3AED0] mr-2">admin_panel_settings</mat-icon>
           </mat-form-field>
         </div>
 
         <!-- Action Buttons -->
         <div class="pt-4 space-y-3" *ngIf="isEditMode()">
           <button mat-raised-button color="primary" type="submit" 
-                  class="w-full !bg-indigo-600 !py-6 !text-lg !rounded-2xl !font-black shadow-lg shadow-indigo-100 transition hover:scale-[1.02] active:scale-95">
+                  class="w-full !bg-gradient-to-r !from-[#4318FF] !to-[#00E5FF] !py-6 !text-lg !rounded-2xl !font-black !text-white shadow-[0_10px_20px_-10px_rgba(67,24,255,0.5)] transition hover:scale-[1.02] active:scale-95">
             <mat-icon class="mr-2">save</mat-icon>
             Save Changes
           </button>
           <button mat-stroked-button type="button" (click)="toggleEdit()"
-                  class="w-full !py-5 !rounded-2xl !font-bold text-slate-600">
+                  class="w-full !py-5 !rounded-2xl !font-bold text-[#A3AED0] !border-[#E9E3FF] hover:bg-[#F4F7FE]">
             Cancel
           </button>
         </div>
