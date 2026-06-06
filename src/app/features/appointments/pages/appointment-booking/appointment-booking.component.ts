@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -37,6 +37,9 @@ export class AppointmentBookingComponent implements OnInit {
 
   bookingForm!: FormGroup;
   doctors: Doctor[] = [];
+  isSubmitting = signal(false);
+  bookingConfirmed = signal(false);
+  confirmedAppointment = signal<any>(null);
 
   timeSlots = [
     '09:00 AM - 09:30 AM',
@@ -86,6 +89,7 @@ export class AppointmentBookingComponent implements OnInit {
 
   submitBooking() {
     if (this.bookingForm.valid) {
+      this.isSubmitting.set(true);
       const formValue = this.bookingForm.value;
       const selectedDoctor = this.doctors.find(d => d.id === formValue.doctorId);
       
@@ -123,17 +127,31 @@ export class AppointmentBookingComponent implements OnInit {
         next: () => {
           this.appointmentService.addAppointment(appointmentData).subscribe({
             next: () => {
-              this.toastr.success('Appointment booked successfully!', 'Success');
-              this.router.navigate(['/appointments/dashboard']);
+              this.isSubmitting.set(false);
+              this.toastr.success('Appointment booked successfully!', 'Confirmed');
+              this.confirmedAppointment.set(appointmentData);
+              this.bookingConfirmed.set(true);
             },
-            error: () => this.toastr.error('Failed to book appointment. Please try again.')
+            error: () => {
+              this.isSubmitting.set(false);
+              this.toastr.error('Failed to book appointment. Please try again.');
+            }
           });
         },
-        error: () => this.toastr.error('Failed to create patient record for booking.')
+        error: () => {
+          this.isSubmitting.set(false);
+          this.toastr.error('Failed to create patient record for booking.');
+        }
       });
     } else {
       this.bookingForm.markAllAsTouched();
       this.toastr.warning('Please fill in all required fields');
     }
+  }
+
+  bookAnother() {
+    this.bookingConfirmed.set(false);
+    this.confirmedAppointment.set(null);
+    this.bookingForm.reset({ type: 'Initial' });
   }
 }
