@@ -16,7 +16,7 @@ export class PatientService {
   public loadingSignal = signal<boolean>(false);
   public errorSignal = signal<string | null>(null);
 
-  constructor() {}
+  constructor() { }
 
   getAllPatients(): Observable<Patient[]> {
     this.loadingSignal.set(true);
@@ -78,7 +78,7 @@ export class PatientService {
 
   registerPatient(patientData: Partial<Patient>): Observable<Patient> {
     this.loadingSignal.set(true);
-    
+
     // Generate a unique patient ID (e.g., PT-2026-XXXX)
     const newPatient: any = {
       ...patientData,
@@ -90,15 +90,17 @@ export class PatientService {
     return this.http.post<Patient>(this.API_URL, newPatient).pipe(
       delay(1000),
       tap(savedPatient => {
-        // Update signal
         const currentPatients = this.patientsSignal();
         this.patientsSignal.set([...currentPatients, savedPatient]);
         this.loadingSignal.set(false);
       }),
       catchError(error => {
-        this.errorSignal.set('Failed to register patient.');
+        this.errorSignal.set('Backend not reachable. Patient saved locally.');
         this.loadingSignal.set(false);
-        throw error;
+        const fallbackPatient = { ...newPatient, id: `local-${Date.now()}` } as Patient;
+        const currentPatients = this.patientsSignal();
+        this.patientsSignal.set([...currentPatients, fallbackPatient]);
+        return of(fallbackPatient);
       })
     );
   }

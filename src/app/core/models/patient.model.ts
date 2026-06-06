@@ -29,7 +29,7 @@ export interface Patient {
   contactNumber: string;
   email?: string;
   address: string;
-  
+
   // Emergency Contact
   emergencyContactName: string;
   emergencyContactRelation: string;
@@ -39,7 +39,7 @@ export interface Patient {
   status: PatientStatus;
   allergies: string[];
   chronicDiseases: string[];
-  
+
   // System Metadata
   registrationDate: Date;
   lastVisitDate?: Date;
