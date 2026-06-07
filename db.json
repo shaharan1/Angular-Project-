@@ -369,5 +369,55 @@
       "id": "dept5",
       "name": "Dermatology"
     }
+  ],
+  "medicines": [
+    {
+      "id": "MED-001",
+      "name": "Amoxicillin 500mg",
+      "genericName": "Amoxicillin",
+      "category": "Antibiotic",
+      "stock": 450,
+      "unit": "Capsule",
+      "price": 12.50,
+      "expiryDate": "2027-12-01",
+      "manufacturer": "PharmaCore",
+      "status": "Available"
+    },
+    {
+      "id": "MED-002",
+      "name": "Paracetamol 650mg",
+      "genericName": "Acetaminophen",
+      "category": "Analgesic",
+      "stock": 35,
+      "unit": "Tablet",
+      "price": 2.00,
+      "expiryDate": "2026-08-15",
+      "manufacturer": "HealthMed",
+      "status": "Low Stock"
+    },
+    {
+      "id": "MED-003",
+      "name": "Omeprazole 20mg",
+      "genericName": "Omeprazole",
+      "category": "Others",
+      "stock": 45,
+      "unit": "Capsule",
+      "price": 8.75,
+      "expiryDate": "2024-08-20",
+      "manufacturer": "BioLabs",
+      "status": "Low Stock"
+    },
+    {
+      "id": "MED-004",
+      "name": "Metformin 850mg",
+      "genericName": "Metformin",
+      "category": "Others",
+      "stock": 320,
+      "unit": "Tablet",
+      "price": 5.40,
+      "expiryDate": "2025-03-10",
+      "manufacturer": "ApexPharma",
+      "status": "Available"
+    }
   ]
 }

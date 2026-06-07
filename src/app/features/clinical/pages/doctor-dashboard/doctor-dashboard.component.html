@@ -102,4 +102,67 @@
       </div>
     </mat-card-content>
   </mat-card>
+
+  <!-- Completed Consultations History -->
+  <mat-card class="!rounded-2xl !shadow-sm">
+    <mat-card-header class="!pt-6 !px-6 !pb-2">
+      <mat-card-title class="!text-lg !font-bold flex items-center gap-2">
+        <mat-icon class="text-emerald-500">history_edu</mat-icon> Completed Consultations
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="!p-0 mt-4">
+      <div *ngIf="consultations().length === 0" class="p-12 text-center text-slate-500">
+        No completed consultations found.
+      </div>
+
+      <div class="overflow-x-auto" *ngIf="consultations().length > 0">
+        <table class="w-full text-left text-sm text-slate-600 dark:text-slate-300">
+          <thead class="bg-slate-50 dark:bg-slate-800/50 text-xs uppercase text-slate-500 border-y border-slate-200 dark:border-slate-700">
+            <tr>
+              <th class="px-6 py-4 font-semibold">Date / Time</th>
+              <th class="px-6 py-4 font-semibold">Patient ID</th>
+              <th class="px-6 py-4 font-semibold">Diagnosis</th>
+              <th class="px-6 py-4 font-semibold">Symptoms</th>
+              <th class="px-6 py-4 font-semibold text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+            <tr *ngFor="let con of consultations()" class="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+              <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">
+                {{ con.date | date:'short' }}
+              </td>
+              <td class="px-6 py-4">
+                <span class="font-semibold text-indigo-600">{{ con.patientId }}</span>
+              </td>
+              <td class="px-6 py-4 font-medium">
+                {{ con.diagnosis }}
+              </td>
+              <td class="px-6 py-4">
+                <mat-chip-set>
+                  <mat-chip *ngFor="let sym of con.symptoms" class="!bg-indigo-50 !text-indigo-600 !text-[10px] !font-bold">
+                    {{ sym }}
+                  </mat-chip>
+                </mat-chip-set>
+              </td>
+              <td class="px-6 py-4 text-right">
+                <button mat-icon-button [matMenuTriggerFor]="conMenu" class="text-slate-400">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #conMenu="matMenu" class="!rounded-2xl !p-2 !shadow-xl border border-slate-100">
+                  <button mat-menu-item [routerLink]="['/clinical/consultation', con.appointmentId]" class="!rounded-xl">
+                    <mat-icon class="text-indigo-600">edit</mat-icon>
+                    <span>Edit Record</span>
+                  </button>
+                  <button mat-menu-item (click)="deleteConsultation(con)" class="!rounded-xl hover:bg-red-50 !text-red-500">
+                    <mat-icon class="!text-red-500">delete</mat-icon>
+                    <span class="font-bold">Delete Record</span>
+                  </button>
+                </mat-menu>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </mat-card-content>
+  </mat-card>
 </div>

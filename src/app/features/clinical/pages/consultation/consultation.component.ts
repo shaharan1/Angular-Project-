@@ -35,14 +35,16 @@ export class ConsultationComponent implements OnInit {
 
   appointmentId!: string;
   consultationForm!: FormGroup;
+  isEditMode = false;
+  existingConsultationId: string | null = null;
 
   ngOnInit() {
     this.appointmentId = this.route.snapshot.paramMap.get('appointmentId') || '';
     this.initForm();
     
-    // In a real app we fetch the appointment to prefill patient ID and set status to In Progress
     if (this.appointmentId) {
       this.clinicalService.updateAppointmentStatus(this.appointmentId, 'In Progress').subscribe();
+      this.checkForExistingConsultation();
     }
   }
 
@@ -59,6 +61,38 @@ export class ConsultationComponent implements OnInit {
       doctorNotes: [''],
       prescriptions: this.fb.array([this.createPrescriptionItem()]),
       labTestsOrdered: ['']
+    });
+  }
+
+  checkForExistingConsultation() {
+    this.clinicalService.getConsultations().subscribe(consultations => {
+      const existing = consultations.find(c => c.appointmentId === this.appointmentId);
+      if (existing) {
+        this.isEditMode = true;
+        this.existingConsultationId = existing.id;
+        
+        // Prefill vitals and general fields
+        this.consultationForm.patchValue({
+          vitals: existing.vitals || {},
+          symptoms: existing.symptoms ? existing.symptoms.join(', ') : '',
+          diagnosis: existing.diagnosis || '',
+          doctorNotes: existing.doctorNotes || '',
+          labTestsOrdered: existing.labTestsOrdered ? existing.labTestsOrdered.join(', ') : ''
+        });
+
+        // Prefill prescriptions array
+        if (existing.prescription && existing.prescription.length > 0) {
+          this.prescriptions.clear();
+          existing.prescription.forEach((p: any) => {
+            this.prescriptions.push(this.fb.group({
+              medicineName: [p.medicineName || '', Validators.required],
+              dosage: [p.dosage || '', Validators.required],
+              frequency: [p.frequency || '', Validators.required],
+              duration: [p.duration || '', Validators.required]
+            }));
+          });
+        }
+      }
     });
   }
 
@@ -97,7 +131,6 @@ export class ConsultationComponent implements OnInit {
     const user = this.authService.currentUserSignal();
 
     const payload = {
-      id: `C-${Date.now()}`,
       appointmentId: this.appointmentId,
       patientId: 'PT-2023-0001', // Mocked patient
       doctorId: user?.id || 'u3',
@@ -110,15 +143,31 @@ export class ConsultationComponent implements OnInit {
       labTestsOrdered: formValue.labTestsOrdered ? formValue.labTestsOrdered.split(',').map((s: string) => s.trim()) : []
     };
 
-    this.clinicalService.saveConsultation(payload as any).subscribe({
-      next: () => {
-        this.clinicalService.updateAppointmentStatus(this.appointmentId, 'Completed').subscribe();
-        this.snackBar.open('Consultation saved successfully', 'Close', { duration: 3000, panelClass: ['bg-emerald-600', 'text-white'] });
-        this.router.navigate(['/clinical/dashboard']);
-      },
-      error: () => {
-        this.snackBar.open('Error saving consultation', 'Close', { duration: 3000, panelClass: ['bg-red-600', 'text-white'] });
-      }
-    });
+    if (this.isEditMode && this.existingConsultationId) {
+      this.clinicalService.updateConsultation(this.existingConsultationId, payload).subscribe({
+        next: () => {
+          this.snackBar.open('Consultation updated successfully', 'Close', { duration: 3000, panelClass: ['bg-emerald-600', 'text-white'] });
+          this.router.navigate(['/clinical/dashboard']);
+        },
+        error: () => {
+          this.snackBar.open('Error updating consultation', 'Close', { duration: 3000, panelClass: ['bg-red-600', 'text-white'] });
+        }
+      });
+    } else {
+      const createPayload = {
+        ...payload,
+        id: `C-${Date.now()}`
+      };
+      this.clinicalService.saveConsultation(createPayload as any).subscribe({
+        next: () => {
+          this.clinicalService.updateAppointmentStatus(this.appointmentId, 'Completed').subscribe();
+          this.snackBar.open('Consultation saved successfully', 'Close', { duration: 3000, panelClass: ['bg-emerald-600', 'text-white'] });
+          this.router.navigate(['/clinical/dashboard']);
+        },
+        error: () => {
+          this.snackBar.open('Error saving consultation', 'Close', { duration: 3000, panelClass: ['bg-red-600', 'text-white'] });
+        }
+      });
+    }
   }
 }
