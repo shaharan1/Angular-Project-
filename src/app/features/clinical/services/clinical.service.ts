@@ -45,6 +45,18 @@ export class ClinicalService {
     );
   }
 
+  getConsultations(): Observable<Consultation[]> {
+    return this.http.get<Consultation[]>(`${this.API_URL}/consultations`);
+  }
+
+  updateConsultation(id: string, data: Partial<Consultation>): Observable<Consultation> {
+    return this.http.patch<Consultation>(`${this.API_URL}/consultations/${id}`, data);
+  }
+
+  deleteConsultation(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.API_URL}/consultations/${id}`);
+  }
+
   updateAppointmentStatus(id: string, status: string): Observable<Appointment> {
     return this.http.patch<Appointment>(`${this.API_URL}/appointments/${id}`, { status });
   }

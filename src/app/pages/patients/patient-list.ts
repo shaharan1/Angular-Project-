@@ -6,13 +6,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatMenuModule } from '@angular/material/menu';
+import { CommonModule } from '@angular/common';
 import { PatientService } from '../../services/patient';
 import { Patient, PatientStatus } from '../../core/models/patient.model';
 
 @Component({
   selector: 'app-patient-list',
   standalone: true,
-  imports: [RouterModule, MatTableModule, MatButtonModule, MatIconModule, MatInputModule, MatChipsModule, MatMenuModule],
+  imports: [CommonModule, RouterModule, MatTableModule, MatButtonModule, MatIconModule, MatInputModule, MatChipsModule, MatMenuModule],
   template: `
     <div class="space-y-6">
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">

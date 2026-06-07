@@ -1,7 +1,7 @@
-<div class="p-6 min-h-screen bg-slate-50">
-  <div class="flex justify-between items-center mb-8">
+<div class="p-6 min-h-screen bg-slate-50 relative">
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
     <div>
-      <h1 class="text-3xl font-bold text-slate-800 tracking-tight flex items-center gap-3">
+      <h1 class="text-3xl font-black text-slate-800 tracking-tight flex items-center gap-3">
         Live Doctor Monitoring
         <span class="relative flex h-3 w-3">
           <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -10,6 +10,9 @@
       </h1>
       <p class="text-sm text-slate-500 mt-1">Auto-refreshing every 5 seconds. Last updated: {{ lastUpdated | date:'mediumTime' }}</p>
     </div>
+    <button mat-flat-button class="!bg-indigo-600 !text-white !px-6 !py-5 !rounded-xl !font-bold shadow-md shadow-indigo-100" (click)="openAddModal()">
+      <mat-icon class="mr-1">add_circle</mat-icon> Add Doctor
+    </button>
   </div>
 
   <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
@@ -68,32 +71,58 @@
 
   <h2 class="text-xl font-bold text-slate-800 mb-4">Doctor Status Board</h2>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    <mat-card *ngFor="let doc of doctors" class="!rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+    <mat-card *ngFor="let doc of doctors" class="!rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow relative">
       <mat-card-content class="p-6">
         <div class="flex justify-between items-start mb-4">
           <div class="flex items-center gap-3">
             <div class="relative">
-              <div class="w-12 h-12 rounded-full bg-slate-200 flex items-center justify-center text-slate-600 font-bold text-lg uppercase">
+              <div class="w-12 h-12 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold text-lg uppercase">
                 {{ doc.firstName.charAt(0) }}{{ doc.lastName.charAt(0) }}
               </div>
-              <span class="absolute bottom-0 right-0 block h-3.5 w-3.5 rounded-full border-2 border-white"
+              <span class="absolute bottom-0 right-0 block h-3.5 w-3.5 rounded-full border-2 border-white animate-pulse"
                     [ngClass]="doc.status === 'Online' ? 'bg-emerald-500' : 'bg-slate-400'"></span>
             </div>
             <div>
               <h3 class="font-bold text-lg text-slate-800">Dr. {{ doc.firstName }} {{ doc.lastName }}</h3>
-              <p class="text-sm text-indigo-600 font-medium">{{ doc.department }}</p>
+              <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider">{{ doc.specialization || 'General Specialist' }}</p>
+              <p class="text-sm text-indigo-600 font-semibold mt-0.5">{{ doc.department }}</p>
             </div>
           </div>
-          <span class="px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider"
-                [ngClass]="doc.availability === 'Available' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'">
-            {{ doc.availability }}
-          </span>
+
+          <div class="flex items-center gap-1">
+            <span class="px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider"
+                  [ngClass]="doc.availability === 'Available' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'">
+              {{ doc.availability || 'Available' }}
+            </span>
+            <button mat-icon-button [matMenuTriggerFor]="cardMenu" class="text-slate-400 hover:text-slate-600">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #cardMenu="matMenu" class="!rounded-2xl !p-2 !shadow-xl border border-slate-100">
+              <button mat-menu-item (click)="openEditModal(doc)" class="!rounded-xl">
+                <mat-icon class="text-indigo-600">edit</mat-icon>
+                <span>Edit Profile</span>
+              </button>
+              <button mat-menu-item (click)="changeStatus(doc, doc.status === 'Online' ? 'Offline' : 'Online')" class="!rounded-xl">
+                <mat-icon class="text-slate-500">wifi</mat-icon>
+                <span>Toggle Live Status</span>
+              </button>
+              <button mat-menu-item (click)="changeAvailability(doc, doc.availability === 'Available' ? 'Busy' : 'Available')" class="!rounded-xl">
+                <mat-icon class="text-amber-500">event_busy</mat-icon>
+                <span>Toggle Availability</span>
+              </button>
+              <div class="border-t border-slate-100 my-1"></div>
+              <button mat-menu-item (click)="deleteDoctor(doc)" class="!rounded-xl hover:bg-red-50 !text-red-500">
+                <mat-icon class="!text-red-500">delete</mat-icon>
+                <span class="font-bold">Remove Doctor</span>
+              </button>
+            </mat-menu>
+          </div>
         </div>
 
         <div class="mt-6 pt-4 border-t border-slate-100">
           <div class="flex justify-between items-center mb-2">
             <span class="text-sm font-medium text-slate-600 flex items-center gap-1">
-              <mat-icon class="text-[16px] w-4 h-4">group</mat-icon> Patient Queue
+              <mat-icon class="text-[16px] w-4 h-4 text-indigo-500">group</mat-icon> Patient Queue
             </span>
             <span class="font-bold text-slate-800">{{ doc.patientsQueue || 0 }} / 10</span>
           </div>
@@ -101,6 +130,84 @@
                             [color]="(doc.patientsQueue || 0) > 8 ? 'warn' : 'primary'"></mat-progress-bar>
         </div>
       </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Form Modal Backdrop -->
+  <div *ngIf="showModal()" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[999] flex items-center justify-center p-4">
+    <!-- Form Card -->
+    <mat-card class="w-full max-w-lg !rounded-[2rem] border border-white/50 !shadow-2xl overflow-hidden animate-in">
+      <div class="p-6 bg-slate-50 border-b border-slate-100 flex justify-between items-center">
+        <div>
+          <h3 class="text-xl font-black text-slate-800">{{ isEditing() ? 'Edit Doctor Profile' : 'Add New Doctor' }}</h3>
+          <p class="text-xs text-slate-400 font-medium mt-0.5">Enter professional details to register or update records.</p>
+        </div>
+        <button mat-icon-button (click)="closeModal()" class="text-slate-400 hover:text-slate-600">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      <mat-card-content class="!p-6 max-h-[70vh] overflow-y-auto">
+        <form [formGroup]="doctorForm" class="space-y-4">
+          <div class="grid grid-cols-2 gap-4">
+            <mat-form-field appearance="outline" class="w-full">
+              <mat-label>First Name</mat-label>
+              <input matInput formControlName="firstName" placeholder="e.g. John">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-full">
+              <mat-label>Last Name</mat-label>
+              <input matInput formControlName="lastName" placeholder="e.g. Doe">
+            </mat-form-field>
+          </div>
+
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Specialization</mat-label>
+            <input matInput formControlName="specialization" placeholder="e.g. Heart Specialist">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Department</mat-label>
+            <mat-select formControlName="department">
+              <mat-option value="Cardiology">Cardiology</mat-option>
+              <mat-option value="Neurology">Neurology</mat-option>
+              <mat-option value="Orthopedics">Orthopedics</mat-option>
+              <mat-option value="Pediatrics">Pediatrics</mat-option>
+              <mat-option value="Dermatology">Dermatology</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <div class="grid grid-cols-2 gap-4">
+            <mat-form-field appearance="outline" class="w-full">
+              <mat-label>Live Status</mat-label>
+              <mat-select formControlName="status">
+                <mat-option value="Online">Online</mat-option>
+                <mat-option value="Offline">Offline</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-full">
+              <mat-label>Availability</mat-label>
+              <mat-select formControlName="availability">
+                <mat-option value="Available">Available</mat-option>
+                <mat-option value="Busy">Busy</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Patients in Queue</mat-label>
+            <input type="number" matInput formControlName="patientsQueue" min="0" max="10">
+          </mat-form-field>
+        </form>
+      </mat-card-content>
+
+      <div class="p-6 bg-slate-50 border-t border-slate-100 flex gap-3 justify-end">
+        <button mat-button class="!rounded-xl" (click)="closeModal()">Cancel</button>
+        <button mat-flat-button class="!bg-indigo-600 !text-white !rounded-xl !font-bold" (click)="saveDoctor()">
+          {{ isEditing() ? 'Save Changes' : 'Register Doctor' }}
+        </button>
+      </div>
     </mat-card>
   </div>
 </div>

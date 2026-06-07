@@ -45,4 +45,16 @@ export class DoctorMonitoringService {
       switchMap(() => this.getDoctors())
     );
   }
+
+  addDoctor(doctor: Doctor): Observable<Doctor> {
+    return this.http.post<Doctor>(`${this.apiUrl}/doctors`, doctor);
+  }
+
+  updateDoctor(id: string, doctor: Partial<Doctor>): Observable<Doctor> {
+    return this.http.patch<Doctor>(`${this.apiUrl}/doctors/${id}`, doctor);
+  }
+
+  deleteDoctor(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/doctors/${id}`);
+  }
 }

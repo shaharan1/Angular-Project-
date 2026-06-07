@@ -4,20 +4,29 @@ import { RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ClinicalService } from '../../../clinical/services/clinical.service';
 import { AuthService } from '../../../../core/auth/auth.service';
+import { AppointmentService } from '../../../../services/appointment';
 
 @Component({
   selector: 'app-appointment-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule, MatCardModule, MatIconModule, MatButtonModule],
+  imports: [CommonModule, RouterModule, MatCardModule, MatIconModule, MatButtonModule, MatMenuModule, MatSnackBarModule],
   templateUrl: './appointment-dashboard.component.html'
 })
 export class AppointmentDashboardComponent implements OnInit {
   public clinicalService = inject(ClinicalService);
   public authService = inject(AuthService);
+  private appointmentService = inject(AppointmentService);
+  private snackBar = inject(MatSnackBar);
 
   ngOnInit() {
+    this.loadAppointments();
+  }
+
+  loadAppointments() {
     this.authService.currentUser$.subscribe(user => {
       if (user) {
         const doctorId = user.role === 'DOCTOR' ? user.id : '';
@@ -28,6 +37,32 @@ export class AppointmentDashboardComponent implements OnInit {
 
   viewAppointment(appointment: any) {
     console.log('Viewing appointment:', appointment);
+  }
+
+  changeStatus(appointment: any, status: string) {
+    this.appointmentService.updateAppointment(appointment.id, { status }).subscribe({
+      next: () => {
+        this.snackBar.open(`Appointment status updated to ${status}`, 'Close', { duration: 3000, panelClass: ['bg-emerald-600', 'text-white'] });
+        this.loadAppointments();
+      },
+      error: () => {
+        this.snackBar.open('Failed to update status', 'Close', { duration: 3000 });
+      }
+    });
+  }
+
+  deleteAppointment(appointment: any) {
+    if (confirm(`Are you sure you want to cancel the appointment for ${appointment.patientName}?`)) {
+      this.appointmentService.deleteAppointment(appointment.id).subscribe({
+        next: () => {
+          this.snackBar.open('Appointment cancelled successfully', 'Close', { duration: 3000, panelClass: ['bg-emerald-600', 'text-white'] });
+          this.loadAppointments();
+        },
+        error: () => {
+          this.snackBar.open('Failed to cancel appointment', 'Close', { duration: 3000 });
+        }
+      });
+    }
   }
 
   getStatusClass(status: string): string {
