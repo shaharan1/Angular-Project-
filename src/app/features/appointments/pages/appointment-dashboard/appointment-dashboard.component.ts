@@ -9,6 +9,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ClinicalService } from '../../../clinical/services/clinical.service';
 import { AuthService } from '../../../../core/auth/auth.service';
 import { AppointmentService } from '../../../../services/appointment';
+import { AppointmentStatus } from '../../../../core/models/appointment.model';
 
 @Component({
   selector: 'app-appointment-dashboard',
@@ -40,7 +41,7 @@ export class AppointmentDashboardComponent implements OnInit {
   }
 
   changeStatus(appointment: any, status: string) {
-    this.appointmentService.updateAppointment(appointment.id, { status }).subscribe({
+    this.appointmentService.updateAppointment(appointment.id, { status: status as AppointmentStatus }).subscribe({
       next: () => {
         this.snackBar.open(`Appointment status updated to ${status}`, 'Close', { duration: 3000, panelClass: ['bg-emerald-600', 'text-white'] });
         this.loadAppointments();

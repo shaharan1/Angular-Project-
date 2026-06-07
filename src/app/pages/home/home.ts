@@ -1,10 +1,8 @@
-import { Component, ElementRef, ViewChild, signal } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { jsPDF } from 'jspdf';
-import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-home',
@@ -13,56 +11,136 @@ import html2canvas from 'html2canvas';
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit, OnDestroy {
 
-  @ViewChild('reportContent', { static: false })
-  reportContent!: ElementRef;
+  isScrolled = signal(false);
+  activeTab = signal('clinical');
+  mobileMenuOpen = signal(false);
 
-  public activeTab = signal<string>('clinical');
+  private countersStarted = false;
+  displayedStats = signal([
+    { label: 'Board Doctors', value: '0', target: 150 },
+    { label: 'Happy Patients', value: '0', target: 25000 },
+    { label: 'Consultations', value: '0', target: 100000 },
+    { label: 'Care Centers', value: '0', target: 25 },
+  ]);
+
+  @HostListener('window:scroll')
+  onScroll() {
+    this.isScrolled.set(window.scrollY > 40);
+    this.checkCounters();
+  }
 
   benefits = [
-    { title: '24/7 Virtual Support', description: 'Our medical assistants are online round-the-clock for help.', icon: 'support_agent', color: 'bg-primary-soft text-primary' },
-    { title: 'Expert Consultants', description: 'Connect directly with top specialists across multiple domains.', icon: 'medical_services', color: 'bg-success-soft text-success' },
-    { title: 'Instant Booking', description: 'Schedule physical or tele-consultation visits in just a few taps.', icon: 'event_available', color: 'bg-warning-soft text-warning' },
-    { title: 'Encrypted Records', description: 'Your medical records (EHR) are protected by HIPAA-compliant security.', icon: 'security', color: 'bg-danger-soft text-danger' }
-  ];
-
-  stats = [
-    { label: 'Board Doctors', value: '150+' },
-    { label: 'Happy Patients', value: '25,000+' },
-    { label: 'Consultations', value: '100k+' },
-    { label: 'Care Centers', value: '25+' }
+    { title: '24/7 Virtual Support', description: 'Medical assistants online round-the-clock for instant clinical assistance.', icon: 'support_agent', gradient: 'from-violet-500 to-indigo-500' },
+    { title: 'Expert Consultants', description: 'Connect with top specialists across cardiology, neurology, oncology and more.', icon: 'medical_services', gradient: 'from-emerald-500 to-teal-500' },
+    { title: 'Instant Booking', description: 'Schedule physical or tele-consultation visits in seconds — anytime.', icon: 'event_available', gradient: 'from-amber-500 to-orange-500' },
+    { title: 'Encrypted Records', description: 'Patient EHR protected by military-grade HIPAA-compliant security layers.', icon: 'security', gradient: 'from-rose-500 to-pink-500' },
   ];
 
   services = [
-    { id: 'clinical', label: 'Clinical Care', icon: 'health_and_safety', title: 'Electronic Health Records & Vitals', desc: 'Real-time entry of patient vitals, medical history, prescriptions, and digital clinical notes for complete electronic health records.', points: ['Live vitals monitoring', 'Secure digital prescriptions', 'Seamless lab & pharmacy sync'] },
-    { id: 'billing', label: 'Billing & Finance', icon: 'payments', title: 'Automated Billing & Invoices', desc: 'Manage payment processes, generate instant invoices, and track hospital financial operations smoothly.', points: ['Instant itemized billing', 'Flexible payment options', 'Insurance claim tracking'] },
-    { id: 'pharmacy', label: 'Pharmacy & Inventory', icon: 'vaccines', title: 'Smart Inventory & Dispensing', desc: 'Real-time medicine stock tracking, low stock alerts, and quick prescription fulfillment pipelines.', points: ['Automatic stock tracking', 'Direct EHR prescription ingestion', 'Fast checkout queue'] },
-    { id: 'telehealth', label: 'Telemedicine', icon: 'videocam', title: 'Virtual Care Anywhere', desc: 'Connect patients to consultants through interactive high-definition video calls directly inside the portal.', points: ['In-app video calls', 'Digital prescription delivery', 'Interactive appointment notes'] }
+    {
+      id: 'clinical', label: 'Clinical Care', icon: 'health_and_safety',
+      title: 'Electronic Health Records & Vitals',
+      desc: 'Real-time entry of patient vitals, medical history, prescriptions and digital clinical notes for complete EHR.',
+      points: ['Live vitals monitoring', 'Secure digital prescriptions', 'Lab & pharmacy sync', 'SOAP notes'],
+      color: 'from-violet-600 to-indigo-600'
+    },
+    {
+      id: 'billing', label: 'Billing & Finance', icon: 'payments',
+      title: 'Automated Billing & Invoices',
+      desc: 'Manage payment processes, generate instant invoices and track hospital financial operations seamlessly.',
+      points: ['Instant itemized billing', 'Flexible payment options', 'Insurance claim tracking', 'Revenue analytics'],
+      color: 'from-emerald-600 to-teal-600'
+    },
+    {
+      id: 'pharmacy', label: 'Pharmacy', icon: 'vaccines',
+      title: 'Smart Inventory & Dispensing',
+      desc: 'Real-time medicine stock tracking, low stock alerts and quick prescription fulfillment pipelines.',
+      points: ['Automatic stock tracking', 'EHR prescription ingestion', 'Fast checkout queue', 'Expiry alerts'],
+      color: 'from-amber-600 to-orange-600'
+    },
+    {
+      id: 'lab', label: 'Laboratory', icon: 'science',
+      title: 'Diagnostic & Lab Management',
+      desc: 'Manage lab test orders, track diagnostic results and deliver reports instantly to attending physicians.',
+      points: ['Test order management', 'Result tracking', 'Instant report delivery', 'CBC, LFT, lipid panels'],
+      color: 'from-sky-600 to-cyan-600'
+    },
   ];
 
   faqs = [
-    { question: 'How do I register a new patient?', answer: 'Navigate to the Patient Management tab after logging in as a receptionist or admin, click "Register Patient", and fill out the patient card details.', open: false },
-    { question: 'Can doctors view lab reports online?', answer: 'Yes! The clinical care and laboratory modules are synced. All reports generated by the lab technician show up instantly in the patient medical profile.', open: false },
-    { question: 'Is the platform accessible on mobile?', answer: 'Absolutely. MEDERP features a responsive grid design, allowing doctors and nurses to update vitals or view reports on tablets and phones.', open: false }
+    { question: 'How do I register a new patient?', answer: 'Navigate to Patient Management after logging in as a receptionist or admin. Click "Register Patient" and fill in the patient card details. The patient ID is auto-generated.', open: false },
+    { question: 'Can doctors view lab reports online?', answer: 'Yes! The clinical and laboratory modules are fully synced. All reports generated by the lab technician appear instantly in the patient medical profile.', open: false },
+    { question: 'Is the platform accessible on mobile?', answer: 'Absolutely. MedERP features a responsive design so doctors and nurses can update vitals or view reports on tablets and phones.', open: false },
+    { question: 'What roles can access the admin panel?', answer: 'Super Admin, Admin, Doctor, Nurse, Receptionist, Pharmacist, Lab Technician, HR Manager and Finance roles each have role-based access to specific modules.', open: false },
+    { question: 'How is patient data kept secure?', answer: 'All data is encrypted at rest and in transit. Our system uses HIPAA-compliant storage, role-based access control and full audit logs for every action.', open: false },
   ];
 
-  toggleFaq(index: number) {
-    this.faqs[index].open = !this.faqs[index].open;
+  specialties = [
+    { name: 'Cardiology', icon: 'favorite', count: '12 Doctors' },
+    { name: 'Neurology', icon: 'psychology', count: '8 Doctors' },
+    { name: 'Orthopedics', icon: 'accessibility_new', count: '10 Doctors' },
+    { name: 'Oncology', icon: 'biotech', count: '6 Doctors' },
+    { name: 'Pediatrics', icon: 'child_care', count: '9 Doctors' },
+    { name: 'Ophthalmology', icon: 'visibility', count: '5 Doctors' },
+    { name: 'Dermatology', icon: 'spa', count: '7 Doctors' },
+    { name: 'Radiology', icon: 'radiology', count: '4 Doctors' },
+  ];
+
+  ngOnInit() {
+    this.checkCounters();
   }
 
-  exportPdf() {
-    const element = this.reportContent.nativeElement;
+  ngOnDestroy() {}
 
-    html2canvas(element, { scale: 2 }).then(canvas => {
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      const pageWidth = 210;
-      const imgWidth = pageWidth - 20;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+  checkCounters() {
+    if (this.countersStarted) return;
+    const el = document.getElementById('stats-section');
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight) {
+      this.countersStarted = true;
+      this.animateCounters();
+    }
+  }
 
-      pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
-      pdf.save('MEDERP_Homepage_Report.pdf');
-    });
+  animateCounters() {
+    const targets = [150, 25000, 100000, 25];
+    const suffixes = ['+', '+', 'k+', '+'];
+    const duration = 2000;
+    const steps = 60;
+    let step = 0;
+
+    const interval = setInterval(() => {
+      step++;
+      const progress = step / steps;
+      const eased = 1 - Math.pow(1 - progress, 3);
+
+      this.displayedStats.set(
+        targets.map((target, i) => ({
+          label: this.displayedStats()[i].label,
+          target,
+          value: i === 2
+            ? Math.round((target / 1000) * eased) + suffixes[i]
+            : Math.round(target * eased).toLocaleString() + suffixes[i]
+        }))
+      );
+
+      if (step >= steps) clearInterval(interval);
+    }, duration / steps);
+  }
+
+  toggleFaq(index: number) {
+    this.faqs = this.faqs.map((f, i) => ({ ...f, open: i === index ? !f.open : false }));
+  }
+
+  scrollTo(id: string) {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    this.mobileMenuOpen.set(false);
+  }
+
+  getActiveService() {
+    return this.services.find(s => s.id === this.activeTab()) ?? this.services[0];
   }
 }

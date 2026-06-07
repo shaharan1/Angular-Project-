@@ -419,5 +419,14 @@
       "manufacturer": "ApexPharma",
       "status": "Available"
     }
+  ],
+  "labTests": [
+    { "id": "LT-001", "patientName": "Suman Ahmed", "patientId": "PT-2024-081", "testName": "Complete Blood Count (CBC)", "status": "Processing", "orderedDate": "2026-06-07", "orderedBy": "Dr. John Doe" },
+    { "id": "LT-002", "patientName": "Maria Begum", "patientId": "PT-2024-102", "testName": "Lipid Profile", "status": "Pending", "orderedDate": "2026-06-07", "orderedBy": "Dr. Jane Smith" },
+    { "id": "LT-003", "patientName": "Karim Ullah", "patientId": "PT-2024-095", "testName": "Blood Glucose (Fasting)", "status": "Completed", "orderedDate": "2026-06-06", "orderedBy": "Dr. John Doe" },
+    { "id": "LT-004", "patientName": "Nasrin Akter", "patientId": "PT-2024-110", "testName": "Thyroid Panel (T3, T4, TSH)", "status": "Pending", "orderedDate": "2026-06-07", "orderedBy": "Dr. Jane Smith" },
+    { "id": "LT-005", "patientName": "Zahir Raihan", "patientId": "PT-2024-077", "testName": "Liver Function Test (LFT)", "status": "Processing", "orderedDate": "2026-06-07", "orderedBy": "Dr. John Doe" },
+    { "id": "LT-006", "patientName": "Rina Sultana", "patientId": "PT-2024-088", "testName": "Urine Routine & Microscopy", "status": "Pending", "orderedDate": "2026-06-07", "orderedBy": "Dr. Alice Roy" },
+    { "id": "LT-007", "patientName": "Rafiq Islam", "patientId": "PT-2024-063", "testName": "Chest X-Ray", "status": "Completed", "orderedDate": "2026-06-06", "orderedBy": "Dr. John Doe" }
   ]
 }

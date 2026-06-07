@@ -5,7 +5,7 @@
       <p class="text-[#A3AED0] font-medium text-sm mt-1">Welcome back! Here's what's happening at the hospital today.</p>
     </div>
     <div class="flex gap-3">
-      <button mat-stroked-button class="!border-[#E9E3FF] !text-[#4318FF] !rounded-xl !h-12 !px-6 !font-bold hover:bg-[#E9E3FF]/50 transition-colors">
+      <button mat-stroked-button class="!border-[#E9E3FF] !text-[#4318FF] !rounded-xl !h-12 !px-6 !font-bold hover:bg-[#E9E3FF]/50 transition-colors" (click)="exportReport()">
         <mat-icon>file_download</mat-icon>
         Export Report
       </button>
@@ -111,18 +111,12 @@
     <div class="lg:col-span-2 bg-white rounded-[20px] shadow-[0_18px_40px_rgba(112,144,176,0.12)] border border-white/50 p-6">
       <div class="flex justify-between items-center mb-6">
         <h3 class="text-[22px] font-black text-[#1B254B] tracking-tight">Patient Admissions</h3>
-        <button mat-icon-button class="text-[#A3AED0] hover:text-[#4318FF] transition-colors bg-[#F4F7FE] rounded-full">
+        <button mat-icon-button class="text-[#A3AED0] hover:text-[#4318FF] transition-colors bg-[#F4F7FE] rounded-full" (click)="toggleChartType()" title="Toggle chart type">
           <mat-icon>more_horiz</mat-icon>
         </button>
       </div>
-      <div class="h-[320px] w-full flex items-center justify-center border-[3px] border-dashed border-[#E9E3FF] rounded-[16px] bg-[#F4F7FE]/50 relative overflow-hidden group">
-        <div class="absolute inset-0 bg-gradient-to-br from-[#4318FF]/5 to-[#00E5FF]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-        <div class="text-[#A3AED0] flex flex-col items-center gap-3 relative z-10">
-          <div class="w-16 h-16 rounded-full bg-white shadow-lg flex items-center justify-center text-[#4318FF]">
-            <mat-icon class="text-3xl w-8 h-8 flex items-center justify-center">bar_chart</mat-icon>
-          </div>
-          <p class="font-bold tracking-wide">Chart Integration Placeholder</p>
-        </div>
+      <div class="h-[320px] w-full flex items-center justify-center rounded-[16px] relative overflow-hidden group">
+        <canvas #admissionsChart></canvas>
       </div>
     </div>
 

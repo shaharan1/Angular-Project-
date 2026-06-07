@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { HrService, Employee, Department } from '../../../services/hr.service';
-import { BehaviorSubject, combineLatest } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-hr-dashboard',
