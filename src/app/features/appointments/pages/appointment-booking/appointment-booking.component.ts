@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -10,7 +10,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { ToastrService } from 'ngx-toastr';
-import { catchError, of } from 'rxjs';
+import { catchError, of, Subject, takeUntil } from 'rxjs';
 import { PatientService } from '../../../../services/patient';
 import { AppointmentService } from '../../../../services/appointment';
 import { DoctorMonitoringService, Doctor } from '../../../../services/doctor-monitoring.service';
@@ -28,13 +28,14 @@ import { Appointment, AppointmentStatus } from '../../../../core/models/appointm
   ],
   templateUrl: './appointment-booking.component.html'
 })
-export class AppointmentBookingComponent implements OnInit {
+export class AppointmentBookingComponent implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);
   private toastr = inject(ToastrService);
   private appointmentService = inject(AppointmentService);
   private doctorService = inject(DoctorMonitoringService);
   private clinicalService = inject(ClinicalService);
   private patientService = inject(PatientService);
+  private destroy$ = new Subject<void>();
 
   bookingForm!: FormGroup;
   doctors: Doctor[] = [];
@@ -76,16 +77,23 @@ export class AppointmentBookingComponent implements OnInit {
   }
 
   private loadDoctors() {
-    this.doctorService.getDoctors().subscribe({
-      next: (data) => {
-        console.log('Doctors loaded:', data);
-        this.doctors = data;
-      },
-      error: (err) => {
-        console.error('Error loading doctors:', err);
-        this.toastr.error('Failed to load doctors. Is the backend running?');
-      }
-    });
+    this.doctorService.getLiveDoctors()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (data) => {
+          console.log('Doctors loaded:', data);
+          this.doctors = data;
+        },
+        error: (err) => {
+          console.error('Error loading doctors:', err);
+          this.toastr.error('Failed to load doctors. Is the backend running?');
+        }
+      });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   submitBooking() {

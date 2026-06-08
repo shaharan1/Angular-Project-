@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, interval, of } from 'rxjs';
-import { switchMap, startWith, catchError } from 'rxjs/operators';
+import { BehaviorSubject, merge, Observable, interval, of } from 'rxjs';
+import { catchError, shareReplay, startWith, switchMap, tap } from 'rxjs/operators';
 
 export interface Doctor {
   id: string;
@@ -29,6 +29,15 @@ export class DoctorMonitoringService {
     { id: 'd3', firstName: 'Michael', lastName: 'Ross', department: 'Orthopedics', specialization: 'Bone Specialist', status: 'Busy' }
   ];
 
+  private refreshDoctors$ = new BehaviorSubject<void>(undefined);
+  private liveDoctors$ = merge(
+    this.refreshDoctors$.pipe(startWith(undefined)),
+    interval(5000).pipe(startWith(0))
+  ).pipe(
+    switchMap(() => this.getDoctors()),
+    shareReplay({ bufferSize: 1, refCount: true })
+  );
+
   getDoctors(): Observable<Doctor[]> {
     return this.http.get<Doctor[]>(`${this.apiUrl}/doctors`).pipe(
       catchError(err => {
@@ -40,21 +49,28 @@ export class DoctorMonitoringService {
 
   // Real-time polling every 5 seconds
   getLiveDoctors(): Observable<Doctor[]> {
-    return interval(5000).pipe(
-      startWith(0),
-      switchMap(() => this.getDoctors())
-    );
+    return this.liveDoctors$;
+  }
+
+  refreshDoctors() {
+    this.refreshDoctors$.next();
   }
 
   addDoctor(doctor: Doctor): Observable<Doctor> {
-    return this.http.post<Doctor>(`${this.apiUrl}/doctors`, doctor);
+    return this.http.post<Doctor>(`${this.apiUrl}/doctors`, doctor).pipe(
+      tap(() => this.refreshDoctors())
+    );
   }
 
   updateDoctor(id: string, doctor: Partial<Doctor>): Observable<Doctor> {
-    return this.http.patch<Doctor>(`${this.apiUrl}/doctors/${id}`, doctor);
+    return this.http.patch<Doctor>(`${this.apiUrl}/doctors/${id}`, doctor).pipe(
+      tap(() => this.refreshDoctors())
+    );
   }
 
   deleteDoctor(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/doctors/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/doctors/${id}`).pipe(
+      tap(() => this.refreshDoctors())
+    );
   }
 }

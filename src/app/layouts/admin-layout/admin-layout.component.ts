@@ -17,49 +17,49 @@ import { AppRole } from '../../core/models/role.model';
 })
 export class AdminLayoutComponent {
   public authService = inject(AuthService);
-  
+
   isSidebarOpen = true;
 
   // Define the master menu configuration
   private readonly MASTER_MENU: MenuItem[] = [
     { title: 'Dashboard', icon: 'dashboard', route: '/dashboard' },
-    { 
+    {
       title: 'User Management', icon: 'admin_panel_settings', route: '/admin/users',
-      allowedRoles: [AppRole.SUPER_ADMIN] 
+      allowedRoles: [AppRole.SUPER_ADMIN]
     },
-    { 
+    {
       title: 'Patient Management', icon: 'people', route: '/patients',
-      allowedRoles: [AppRole.SUPER_ADMIN, AppRole.ADMIN, AppRole.DOCTOR, AppRole.NURSE, AppRole.RECEPTIONIST] 
+      allowedRoles: [AppRole.SUPER_ADMIN, AppRole.ADMIN, AppRole.DOCTOR, AppRole.NURSE, AppRole.RECEPTIONIST]
     },
-    { 
+    {
       title: 'Clinical Workflow', icon: 'medical_services', route: '/clinical',
-      allowedRoles: [AppRole.SUPER_ADMIN, AppRole.DOCTOR, AppRole.NURSE] 
+      allowedRoles: [AppRole.SUPER_ADMIN, AppRole.DOCTOR, AppRole.NURSE]
     },
-    { 
+    {
       title: 'Appointments', icon: 'event', route: '/appointments',
-      allowedRoles: [AppRole.SUPER_ADMIN, AppRole.ADMIN, AppRole.RECEPTIONIST, AppRole.DOCTOR] 
+      allowedRoles: [AppRole.SUPER_ADMIN, AppRole.ADMIN, AppRole.RECEPTIONIST, AppRole.DOCTOR]
     },
-    { 
+    {
       title: 'Pharmacy', icon: 'medication', route: '/pharmacy',
-      allowedRoles: [AppRole.SUPER_ADMIN, AppRole.PHARMACIST, AppRole.DOCTOR] 
+      allowedRoles: [AppRole.SUPER_ADMIN, AppRole.ADMIN, AppRole.PHARMACIST, AppRole.DOCTOR]
     },
-    { 
+    {
       title: 'Laboratory', icon: 'science', route: '/laboratory',
-      allowedRoles: [AppRole.SUPER_ADMIN, AppRole.LAB_TECHNICIAN, AppRole.DOCTOR] 
+      allowedRoles: [AppRole.SUPER_ADMIN, AppRole.ADMIN, AppRole.LAB_TECHNICIAN, AppRole.DOCTOR]
     },
-    { 
+    {
       title: 'Billing & Finance', icon: 'receipt_long', route: '/billing',
-      allowedRoles: [AppRole.SUPER_ADMIN, AppRole.ADMIN, AppRole.FINANCE] 
+      allowedRoles: [AppRole.SUPER_ADMIN, AppRole.ADMIN, AppRole.FINANCE]
     },
-    { 
+    {
       title: 'HR & Payroll', icon: 'badge', route: '/hr',
-      allowedRoles: [AppRole.SUPER_ADMIN, AppRole.ADMIN, AppRole.HR_MANAGER] 
+      allowedRoles: [AppRole.SUPER_ADMIN, AppRole.ADMIN, AppRole.HR_MANAGER]
     },
-    { 
+    {
       title: 'Doctor Monitoring', icon: 'monitor_heart', route: '/doctors',
-      allowedRoles: [AppRole.SUPER_ADMIN, AppRole.ADMIN, AppRole.DOCTOR] 
+      allowedRoles: [AppRole.SUPER_ADMIN, AppRole.ADMIN, AppRole.DOCTOR]
     },
-    { 
+    {
       title: 'My Profile', icon: 'account_circle', route: '/profile'
     }
   ];
