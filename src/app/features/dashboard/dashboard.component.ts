@@ -5,13 +5,15 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { Chart } from 'chart.js/auto';
 import { PatientService } from '../../services/patient';
 import { ClinicalService } from '../clinical/services/clinical.service';
 import { AppointmentService } from '../../services/appointment';
 import { WardService } from '../../services/ward';
-import { Chart, registerables } from 'chart.js';
 
-Chart.register(...registerables);
+
+
+
 
 @Component({
   selector: 'app-dashboard',
@@ -20,7 +22,7 @@ Chart.register(...registerables);
   templateUrl: './dashboard.component.html'
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
-  @ViewChild('admissionsChart') chartRef!: ElementRef;
+  @ViewChild('admissionsChart') chartRef!: ElementRef<HTMLCanvasElement>;
   private chartInstance: Chart | null = null;
   private chartType: 'bar' | 'line' = 'bar';
 
