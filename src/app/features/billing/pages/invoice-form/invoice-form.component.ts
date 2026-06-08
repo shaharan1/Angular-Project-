@@ -12,6 +12,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { Router } from '@angular/router';
 import { PatientService } from '../../../../services/patient';
+import { BillingService } from '../../services/billing.service';
+import { InvoiceStatus } from '../../core/models/billing.model';
 import { Patient } from '../../../../core/models/patient.model';
 import { Observable, startWith, map, of } from 'rxjs';
 
@@ -19,8 +21,8 @@ import { Observable, startWith, map, of } from 'rxjs';
   selector: 'app-invoice-form',
   standalone: true,
   imports: [
-    CommonModule, ReactiveFormsModule, MatCardModule, MatFormFieldModule, 
-    MatInputModule, MatButtonModule, MatIconModule, MatDatepickerModule, 
+    CommonModule, ReactiveFormsModule, MatCardModule, MatFormFieldModule,
+    MatInputModule, MatButtonModule, MatIconModule, MatDatepickerModule,
     MatNativeDateModule, MatSelectModule, MatAutocompleteModule
   ],
   templateUrl: './invoice-form.component.html'
@@ -29,6 +31,7 @@ export class InvoiceFormComponent implements OnInit {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private patientService = inject(PatientService);
+  private billingService = inject(BillingService);
 
   invoiceForm!: FormGroup;
   patients: Patient[] = [];
@@ -73,7 +76,7 @@ export class InvoiceFormComponent implements OnInit {
 
   private _filterPatients(value: string): Patient[] {
     const filterValue = value.toLowerCase();
-    return this.patients.filter(p => 
+    return this.patients.filter(p =>
       `${p.firstName} ${p.lastName}`.toLowerCase().includes(filterValue) ||
       p.patientId.toLowerCase().includes(filterValue)
     );
@@ -105,20 +108,20 @@ export class InvoiceFormComponent implements OnInit {
   calculateTotals() {
     let subTotal = 0;
     this.items.controls.forEach(control => {
-      const quantity = control.get('quantity')?.value || 0;
-      const unitPrice = control.get('unitPrice')?.value || 0;
+      const quantity = Number(control.get('quantity')?.value) || 0;
+      const unitPrice = Number(control.get('unitPrice')?.value) || 0;
       const total = quantity * unitPrice;
       control.get('total')?.setValue(total, { emitEvent: false });
       subTotal += total;
     });
 
-    const taxRate = this.invoiceForm.get('tax')?.value || 0;
+    const taxRate = Number(this.invoiceForm.get('tax')?.value) || 0;
     const taxAmount = subTotal * (taxRate / 100);
     const totalAmount = subTotal + taxAmount;
 
     this.invoiceForm.patchValue({
-      subTotal: subTotal,
-      totalAmount: totalAmount
+      subTotal,
+      totalAmount
     }, { emitEvent: false });
   }
 
@@ -130,8 +133,29 @@ export class InvoiceFormComponent implements OnInit {
 
   saveInvoice() {
     if (this.invoiceForm.valid) {
-      console.log('Invoice saved:', this.invoiceForm.value);
-      this.router.navigate(['/billing/dashboard']);
+      const formValue = this.invoiceForm.value;
+      const invoice = {
+        patientId: formValue.patientId,
+        date: formValue.date,
+        dueDate: formValue.dueDate,
+        items: this.items.controls.map(control => ({
+          description: control.get('description')?.value || '',
+          amount: (control.get('quantity')?.value || 0) * (control.get('unitPrice')?.value || 0)
+        })),
+        totalAmount: this.invoiceForm.get('totalAmount')?.value || 0,
+        status: formValue.status as InvoiceStatus
+      };
+
+      this.billingService.createInvoice(invoice).subscribe({
+        next: () => {
+          console.log('Invoice saved:', invoice);
+          this.router.navigate(['/billing/dashboard']);
+        },
+        error: () => {
+          console.error('Failed to save invoice');
+          this.invoiceForm.markAllAsTouched();
+        }
+      });
     } else {
       this.invoiceForm.markAllAsTouched();
     }
