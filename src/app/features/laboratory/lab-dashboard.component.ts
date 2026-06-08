@@ -278,7 +278,7 @@ export class LabDashboardComponent implements OnInit {
   }
 
   getStatusColor(status: string): string {
-    switch(status) {
+    switch (status) {
       case 'Processing': return 'text-indigo-600';
       case 'Pending': return 'text-amber-600';
       case 'Completed': return 'text-emerald-600';
@@ -287,7 +287,7 @@ export class LabDashboardComponent implements OnInit {
   }
 
   getStatusPulse(status: string): string {
-    switch(status) {
+    switch (status) {
       case 'Processing': return 'bg-indigo-500 pulse';
       case 'Pending': return 'bg-amber-500';
       case 'Completed': return 'bg-emerald-500';
