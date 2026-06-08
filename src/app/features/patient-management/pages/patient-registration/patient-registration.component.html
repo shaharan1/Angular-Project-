@@ -10,7 +10,7 @@
   </div>
 
   <form [formGroup]="regForm" (ngSubmit)="onSubmit()" class="space-y-6">
-    
+
     <!-- Personal Details -->
     <mat-card class="!rounded-2xl !shadow-sm border border-slate-200 dark:border-slate-700">
       <mat-card-header class="!pb-0 !pt-6 !px-6 border-b border-slate-100 dark:border-slate-700 pb-4">
@@ -61,8 +61,16 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <mat-form-field appearance="outline">
             <mat-label>Phone Number</mat-label>
-            <input matInput formControlName="contactNumber" placeholder="+1 234 567 890">
+            <input matInput type="tel" inputmode="tel" formControlName="contactNumber" placeholder="+1 234 567 890">
             <mat-icon matPrefix class="mr-2 text-slate-400">phone</mat-icon>
+            <mat-error
+              *ngIf="regForm.get('contact.contactNumber')?.hasError('required') && regForm.get('contact.contactNumber')?.touched">
+              Phone number is required.
+            </mat-error>
+            <mat-error
+              *ngIf="regForm.get('contact.contactNumber')?.hasError('pattern') && regForm.get('contact.contactNumber')?.touched">
+              Enter a valid phone number using digits, +, (), spaces or -.
+            </mat-error>
           </mat-form-field>
           <mat-form-field appearance="outline">
             <mat-label>Email Address</mat-label>
@@ -96,8 +104,12 @@
           </mat-form-field>
           <mat-form-field appearance="outline">
             <mat-label>Phone Number</mat-label>
-            <input matInput formControlName="emergencyContactNumber">
+            <input matInput type="tel" inputmode="tel" formControlName="emergencyContactNumber">
             <mat-icon matPrefix class="mr-2 text-slate-400">phone</mat-icon>
+            <mat-error
+              *ngIf="regForm.get('emergency.emergencyContactNumber')?.hasError('required') && regForm.get('emergency.emergencyContactNumber')?.touched">
+              Emergency contact number is required.
+            </mat-error>
           </mat-form-field>
         </div>
       </mat-card-content>
@@ -105,7 +117,8 @@
 
     <div class="flex justify-end gap-4 pt-4">
       <button mat-button type="button" routerLink="/patients">Cancel</button>
-      <button mat-flat-button color="primary" type="submit" [disabled]="patientService.loadingSignal()" class="!px-8 !py-6 text-lg">
+      <button mat-flat-button color="primary" type="submit"
+        [disabled]="regForm.invalid || patientService.loadingSignal()" class="!px-8 !py-6 text-lg">
         <mat-icon>save</mat-icon>
         {{ patientService.loadingSignal() ? 'Saving...' : 'Register Patient' }}
       </button>

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal, computed, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal, computed, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
@@ -10,6 +10,7 @@ import { PatientService } from '../../services/patient';
 import { ClinicalService } from '../clinical/services/clinical.service';
 import { AppointmentService } from '../../services/appointment';
 import { WardService } from '../../services/ward';
+import { Subject, switchMap, startWith, takeUntil } from 'rxjs';
 
 
 
@@ -21,10 +22,11 @@ import { WardService } from '../../services/ward';
   imports: [CommonModule, RouterModule, MatCardModule, MatIconModule, MatButtonModule, MatSnackBarModule],
   templateUrl: './dashboard.component.html'
 })
-export class DashboardComponent implements OnInit, AfterViewInit {
+export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('admissionsChart') chartRef!: ElementRef<HTMLCanvasElement>;
   private chartInstance: Chart | null = null;
   private chartType: 'bar' | 'line' = 'bar';
+  private destroy$ = new Subject<void>();
 
   private patientService = inject(PatientService);
   public clinicalService = inject(ClinicalService);
@@ -35,6 +37,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   totalPatients = signal(0);
   allAppointments = signal<any[]>([]);
   patientsData = signal<any[]>([]);
+  appointmentsData = signal<any[]>([]);
 
   availableBeds = computed(() =>
     this.wardService.wards().reduce((sum, w) => sum + w.availableBeds, 0)
@@ -48,24 +51,36 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   ]);
 
   ngOnInit() {
-    this.patientService.getPatients().subscribe(data => {
+    this.patientService.refresh$.pipe(
+      startWith(void 0),
+      takeUntil(this.destroy$),
+      switchMap(() => this.patientService.getPatients())
+    ).subscribe(data => {
       this.totalPatients.set(data.length);
       this.patientsData.set(data);
       if (this.chartRef) {
-        this.initChart(data);
+        this.initChart(data, this.appointmentsData());
       }
     });
 
-    this.appointmentService.getAppointments().subscribe(data => {
+    this.appointmentService.refresh$.pipe(
+      startWith(void 0),
+      takeUntil(this.destroy$),
+      switchMap(() => this.appointmentService.getAppointments())
+    ).subscribe(data => {
       this.allAppointments.set(data);
+      this.appointmentsData.set(data);
+      if (this.chartRef) {
+        this.initChart(this.patientsData(), data);
+      }
     });
 
     this.clinicalService.getDoctorAppointments('', new Date().toISOString().split('T')[0]).subscribe();
   }
 
   ngAfterViewInit() {
-    if (this.patientsData().length > 0) {
-      this.initChart(this.patientsData());
+    if (this.patientsData().length > 0 || this.appointmentsData().length > 0) {
+      this.initChart(this.patientsData(), this.appointmentsData());
     }
   }
 
@@ -77,6 +92,16 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     });
     const est = todayApts.length * 500;
     return '৳' + est.toLocaleString();
+  }
+
+  refreshDashboard() {
+    this.patientService.triggerRefresh();
+    this.appointmentService.triggerRefresh();
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   exportReport() {
@@ -103,22 +128,34 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   toggleChartType() {
     this.chartType = this.chartType === 'bar' ? 'line' : 'bar';
-    this.initChart(this.patientsData());
+    this.initChart(this.patientsData(), this.appointmentsData());
     this.snackBar.open(`Switched to ${this.chartType} chart`, 'Close', { duration: 1500 });
   }
 
-  initChart(patients: any[]) {
+  initChart(patients: any[], appointments: any[]) {
     if (!this.chartRef) return;
 
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const monthlyCounts: Record<string, number> = {};
-    months.forEach(m => monthlyCounts[m] = 0);
+    const patientCounts: Record<string, number> = {};
+    const appointmentCounts: Record<string, number> = {};
+    months.forEach(m => {
+      patientCounts[m] = 0;
+      appointmentCounts[m] = 0;
+    });
 
     patients.forEach(p => {
       if (p.registrationDate) {
         const date = new Date(p.registrationDate);
         const month = months[date.getMonth()];
-        monthlyCounts[month]++;
+        patientCounts[month]++;
+      }
+    });
+
+    appointments.forEach(a => {
+      if (a.appointmentDate) {
+        const date = new Date(a.appointmentDate);
+        const month = months[date.getMonth()];
+        appointmentCounts[month]++;
       }
     });
 
@@ -132,19 +169,34 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       type: this.chartType,
       data: {
         labels: months,
-        datasets: [{
-          label: 'Patient Admissions',
-          data: months.map(m => monthlyCounts[m]),
-          backgroundColor: isLine ? 'rgba(67,24,255,0.08)' : '#4318FF',
-          borderColor: '#4318FF',
-          borderWidth: isLine ? 2 : 0,
-          borderRadius: isLine ? 0 : 4,
-          barThickness: 20,
-          fill: isLine,
-          tension: 0.4,
-          pointBackgroundColor: '#4318FF',
-          pointRadius: isLine ? 4 : 0
-        }]
+        datasets: [
+          {
+            label: 'Patient Admissions',
+            data: months.map(m => patientCounts[m]),
+            backgroundColor: isLine ? 'rgba(67,24,255,0.08)' : '#4318FF',
+            borderColor: '#4318FF',
+            borderWidth: isLine ? 2 : 0,
+            borderRadius: isLine ? 0 : 4,
+            barThickness: 20,
+            fill: isLine,
+            tension: 0.4,
+            pointBackgroundColor: '#4318FF',
+            pointRadius: isLine ? 4 : 0
+          },
+          {
+            label: 'Appointments Booked',
+            data: months.map(m => appointmentCounts[m]),
+            backgroundColor: isLine ? 'rgba(0,229,255,0.12)' : '#00E5FF',
+            borderColor: '#00E5FF',
+            borderWidth: isLine ? 2 : 0,
+            borderRadius: isLine ? 0 : 4,
+            barThickness: 20,
+            fill: isLine,
+            tension: 0.4,
+            pointBackgroundColor: '#00E5FF',
+            pointRadius: isLine ? 4 : 0
+          }
+        ]
       },
       options: {
         responsive: true,
@@ -153,7 +205,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           y: { beginAtZero: true, grid: { color: '#F4F7FE' }, border: { display: false } },
           x: { grid: { display: false }, border: { display: false } }
         },
-        plugins: { legend: { display: false } }
+        plugins: {
+          legend: { display: true, position: 'top' }
+        }
       }
     });
   }

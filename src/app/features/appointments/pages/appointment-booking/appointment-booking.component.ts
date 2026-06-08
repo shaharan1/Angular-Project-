@@ -14,6 +14,7 @@ import { catchError, of } from 'rxjs';
 import { PatientService } from '../../../../services/patient';
 import { AppointmentService } from '../../../../services/appointment';
 import { DoctorMonitoringService, Doctor } from '../../../../services/doctor-monitoring.service';
+import { ClinicalService } from '../../../clinical/services/clinical.service';
 import { Patient, BloodGroup, Gender, PatientStatus } from '../../../../core/models/patient.model';
 import { Appointment, AppointmentStatus } from '../../../../core/models/appointment.model';
 
@@ -32,6 +33,7 @@ export class AppointmentBookingComponent implements OnInit {
   private toastr = inject(ToastrService);
   private appointmentService = inject(AppointmentService);
   private doctorService = inject(DoctorMonitoringService);
+  private clinicalService = inject(ClinicalService);
   private patientService = inject(PatientService);
 
   bookingForm!: FormGroup;
@@ -144,6 +146,10 @@ export class AppointmentBookingComponent implements OnInit {
               this.toastr.success('Appointment booked successfully!', 'Confirmed');
               this.confirmedAppointment.set(appointmentData);
               this.bookingConfirmed.set(true);
+              const appointmentDateString = typeof appointmentData.appointmentDate === 'string'
+                ? appointmentData.appointmentDate
+                : appointmentData.appointmentDate.toISOString().split('T')[0];
+              this.clinicalService.getDoctorAppointments('', appointmentDateString).subscribe();
             },
             error: () => {
               this.isSubmitting.set(false);

@@ -2,14 +2,18 @@
   <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
     <div>
       <h1 class="text-[32px] leading-tight font-black text-[#1B254B] tracking-tight">Dashboard Overview</h1>
-      <p class="text-[#A3AED0] font-medium text-sm mt-1">Welcome back! Here's what's happening at the hospital today.</p>
+      <p class="text-[#A3AED0] font-medium text-sm mt-1">Welcome back! Here's what's happening at the hospital today.
+      </p>
     </div>
     <div class="flex gap-3">
-      <button mat-stroked-button class="!border-[#E9E3FF] !text-[#4318FF] !rounded-xl !h-12 !px-6 !font-bold hover:bg-[#E9E3FF]/50 transition-colors" (click)="exportReport()">
+      <button mat-stroked-button
+        class="!border-[#E9E3FF] !text-[#4318FF] !rounded-xl !h-12 !px-6 !font-bold hover:bg-[#E9E3FF]/50 transition-colors"
+        (click)="exportReport()">
         <mat-icon>file_download</mat-icon>
         Export Report
       </button>
-      <button mat-flat-button routerLink="/patients/register" class="!bg-gradient-to-r !from-[#4318FF] !to-[#00E5FF] !text-white !rounded-xl !h-12 !px-6 !font-bold shadow-[0_10px_20px_-10px_rgba(67,24,255,0.5)] hover:-translate-y-0.5 transition-all">
+      <button mat-flat-button routerLink="/patients/register"
+        class="!bg-gradient-to-r !from-[#4318FF] !to-[#00E5FF] !text-white !rounded-xl !h-12 !px-6 !font-bold shadow-[0_10px_20px_-10px_rgba(67,24,255,0.5)] hover:-translate-y-0.5 transition-all">
         <mat-icon>add</mat-icon>
         New Patient
       </button>
@@ -18,7 +22,8 @@
 
   <!-- KPI Cards -->
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-    <div *ngFor="let kpi of kpiData()" class="bg-white rounded-[20px] p-6 shadow-[0_18px_40px_rgba(112,144,176,0.12)] border border-white/50 hover:-translate-y-1 transition-transform duration-300">
+    <div *ngFor="let kpi of kpiData()"
+      class="bg-white rounded-[20px] p-6 shadow-[0_18px_40px_rgba(112,144,176,0.12)] border border-white/50 hover:-translate-y-1 transition-transform duration-300">
       <div class="flex items-center justify-between">
         <div>
           <p class="text-sm font-bold text-[#A3AED0]">{{ kpi.title }}</p>
@@ -31,11 +36,55 @@
     </div>
   </div>
 
+  <!-- All Registered Patients -->
+  <div
+    class="bg-white rounded-[20px] shadow-[0_18px_40px_rgba(112,144,176,0.12)] border border-white/50 overflow-hidden">
+    <div class="flex justify-between items-center p-6 border-b border-[#F4F7FE]">
+      <div>
+        <h3 class="text-[22px] font-black text-[#1B254B] tracking-tight">All Registered Patients</h3>
+        <p class="text-[#A3AED0] text-sm mt-1">Patient data is loaded from db.json through the backend API.</p>
+      </div>
+      <button mat-button class="!text-[#4318FF] !font-bold hover:bg-[#E9E3FF]/50 !rounded-lg"
+        (click)="refreshDashboard()">Refresh</button>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-sm">
+        <thead class="bg-[#F4F7FE] text-xs uppercase text-[#A3AED0] tracking-wider border-b border-[#E9E3FF]">
+          <tr>
+            <th class="px-6 py-4 font-bold">Patient Name</th>
+            <th class="px-6 py-4 font-bold">Contact</th>
+            <th class="px-6 py-4 font-bold">Blood Group</th>
+            <th class="px-6 py-4 font-bold">Status</th>
+            <th class="px-6 py-4 font-bold">Registered</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-[#F4F7FE]">
+          <tr *ngIf="patientsData().length === 0">
+            <td colspan="5" class="px-6 py-16 text-center text-[#A3AED0]">
+              No patient records found. Register a patient to populate the dashboard.
+            </td>
+          </tr>
+          <tr *ngFor="let patient of patientsData()" class="hover:bg-[#F4F7FE]/50 transition-colors group">
+            <td class="px-6 py-5 font-bold text-[#1B254B]">{{ patient.firstName }} {{ patient.lastName }}</td>
+            <td class="px-6 py-5 text-[#1B254B]">{{ patient.contactNumber || patient.email || '-' }}</td>
+            <td class="px-6 py-5 text-[#A3AED0]">{{ patient.bloodGroup || 'N/A' }}</td>
+            <td class="px-6 py-5 text-[#1B254B]">{{ patient.status || 'OPD' }}</td>
+            <td class="px-6 py-5 text-[#A3AED0]">{{ patient.registrationDate ? (patient.registrationDate |
+              date:'mediumDate') : '-' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
   <!-- All Booked Appointments Table -->
-  <div class="bg-white rounded-[20px] shadow-[0_18px_40px_rgba(112,144,176,0.12)] border border-white/50 overflow-hidden">
+  <div
+    class="bg-white rounded-[20px] shadow-[0_18px_40px_rgba(112,144,176,0.12)] border border-white/50 overflow-hidden">
     <div class="flex justify-between items-center p-6 border-b border-[#F4F7FE]">
       <h3 class="text-[22px] font-black text-[#1B254B] tracking-tight">All Booked Appointments</h3>
-      <button mat-button class="!text-[#4318FF] !font-bold hover:bg-[#E9E3FF]/50 !rounded-lg" routerLink="/appointments">View All</button>
+      <button mat-button class="!text-[#4318FF] !font-bold hover:bg-[#E9E3FF]/50 !rounded-lg"
+        routerLink="/appointments">View All</button>
     </div>
 
     <div class="overflow-x-auto">
@@ -66,7 +115,8 @@
           <tr *ngFor="let apt of allAppointments()" class="hover:bg-[#F4F7FE]/50 transition-colors group">
             <td class="px-6 py-5">
               <div class="flex items-center gap-4">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#4318FF] to-[#00E5FF] flex items-center justify-center text-white font-black text-sm shadow-md shrink-0">
+                <div
+                  class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#4318FF] to-[#00E5FF] flex items-center justify-center text-white font-black text-sm shadow-md shrink-0">
                   {{ apt.patientName ? apt.patientName[0] : 'P' }}
                 </div>
                 <div>
@@ -85,11 +135,11 @@
               <span class="font-bold text-[#1B254B]">{{ apt.appointmentDate }}</span>
             </td>
             <td class="px-6 py-5">
-              <span class="font-black text-[#4318FF] bg-[#E9E3FF] px-3 py-1.5 rounded-lg text-xs">{{ apt.timeSlot }}</span>
+              <span class="font-black text-[#4318FF] bg-[#E9E3FF] px-3 py-1.5 rounded-lg text-xs">{{ apt.timeSlot
+                }}</span>
             </td>
             <td class="px-6 py-5">
-              <span class="px-4 py-2 rounded-xl text-xs font-black tracking-wider uppercase border"
-                    [ngClass]="{
+              <span class="px-4 py-2 rounded-xl text-xs font-black tracking-wider uppercase border" [ngClass]="{
                       'bg-emerald-50 text-emerald-600 border-emerald-100': apt.status === 'Confirmed',
                       'bg-blue-50 text-blue-600 border-blue-100': apt.status === 'Scheduled',
                       'bg-amber-50 text-amber-600 border-amber-100': apt.status === 'In Progress',
@@ -108,10 +158,12 @@
   <!-- Main Content Grid -->
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
     <!-- Chart Area Skeleton -->
-    <div class="lg:col-span-2 bg-white rounded-[20px] shadow-[0_18px_40px_rgba(112,144,176,0.12)] border border-white/50 p-6">
+    <div
+      class="lg:col-span-2 bg-white rounded-[20px] shadow-[0_18px_40px_rgba(112,144,176,0.12)] border border-white/50 p-6">
       <div class="flex justify-between items-center mb-6">
         <h3 class="text-[22px] font-black text-[#1B254B] tracking-tight">Patient Admissions</h3>
-        <button mat-icon-button class="text-[#A3AED0] hover:text-[#4318FF] transition-colors bg-[#F4F7FE] rounded-full" (click)="toggleChartType()" title="Toggle chart type">
+        <button mat-icon-button class="text-[#A3AED0] hover:text-[#4318FF] transition-colors bg-[#F4F7FE] rounded-full"
+          (click)="toggleChartType()" title="Toggle chart type">
           <mat-icon>more_horiz</mat-icon>
         </button>
       </div>
@@ -121,23 +173,27 @@
     </div>
 
     <!-- Recent Appointments List -->
-    <div class="bg-white rounded-[20px] shadow-[0_18px_40px_rgba(112,144,176,0.12)] border border-white/50 p-6 flex flex-col">
+    <div
+      class="bg-white rounded-[20px] shadow-[0_18px_40px_rgba(112,144,176,0.12)] border border-white/50 p-6 flex flex-col">
       <div class="flex justify-between items-center mb-6">
         <h3 class="text-[22px] font-black text-[#1B254B] tracking-tight">Today's Bookings</h3>
-        <button mat-button class="!text-[#4318FF] !font-bold hover:bg-[#E9E3FF]/50 !rounded-lg" routerLink="/appointments">View All</button>
+        <button mat-button class="!text-[#4318FF] !font-bold hover:bg-[#E9E3FF]/50 !rounded-lg"
+          routerLink="/appointments">View All</button>
       </div>
-      
+
       <div class="space-y-4 flex-1">
-        <div *ngIf="clinicalService.todayAppointmentsSignal().length === 0" class="h-full flex flex-col items-center justify-center text-[#A3AED0] py-10">
+        <div *ngIf="clinicalService.todayAppointmentsSignal().length === 0"
+          class="h-full flex flex-col items-center justify-center text-[#A3AED0] py-10">
           <div class="w-20 h-20 rounded-full bg-[#F4F7FE] flex items-center justify-center mb-4">
             <mat-icon class="text-4xl w-10 h-10 flex items-center justify-center">event_busy</mat-icon>
           </div>
           <p class="font-bold text-lg">No appointments today</p>
         </div>
-        
-        <div *ngFor="let apt of clinicalService.todayAppointmentsSignal().slice(0, 5)" 
-             class="flex items-center gap-4 p-4 rounded-[16px] bg-[#F4F7FE]/50 hover:bg-[#F4F7FE] transition-colors cursor-pointer group">
-          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#4318FF] to-[#00E5FF] flex items-center justify-center text-white font-black text-lg shadow-md group-hover:shadow-lg transition-shadow">
+
+        <div *ngFor="let apt of clinicalService.todayAppointmentsSignal().slice(0, 5)"
+          class="flex items-center gap-4 p-4 rounded-[16px] bg-[#F4F7FE]/50 hover:bg-[#F4F7FE] transition-colors cursor-pointer group">
+          <div
+            class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#4318FF] to-[#00E5FF] flex items-center justify-center text-white font-black text-lg shadow-md group-hover:shadow-lg transition-shadow">
             {{ apt.patientName ? apt.patientName[0] : 'P' }}
           </div>
           <div class="flex-1 min-w-0">
@@ -145,7 +201,8 @@
             <p class="text-xs font-bold text-[#A3AED0] truncate mt-0.5">{{ apt.reasonForVisit }}</p>
           </div>
           <div class="text-right">
-            <p class="text-xs font-black text-[#4318FF] bg-[#E9E3FF] px-3 py-1.5 rounded-lg">{{ apt.timeSlot ? apt.timeSlot.split(' ')[0] : '' }}</p>
+            <p class="text-xs font-black text-[#4318FF] bg-[#E9E3FF] px-3 py-1.5 rounded-lg">{{ apt.timeSlot ?
+              apt.timeSlot.split(' ')[0] : '' }}</p>
           </div>
         </div>
       </div>
