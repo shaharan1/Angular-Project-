@@ -97,6 +97,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   refreshDashboard() {
     this.patientService.triggerRefresh();
     this.appointmentService.triggerRefresh();
+    const today = new Date().toISOString().split('T')[0];
+    this.clinicalService.getDoctorAppointments('', today).subscribe();
   }
 
   ngOnDestroy() {

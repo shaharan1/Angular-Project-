@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,6 +9,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { CommonModule } from '@angular/common';
 import { PatientService } from '../../services/patient';
 import { Patient, PatientStatus } from '../../core/models/patient.model';
+import { Subject, startWith, switchMap, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-patient-list',
@@ -120,16 +121,26 @@ import { Patient, PatientStatus } from '../../core/models/patient.model';
     .mat-mdc-table { background: transparent; }
   `]
 })
-export class PatientList implements OnInit {
+export class PatientList implements OnInit, OnDestroy {
   private patientService = inject(PatientService);
+  private destroy$ = new Subject<void>();
 
   patients = signal<Patient[]>([]);
   displayedColumns = ['id', 'name', 'status', 'doctor', 'actions'];
 
   ngOnInit() {
-    this.patientService.getPatients().subscribe(data => {
+    this.patientService.refresh$.pipe(
+      startWith(void 0),
+      takeUntil(this.destroy$),
+      switchMap(() => this.patientService.getPatients())
+    ).subscribe(data => {
       this.patients.set(data);
     });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   viewPatient(patient: Patient) {

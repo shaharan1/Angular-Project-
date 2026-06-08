@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
@@ -7,6 +7,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatCardModule } from '@angular/material/card';
 import { AppointmentService } from '../../services/appointment';
 import { Appointment, AppointmentStatus } from '../../core/models/appointment.model';
+import { Subject, startWith, switchMap, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-appointment-list',
@@ -111,17 +112,27 @@ import { Appointment, AppointmentStatus } from '../../core/models/appointment.mo
     .cursor-pointer { cursor: pointer; }
   `]
 })
-export class AppointmentList implements OnInit {
+export class AppointmentList implements OnInit, OnDestroy {
   private appointmentService = inject(AppointmentService);
   private router = inject(Router);
-  
+  private destroy$ = new Subject<void>();
+
   appointments = signal<Appointment[]>([]);
   displayedColumns = ['time', 'patient', 'doctor', 'status', 'actions'];
 
   ngOnInit() {
-    this.appointmentService.getAppointments().subscribe(data => {
+    this.appointmentService.refresh$.pipe(
+      startWith(void 0),
+      takeUntil(this.destroy$),
+      switchMap(() => this.appointmentService.getAppointments())
+    ).subscribe(data => {
       this.appointments.set(data);
     });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   viewAppointment(appointment: Appointment) {
@@ -129,7 +140,7 @@ export class AppointmentList implements OnInit {
   }
 
   getStatusClass(status: AppointmentStatus): string {
-    switch(status) {
+    switch (status) {
       case AppointmentStatus.SCHEDULED: return 'bg-blue-50 text-blue-600';
       case AppointmentStatus.IN_PROGRESS: return 'bg-amber-50 text-amber-600';
       case AppointmentStatus.COMPLETED: return 'bg-emerald-50 text-emerald-600';
