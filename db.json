@@ -165,132 +165,55 @@
   ],
   "patients": [
     {
-      "id": "1",
-      "patientId": "PT-2023-0001",
-      "firstName": "Michael",
-      "lastName": "Scott",
-      "dateOfBirth": "1965-03-15T00:00:00.000Z",
+      "firstName": "Shaharan",
+      "lastName": "Hossain",
+      "dateOfBirth": "2026-06-09T18:00:00.000Z",
       "gender": "Male",
-      "bloodGroup": "O+",
-      "contactNumber": "+1 570 555 1234",
-      "email": "mscott@dundermifflin.com",
-      "address": "1725 Slough Avenue, Scranton, PA",
-      "emergencyContactName": "Holly Flax",
-      "emergencyContactRelation": "Wife",
-      "emergencyContactNumber": "+1 570 555 5678",
-      "status": "Admitted",
-      "allergies": [
-        "Penicillin"
-      ],
+      "bloodGroup": "B+",
+      "contactNumber": "089986675",
+      "email": "shaharanhossain1@gmail.com",
+      "address": "safdsg",
+      "emergencyContactName": "aaaaaaaaa",
+      "emergencyContactRelation": "ccccccc",
+      "emergencyContactNumber": "1232435646",
+      "allergies": [],
       "chronicDiseases": [],
-      "registrationDate": "2023-01-10T10:30:00.000Z"
+      "status": "Admitted",
+      "patientId": "PT-2026-8404",
+      "registrationDate": "2026-06-08T09:34:24.479Z",
+      "id": 1
     },
     {
-      "firstName": "9ohjji",
-      "lastName": "ddd",
-      "dateOfBirth": "2026-05-19T18:00:00.000Z",
+      "firstName": "Masud",
+      "lastName": "Hasan",
+      "dateOfBirth": "2026-05-31T18:00:00.000Z",
       "gender": "Male",
-      "bloodGroup": "B-",
-      "contactNumber": "56767463",
-      "email": "dasfhgj@g.c",
-      "address": "reqewrytuh",
-      "emergencyContactName": "Shaharan Hossain",
-      "emergencyContactRelation": "gtuygh",
-      "emergencyContactNumber": "321+6545+641",
+      "bloodGroup": "A+",
+      "contactNumber": "243564768",
+      "email": "",
+      "address": "dddddd",
+      "emergencyContactName": "adfsdg",
+      "emergencyContactRelation": "frog",
+      "emergencyContactNumber": "24334545657",
       "allergies": [],
       "chronicDiseases": [],
       "status": "OPD",
-      "patientId": "PT-2026-4327",
-      "registrationDate": "2026-05-16T13:01:09.666Z",
-      "id": "AbTVR6u"
-    },
-    {
-      "id": "PT-GUEST-1778937042323",
-      "patientId": "PT-2026-GUEST1",
-      "firstName": "gggh",
-      "lastName": "",
-      "contactNumber": "Unknown",
-      "email": "",
-      "bloodGroup": "Unknown",
-      "gender": "Unknown",
-      "status": "OPD",
-      "registrationDate": "2026-05-26T10:00:00.000Z"
-    },
-    {
-      "id": "PT-GUEST-1778938038827",
-      "patientId": "PT-2026-GUEST2",
-      "firstName": "cbfdhfdghfsg",
-      "lastName": "",
-      "contactNumber": "Unknown",
-      "email": "",
-      "bloodGroup": "Unknown",
-      "gender": "Unknown",
-      "status": "OPD",
-      "registrationDate": "2026-05-26T10:00:00.000Z"
-    },
-    {
-      "id": "PT-GUEST-1778938038937",
-      "patientId": "PT-2026-GUEST3",
-      "firstName": "Sajin",
-      "lastName": "",
-      "contactNumber": "Unknown",
-      "email": "",
-      "bloodGroup": "Unknown",
-      "gender": "Unknown",
-      "status": "OPD",
-      "registrationDate": "2026-05-26T10:00:00.000Z"
+      "patientId": "PT-2026-4367",
+      "registrationDate": "2026-06-08T09:35:18.694Z",
+      "id": 2
     }
   ],
   "appointments": [
     {
-      "id": "APT-7788",
-      "patientId": "1",
-      "doctorId": "d1",
-      "patientName": "Michael Scott",
-      "doctorName": "John Doe",
-      "department": "Cardiology",
-      "appointmentDate": "2026-05-18",
-      "timeSlot": "10:00 AM - 10:30 AM",
-      "reasonForVisit": "Regular checkup",
-      "notes": "Follow-up for previous condition",
-      "status": "Confirmed"
-    },
-    {
-      "id": "APT-5371",
-      "patientId": "PT-GUEST-1778937042323",
-      "patientName": "gggh",
-      "doctorId": "d3",
-      "doctorName": "Dr. Michael Ross",
-      "department": "Orthopedics",
-      "appointmentDate": "2026-05-26",
-      "timeSlot": "10:00 AM - 10:30 AM",
-      "reasonForVisit": "cfgfgf",
-      "notes": "",
-      "status": "Confirmed"
-    },
-    {
-      "id": "APT-9511",
-      "patientId": "PT-GUEST-1778938038827",
-      "patientName": "cbfdhfdghfsg",
-      "doctorId": "d1",
-      "doctorName": "Dr. John Doe",
-      "department": "Cardiology",
-      "appointmentDate": "2026-05-26",
-      "timeSlot": "09:00 AM - 09:30 AM",
-      "reasonForVisit": "Headache",
-      "notes": "",
-      "status": "Confirmed"
-    },
-    {
-      "id": "APT-6371",
-      "patientId": "PT-GUEST-1778938038937",
-      "patientName": "Sajin",
-      "doctorId": "d1",
+      "id": "APT-6431",
+      "patientId": "PT-GUEST-1780911004567",
+      "patientName": "mn jk",
+      "doctorId": "d2",
       "doctorName": "Dr. Amit Maji",
-      "department": "Cardiology",
-      "appointmentDate": "2026-05-26",
-      "timeSlot": "09:00 AM - 09:30 AM",
-      "reasonForVisit": "Fever",
+      "department": "Neurology",
+      "appointmentDate": "2026-06-10",
+      "timeSlot": "09:30 AM - 10:00 AM",
+      "reasonForVisit": "njmn ,j",
       "notes": "",
       "status": "Confirmed"
     }
@@ -323,30 +246,34 @@
   "payrolls": [],
   "invoices": [
     {
-      "patientId": "9ohjji ddd",
-      "date": "2026-06-08T04:49:32.555Z",
-      "dueDate": "2026-06-15T04:49:32.555Z",
+      "patientId": "Shaharan Hossain",
+      "date": "2026-06-08T09:40:27.600Z",
+      "dueDate": "2026-06-15T09:40:27.600Z",
       "items": [
         {
-          "description": "fffffh",
-          "amount": 0
+          "description": "MRI",
+          "amount": 1200
         }
       ],
-      "totalAmount": 0,
+      "totalAmount": 1320,
       "status": "Pending",
       "id": 1
     },
     {
-      "patientId": "gggh ",
-      "date": "2026-06-08T04:59:46.679Z",
-      "dueDate": "2026-06-15T04:59:46.679Z",
+      "patientId": "Masud Hasan",
+      "date": "2026-06-08T09:41:08.303Z",
+      "dueDate": "2026-06-15T09:41:08.303Z",
       "items": [
         {
-          "description": "jhgjk",
-          "amount": 9000
+          "description": "X-Ry",
+          "amount": 330
+        },
+        {
+          "description": "MRI",
+          "amount": 1000
         }
       ],
-      "totalAmount": 9900,
+      "totalAmount": 1463,
       "status": "Pending",
       "id": 2
     }
@@ -423,18 +350,6 @@
       "status": "Available"
     },
     {
-      "id": "MED-002",
-      "name": "Paracetamol 650mg",
-      "genericName": "Acetaminophen",
-      "category": "Analgesic",
-      "stock": 35,
-      "unit": "Tablet",
-      "price": 2,
-      "expiryDate": "2026-08-15",
-      "manufacturer": "HealthMed",
-      "status": "Low Stock"
-    },
-    {
       "id": "MED-003",
       "name": "Omeprazole 20mg",
       "genericName": "Omeprazole",
@@ -457,71 +372,38 @@
       "expiryDate": "2025-03-10",
       "manufacturer": "ApexPharma",
       "status": "Available"
+    },
+    {
+      "name": "Paracitamol 500mg",
+      "genericName": "Paracitamol",
+      "category": "Others",
+      "stock": 100,
+      "unit": "Tablet",
+      "price": 2,
+      "expiryDate": "2027-01-31",
+      "manufacturer": "Squre",
+      "id": "MED-2366",
+      "status": "Available"
     }
   ],
   "labTests": [
     {
-      "id": "LT-001",
-      "patientName": "Suman Ahmed",
-      "patientId": "PT-2024-081",
-      "testName": "Complete Blood Count (CBC)",
-      "status": "Processing",
-      "orderedDate": "2026-06-07",
-      "orderedBy": "Dr. John Doe"
-    },
-    {
-      "id": "LT-002",
-      "patientName": "Maria Begum",
-      "patientId": "PT-2024-102",
-      "testName": "Lipid Profile",
-      "status": "Pending",
-      "orderedDate": "2026-06-07",
-      "orderedBy": "Dr. Jane Smith"
-    },
-    {
-      "id": "LT-003",
-      "patientName": "Karim Ullah",
-      "patientId": "PT-2024-095",
-      "testName": "Blood Glucose (Fasting)",
-      "status": "Completed",
-      "orderedDate": "2026-06-06",
-      "orderedBy": "Dr. John Doe"
-    },
-    {
-      "id": "LT-004",
-      "patientName": "Nasrin Akter",
-      "patientId": "PT-2024-110",
-      "testName": "Thyroid Panel (T3, T4, TSH)",
-      "status": "Pending",
-      "orderedDate": "2026-06-07",
-      "orderedBy": "Dr. Jane Smith"
-    },
-    {
-      "id": "LT-005",
-      "patientName": "Zahir Raihan",
-      "patientId": "PT-2024-077",
-      "testName": "Liver Function Test (LFT)",
-      "status": "Processing",
-      "orderedDate": "2026-06-07",
-      "orderedBy": "Dr. John Doe"
-    },
-    {
-      "id": "LT-006",
-      "patientName": "Rina Sultana",
-      "patientId": "PT-2024-088",
-      "testName": "Urine Routine & Microscopy",
-      "status": "Pending",
-      "orderedDate": "2026-06-07",
-      "orderedBy": "Dr. Alice Roy"
-    },
-    {
-      "id": "LT-007",
-      "patientName": "Rafiq Islam",
-      "patientId": "PT-2024-063",
+      "patientName": "Sajin",
+      "patientId": "45365",
       "testName": "Chest X-Ray",
+      "orderedBy": "Dr.Amit Maji",
+      "id": "LT-66093",
       "status": "Completed",
-      "orderedDate": "2026-06-06",
-      "orderedBy": "Dr. John Doe"
+      "orderedDate": "2026-06-08"
+    },
+    {
+      "patientName": "Masud",
+      "patientId": "122",
+      "testName": "Blood Glucose (Fasting)",
+      "orderedBy": "Dr.Roma Moni Pull",
+      "id": "LT-14605",
+      "status": "Pending",
+      "orderedDate": "2026-06-08"
     }
   ]
 }
